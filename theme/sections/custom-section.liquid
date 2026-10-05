@@ -1,0 +1,31 @@
+{%- comment -%} Section libre : composez-la avec les blocs de thème (titre, texte, bouton, image, groupe imbriqué). {%- endcomment -%}
+<section class="section{% if section.settings.alt %} section--alt{% endif %}">
+  <div class="page-width{% if section.settings.narrow %} page-width--narrow{% endif %}">
+    <div class="custom-section" style="display: grid; gap: {{ section.settings.gap }}px; {% if section.settings.columns == 2 %}grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: center;{% endif %}">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Section libre",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    { "type": "select", "id": "columns", "label": "Colonnes", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }], "default": "1" },
+    { "type": "range", "id": "gap", "min": 8, "max": 64, "step": 4, "unit": "px", "label": "Espacement", "default": 24 },
+    { "type": "checkbox", "id": "narrow", "label": "Largeur réduite", "default": false },
+    { "type": "checkbox", "id": "alt", "label": "Fond alterné", "default": false }
+  ],
+  "presets": [
+    {
+      "name": "Section libre",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

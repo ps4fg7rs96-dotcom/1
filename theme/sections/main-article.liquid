@@ -1,0 +1,56 @@
+<section class="section">
+  <article class="page-width article">
+    <header class="article__head">
+      <p class="eyebrow">{{ article.published_at | time_tag: format: 'date' }}</p>
+      <h1 style="margin-top:.75rem">{{ article.title }}</h1>
+      {%- if section.settings.show_author -%}<p class="muted" style="margin-top:.75rem">{{ 'blogs.by' | t: author: article.author }}</p>{%- endif -%}
+    </header>
+    {%- if article.image -%}
+      <div class="article__hero">{{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 46rem, 100vw' }}</div>
+    {%- endif -%}
+    <div class="rte article__content">{{ article.content }}</div>
+    {%- if article.tags.size > 0 -%}
+      <ul class="product__tags" role="list" style="margin-top: 2rem;">{%- for tag in article.tags -%}<li class="tag-chip">{{ tag }}</li>{%- endfor -%}</ul>
+    {%- endif -%}
+
+    {%- if blog.comments_enabled? -%}
+      <div class="comments" id="comments">
+        <h2 class="h3">{{ 'blogs.comments' | t: count: article.comments_count }}</h2>
+        {%- for comment in article.comments -%}
+          <div class="card"><p class="small muted">{{ comment.author }} · {{ comment.created_at | time_tag: format: 'date' }}</p><div class="rte" style="margin-top:.5rem">{{ comment.content }}</div></div>
+        {%- endfor -%}
+        {%- form 'new_comment', article -%}
+          <div class="stack">
+            {%- if form.posted_successfully? -%}
+              <p class="form-message form-message--success" role="status">{% if blog.moderated? %}{{ 'blogs.comment_moderated' | t }}{% else %}{{ 'blogs.comment_posted' | t }}{% endif %}</p>
+            {%- endif -%}
+            {%- if form.errors -%}<p class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <div class="field"><label for="CommentAuthor">{{ 'blogs.name' | t }}</label><input id="CommentAuthor" class="input" name="comment[author]" value="{{ form.author }}" required autocomplete="name"></div>
+            <div class="field"><label for="CommentEmail">{{ 'blogs.email' | t }}</label><input id="CommentEmail" class="input" type="email" name="comment[email]" value="{{ form.email }}" required autocomplete="email"></div>
+            <div class="field"><label for="CommentBody">{{ 'blogs.message' | t }}</label><textarea id="CommentBody" class="textarea" name="comment[body]" rows="5" required>{{ form.body }}</textarea></div>
+            <button type="submit" class="btn btn--primary">{{ 'blogs.post' | t }}</button>
+          </div>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </article>
+</section>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ article.title | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+    "author": { "@type": "Person", "name": {{ article.author | json }} },
+    {%- if article.image -%}"image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},{%- endif -%}
+    "mainEntityOfPage": {{ request.origin | append: article.url | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [{ "type": "checkbox", "id": "show_author", "label": "Afficher l'auteur", "default": true }]
+}
+{% endschema %}

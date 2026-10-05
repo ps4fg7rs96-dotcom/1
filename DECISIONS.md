@@ -1,5 +1,35 @@
 # Journal des décisions
 
+## Partie A — Thème Shopify (Online Store 2.0)
+
+| # | Sujet | Décision | Pourquoi |
+|---|---|---|---|
+| T-01 | Emplacement | Thème dans `theme/`, zip à la racine du dépôt (`theme.zip`), démo dans `demo/` | La racine contient déjà le site Next.js (dont un dossier `assets/`) ; un dossier dédié évite tout mélange. Le zip, lui, a bien les dossiers Shopify à sa racine. |
+| T-02 | Logo | `brand/logo.png` n'existait pas dans le dépôt : créé à partir du logo fourni dans la conversation | Respecter le chemin demandé. Le thème utilise une version SVG redessinée (nette, 1 Ko), remplaçable par une image dans *Paramètres du thème › Logo*. |
+| T-03 | Architecture | Sections avec schéma complet (réglages + blocs + presets), groupes `header-group`/`footer-group`, blocs de thème (`blocks/`) utilisés par une « Section libre » et un bloc « Groupe » imbriquable | Tout est éditable sans code, y compris l'ordre des blocs ; les blocs de thème ouvrent la composition libre de nouvelles sections. |
+| T-04 | Libellés de l'éditeur | Libellés de schéma en français (texte brut), textes de la boutique dans `locales/` (FR par défaut + EN) | Marchands francophones ciblés ; les chaînes visibles par les clients restent traduisibles (Translate & Adapt). |
+| T-05 | Contenu par défaut | Page d'accueil = vitrine marketing de Kinetic (sections demandées) ; gabarits commerce standards | La page d'accueil sert aussi de démonstration du thème. Chaque section se réutilise pour une vraie boutique. |
+| T-06 | Hero « éditeur en direct » | Section `hero-editor` : boutiques démo en blocs (max 4), KPI en blocs (max 2), données passées au JS en JSON ; produits illustrés en SVG (flacon, sachet, gourde, bougie) avec image optionnelle | Configurable dans l'éditeur, aucune photo à charger, rendu identique hors ligne. |
+| T-07 | Boutiques démo du hero | Sève (cosmétique naturelle), Ruelle (café de spécialité), Altitude (équipement outdoor) | Trois niches contrastées (couleurs, conditionnement, ton) pour montrer l'adaptabilité. |
+| T-08 | Interactions de l'éditeur | Dupliquer / masquer / supprimer / « + » / groupe vide / annuler-rétablir (instantanés, 40 niveaux) / IA (suggestions prédéfinies tapées lettre à lettre) / gras-italique-taille / menu « … » (contours, réinitialiser) / Enregistrer (toast) ; lien et listes affichent « disponible dans le thème complet » | Tout ce qui est montré réagit ; pas de fausse promesse d'IA réelle (suggestions configurables). |
+| T-09 | Accessibilité de l'éditeur | Pastilles en `radiogroup` (flèches), blocs focusables (Entrée = sélection), annonces `aria-live`, cibles tactiles agrandies (`pointer: coarse`) | Démo utilisable au clavier et au doigt. |
+| T-10 | JavaScript | Vanilla, `defer` : `theme.js` (~11 Ko) global + `hero-editor.js` chargé uniquement par sa section | Objectif Lighthouse ≥ 90, zéro dépendance. |
+| T-11 | Panier | Tiroir par défaut (AJAX `/cart/add.js` + Section Rendering API), page panier sans JS en repli, jauge de livraison offerte (seuil réglable) | Conversion ; fonctionne même sans JavaScript. |
+| T-12 | Seuil de livraison offerte | Exprimé dans la devise principale et comparé au total du panier | Simple et fiable ; avec Shopify Markets multi-devises, le seuil n'est pas converti (limite documentée). |
+| T-13 | Polices | Polices de marque auto-hébergées (option par défaut) + sélecteurs de la bibliothèque Shopify en alternative (défaut `assistant_n4`, poignée valide garantie) | Fidélité au logo, performance, RGPD ; liberté pour le marchand. |
+| T-14 | Données structurées | Organization + WebSite (accueil), Product avec offres par variante (+ AggregateRating seulement si le métachamp `reviews.rating` existe), FAQPage (section FAQ), CollectionPage, BlogPosting | SEO sans jamais publier de note inventée. |
+| T-15 | Placeholders | Logos, avis, notes, KPI, scores et coûts entre `[crochets]` + soulignement pointillé corail (`.ph`) | Impossible de les confondre avec des données réelles. |
+| T-16 | Démo autonome | Générée depuis les vrais fichiers du thème avec liquidjs (filtres/tags Shopify simulés), CSS/JS/polices intégrés en base64 | La démo ne peut pas diverger du thème ; un seul fichier, fonctionne hors ligne. |
+| T-17 | Langue de la démo | FR uniquement | Le contenu des sections est saisi en FR dans `index.json` ; une version EN n'aurait traduit que l'interface. |
+| T-18 | Validation | `shopify theme check` (CLI 3.94) jusqu'à 0 erreur / 0 avertissement ; tests Playwright sur la démo | Demandé ; garde-fou automatisable (`npm run theme:check`). |
+
+### Logique reprise de la référence (pas le contenu)
+Hero « éditeur » démontrant la personnalisation, preuve sociale sous les CTA, bandeau de logos, bénéfices, fonctionnalités alternées, bloc performance, boutiques démo par niche, comparatif « applis payantes vs natif », installation en 3 étapes, avis en carrousel, FAQ, CTA final. Textes, visuels, niches, noms de boutiques et données sont entièrement originaux.
+
+---
+
+## Partie B — Site vitrine Next.js
+
 Le projet a été mené en autonomie. Chaque choix non spécifié dans le brief est consigné ici avec sa justification.
 
 ## Analyse de la référence (themefullstack.com)

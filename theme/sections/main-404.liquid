@@ -1,0 +1,15 @@
+<section class="page-width not-found">
+  <p class="not-found__code" aria-hidden="true"><span class="not-found__lines"><i></i><i></i><i></i></span><span class="text-gradient">404</span></p>
+  <h1 class="h2" style="margin-top: 1.5rem;">{{ 'templates.404.title' | t }}</h1>
+  <p class="lead" style="max-width: 34rem; margin: 1rem auto 0;">{{ 'templates.404.text' | t }}</p>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+    <label for="NotFoundSearch" class="visually-hidden">{{ 'search.title' | t }}</label>
+    <input id="NotFoundSearch" class="input" type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}">
+    <button type="submit" class="btn btn--primary">{{ 'search.submit' | t }}</button>
+  </form>
+  <p style="margin-top: 1.5rem;"><a href="{{ routes.root_url }}" class="link">{{ 'templates.404.home' | t }} →</a></p>
+</section>
+
+{% schema %}
+{ "name": "Page 404", "settings": [] }
+{% endschema %}

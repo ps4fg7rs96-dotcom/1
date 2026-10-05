@@ -1,0 +1,67 @@
+<section class="section section--tight">
+  <div class="page-width">
+    <h1 style="margin-bottom: 2rem;">{{ 'cart.title' | t }}</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-page" id="CartForm">
+        <div>
+          {% render 'free-shipping-bar' %}
+          <ul class="cart-lines" role="list">
+            {%- for item in cart.items -%}
+              <li class="cart-line">
+                <a href="{{ item.url }}" class="cart-line__media" tabindex="-1" aria-hidden="true">
+                  {%- if item.image -%}{{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 100, height: 100, alt: '' }}{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                </a>
+                <div class="cart-line__info">
+                  <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+                  {%- unless item.product.has_only_default_variant -%}<p class="cart-line__variant">{{ item.variant.title }}</p>{%- endunless -%}
+                  {%- for p in item.properties -%}
+                    {%- unless p.last == blank or p.first contains '_' -%}<p class="cart-line__variant">{{ p.first }} : {{ p.last }}</p>{%- endunless -%}
+                  {%- endfor -%}
+                  <div class="qty qty--sm">
+                    <button type="button" class="qty__btn" data-qty-step="-1" aria-label="{{ 'cart.decrease' | t: title: item.product.title | escape }}">{% render 'icon', name: 'minus', size: 14 %}</button>
+                    <label class="visually-hidden" for="Updates-{{ item.key }}">{{ 'products.product.quantity' | t }}</label>
+                    <input id="Updates-{{ item.key }}" class="qty__input" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
+                    <button type="button" class="qty__btn" data-qty-step="1" aria-label="{{ 'cart.increase' | t: title: item.product.title | escape }}">{% render 'icon', name: 'plus', size: 14 %}</button>
+                  </div>
+                </div>
+                <div class="cart-line__end">
+                  <p class="cart-line__price">{{ item.final_line_price | money }}</p>
+                  {%- if item.original_line_price > item.final_line_price -%}<s class="price__compare">{{ item.original_line_price | money }}</s>{%- endif -%}
+                  <a href="{{ item.url_to_remove }}" class="link--muted">{{ 'cart.remove' | t }}</a>
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <button type="submit" name="update" class="btn btn--secondary btn--sm" style="margin-top: 1rem;">{{ 'cart.update' | t }}</button>
+        </div>
+
+        <aside class="cart-summary" aria-label="{{ 'cart.summary' | t }}">
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <p class="cart-total cart-total--discount"><span>{{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span></p>
+          {%- endfor -%}
+          <p class="cart-total"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.total_price | money_with_currency }}</span></p>
+          <p class="cart-note-small">{{ 'cart.taxes_note' | t }}</p>
+          {%- if settings.cart_show_note -%}
+            <div class="field">
+              <label for="CartNote">{{ 'cart.note' | t }}</label>
+              <textarea id="CartNote" name="note" class="textarea" rows="3">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+          <button type="submit" name="checkout" class="btn btn--primary btn--lg btn--block">{{ 'cart.checkout' | t }} {% render 'icon', name: 'arrow-right', size: 18 %}</button>
+          {%- if additional_checkout_buttons -%}<div>{{ content_for_additional_checkout_buttons }}</div>{%- endif -%}
+          {%- if settings.cart_reassurance != blank -%}<p class="cart-reassurance">{% render 'icon', name: 'shield', size: 16 %} {{ settings.cart_reassurance }}</p>{%- endif -%}
+        </aside>
+      </form>
+    {%- else -%}
+      <div class="empty-state">
+        <span class="empty-icon">{% render 'icon', name: 'cart', size: 30 %}</span>
+        <p class="lead">{{ 'cart.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary" style="margin-top: 1.5rem;">{{ 'cart.continue' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Panier", "settings": [] }
+{% endschema %}

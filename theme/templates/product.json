@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "sticky_atc": true
+      },
+      "blocks": {
+        "vendor-1": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title-2": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating-3": {
+          "type": "rating",
+          "settings": {}
+        },
+        "price-4": {
+          "type": "price",
+          "settings": {}
+        },
+        "tags-5": {
+          "type": "tags",
+          "settings": {
+            "limit": 4
+          }
+        },
+        "inventory-6": {
+          "type": "inventory",
+          "settings": {
+            "threshold": 5
+          }
+        },
+        "variant_picker-7": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons-8": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "free_shipping-9": {
+          "type": "free_shipping",
+          "settings": {}
+        },
+        "trust-10": {
+          "type": "trust",
+          "settings": {
+            "line_1": "Livraison offerte dès 60 €",
+            "line_2": "Retours gratuits sous 30 jours",
+            "line_3": "Paiement 100 % sécurisé"
+          }
+        },
+        "description-11": {
+          "type": "description",
+          "settings": {}
+        },
+        "collapsible-12": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Livraison et retours",
+            "content": "<p>Expédition sous 24 h ouvrées. Retours gratuits pendant 30 jours.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "vendor-1",
+        "title-2",
+        "rating-3",
+        "price-4",
+        "tags-5",
+        "inventory-6",
+        "variant_picker-7",
+        "buy_buttons-8",
+        "free_shipping-9",
+        "trust-10",
+        "description-11",
+        "collapsible-12"
+      ]
+    },
+    "reco": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Vous aimerez aussi",
+        "limit": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reco"
+  ]
+}

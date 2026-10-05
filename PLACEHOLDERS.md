@@ -1,5 +1,34 @@
 # Placeholders à remplacer avant mise en ligne
 
+## A. Thème Shopify
+
+Tout se remplace **dans l'éditeur Shopify** (Personnaliser), sans toucher au code. Sur la boutique, les données d'exemple sont soulignées en pointillé corail.
+
+| Où (éditeur) | Placeholder | Fichier source |
+|---|---|---|
+| Hero éditeur en direct › Note et avis | `[4,9/5] · [250+] avis vérifiés` | `templates/index.json` |
+| Hero éditeur en direct › blocs Carte KPI | `[68,40 €]` `[+12 %]`, `[3,4 %]` `[+0,8 pt]` | `templates/index.json` |
+| Bandeau logos › blocs Logo | `[Logo client 1…8]` → téléversez les logos (SVG/PNG transparent) | `templates/index.json` |
+| Performance › blocs Score et Barre + note | scores 98/100/100/100, `[1,1 s]`, `[3,4 s]` | `templates/index.json` |
+| Comparatif › blocs Application + total | `[15 €]` … `[10 €]`, total `[122 €]`, prix « 31 € » | `templates/index.json` |
+| Témoignages › blocs | 5 citations `[Avis à remplacer]`, `[Prénom N.]`, `[rôle]` (+ 3 sur la landing) | `templates/index.json`, `page.landing.json` |
+| Boutiques démo › blocs | liens « Voir la démo » vides → URL de vos boutiques démo ; captures en option | `templates/index.json` |
+| CTA final, Comparatif, Hero | liens des boutons (vides = collection « Tous les produits ») ; « 21 jours d'essai » | `templates/index.json` |
+| FAQ | réponses à valider (politique de résiliation, mises à jour) | `templates/index.json` |
+| En-tête › Bouton d'action | lien du bouton « Essai gratuit » | `sections/header-group.json` |
+| Bandeau annonce | messages et liens | `sections/header-group.json` |
+| Pied de page | texte de marque, menus (`main-menu`, `footer`) | `sections/footer-group.json` |
+| Paramètres du thème › Réseaux sociaux / Référencement | URL des réseaux, image de partage, e-mail | `config/settings_data.json` |
+| Paramètres du thème › Panier | seuil de livraison offerte (60), message de réassurance | `config/settings_data.json` |
+| Fiche produit › Réassurance, Onglet repliable | « Livraison offerte dès 60 € », « Retours gratuits sous 30 jours »… | `templates/product.json` |
+| Landing page (`page.landing`) | textes d'exemple, FAQ, avis | `templates/page.landing.json` |
+
+Note produit : les étoiles des fiches et cartes produit s'affichent **uniquement** si une application d'avis remplit le métachamp `reviews.rating` — rien n'est inventé.
+
+---
+
+## B. Site vitrine Next.js
+
 Astuce : `grep -rn "\[" content/` liste tous les textes entre crochets ; `grep -rn "PLACEHOLDER" lib/ components/` liste les valeurs de configuration.
 Sur le site, les données d'exemple sont **soulignées en pointillé corail** (composant `<Ph>`).
 

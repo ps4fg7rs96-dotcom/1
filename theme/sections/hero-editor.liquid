@@ -1,0 +1,371 @@
+{%- comment -%}
+  HERO « ÉDITEUR EN DIRECT »
+  Fausse fenêtre d'éditeur de thème, interactive (assets/hero-editor.js).
+  Boutiques démo = blocs « store », cartes KPI = blocs « kpi ». Tout est réglable dans l'éditeur Shopify.
+{%- endcomment -%}
+{{ 'hero-editor.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-editor.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign stores = section.blocks | where: 'type', 'store'
+  assign kpis = section.blocks | where: 'type', 'kpi'
+  assign first = stores.first
+  assign tag_list = first.settings.tags | split: ','
+-%}
+
+<section
+  id="hero-{{ section.id }}"
+  class="hero-ed"
+  style="--tint: {{ section.settings.tint }}; --tint-dark: {{ section.settings.tint_dark }};"
+  aria-labelledby="HeroTitle-{{ section.id }}"
+>
+  <div class="hero-ed__glow" aria-hidden="true"></div>
+
+  <div class="page-width hero-ed__head">
+    {%- if section.settings.hand_word != blank -%}
+      <span class="hero-ed__hand" aria-hidden="true">{{ section.settings.hand_word }}</span>
+    {%- endif -%}
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="hero-ed__eyebrow">{% render 'icon', name: 'bolt', size: 16 %} {{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 id="HeroTitle-{{ section.id }}" class="h0 hero-ed__title">
+      {{ section.settings.heading }}
+      {%- if section.settings.heading_highlight != blank %}
+        <span class="hero-ed__highlight"><span class="hero-ed__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="text-gradient">{{ section.settings.heading_highlight }}</span></span>
+      {%- endif -%}
+    </h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="lead hero-ed__lead">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    <div class="btn-row btn-row--center hero-ed__ctas">
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg">{{ section.settings.cta_label }} {% render 'icon', name: 'arrow-right', size: 18 %}</a>
+      {%- endif -%}
+      {%- if section.settings.cta2_label != blank -%}
+        <a href="{{ section.settings.cta2_link | default: '#demos' }}" class="btn btn--secondary btn--lg">{{ section.settings.cta2_label }}</a>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.rating_text != blank -%}
+      <div class="hero-ed__rating">
+        <span class="hero-ed__avatars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        {% render 'stars', rating: 5 %}
+        <span class="ph" title="{{ 'general.placeholder' | t }}">{{ section.settings.rating_text }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if stores.size > 0 -%}
+    <div class="page-width hero-ed__stage">
+      <div
+        class="ed"
+        data-editor
+        role="region"
+        aria-label="{{ 'hero_editor.region_label' | t }}"
+        style="--store-accent: {{ first.settings.accent }}; --store-tint: {{ first.settings.tint }};"
+      >
+        {%- comment -%} Barre d'outils {%- endcomment -%}
+        <div class="ed__toolbar" role="toolbar" aria-label="{{ 'hero_editor.toolbar' | t }}">
+          <div class="ed__tools">
+            <button type="button" class="ed__tool" data-ed-action="layers" aria-pressed="false" title="{{ 'hero_editor.layers' | t }}">{% render 'icon', name: 'layers', size: 18 %}<span class="visually-hidden">{{ 'hero_editor.layers' | t }}</span></button>
+            <button type="button" class="ed__tool is-active" data-ed-action="select" aria-pressed="true" title="{{ 'hero_editor.select' | t }}">{% render 'icon', name: 'cursor', size: 18 %}<span class="visually-hidden">{{ 'hero_editor.select' | t }}</span></button>
+            <span class="ed__sep" aria-hidden="true"></span>
+            <button type="button" class="ed__tool" data-ed-action="undo" disabled title="{{ 'hero_editor.undo' | t }}">{% render 'icon', name: 'undo', size: 18 %}<span class="visually-hidden">{{ 'hero_editor.undo' | t }}</span></button>
+            <button type="button" class="ed__tool" data-ed-action="redo" disabled title="{{ 'hero_editor.redo' | t }}">{% render 'icon', name: 'redo', size: 18 %}<span class="visually-hidden">{{ 'hero_editor.redo' | t }}</span></button>
+          </div>
+          <p class="ed__doc">{% render 'icon', name: 'globe', size: 14 %} <span data-ed-doc>{{ first.settings.name }}</span> · {{ 'hero_editor.home_page' | t }}</p>
+          <div class="ed__tools">
+            <div class="ed__menu-wrap">
+              <button type="button" class="ed__tool" data-ed-action="menu" aria-expanded="false" aria-haspopup="true" title="{{ 'hero_editor.more' | t }}">{% render 'icon', name: 'dots', size: 18 %}<span class="visually-hidden">{{ 'hero_editor.more' | t }}</span></button>
+              <div class="ed__menu" data-ed-menu hidden>
+                <button type="button" data-ed-action="outlines">{% render 'icon', name: 'eye', size: 16 %} {{ 'hero_editor.show_outlines' | t }}</button>
+                <button type="button" data-ed-action="reset">{% render 'icon', name: 'refresh', size: 16 %} {{ 'hero_editor.reset' | t }}</button>
+              </div>
+            </div>
+            <button type="button" class="ed__save" data-ed-action="save">
+              <span>{{ section.settings.save_label }}</span>
+              <span class="ed__save-chev" aria-hidden="true">{% render 'icon', name: 'chevron-down', size: 16 %}</span>
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} Sélecteur de boutique démo {%- endcomment -%}
+        <div class="ed__stores">
+          <span class="ed__stores-label" id="StoresLabel-{{ section.id }}">{{ 'hero_editor.demo_store' | t }}</span>
+          <div class="ed__pills" role="radiogroup" aria-labelledby="StoresLabel-{{ section.id }}">
+            {%- for store in stores -%}
+              <button
+                type="button"
+                role="radio"
+                class="ed__pill"
+                data-ed-store="{{ forloop.index0 }}"
+                aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                {{ store.shopify_attributes }}
+              >
+                <span class="ed__dot" style="background: {{ store.settings.accent }}"></span>
+                <span class="ed__pill-name">{{ store.settings.name }}</span>
+                <span class="ed__pill-niche">{{ store.settings.niche }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- comment -%} Aperçu de la boutique {%- endcomment -%}
+        <div class="ed__preview" data-ed-preview>
+          <div class="pv" data-ed-canvas>
+            <header class="pv__header">
+              <span class="pv__icon">{% render 'icon', name: 'menu', size: 18 %}</span>
+              <span class="pv__brand" data-block data-block-name="{{ 'hero_editor.blocks.store_name' | t }}" data-field="name" tabindex="0">{{ first.settings.name }}</span>
+              <span class="pv__icons">
+                <span class="pv__icon">{% render 'icon', name: 'search', size: 18 %}</span>
+                <span class="pv__icon">{% render 'icon', name: 'account', size: 18 %}</span>
+                <span class="pv__icon pv__cart">{% render 'icon', name: 'cart', size: 18 %}<b data-field="cart">2</b></span>
+              </span>
+            </header>
+
+            <div class="pv__product">
+              <div class="pv__media" data-block data-block-name="{{ 'hero_editor.blocks.image' | t }}" data-block-kind="media" tabindex="0">
+                <div class="pv__art" data-field="art" style="--art: {{ first.settings.accent }}">
+                  {%- if first.settings.image != blank -%}
+                    {{ first.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 500, 700', sizes: '(min-width: 990px) 340px, 80vw', alt: first.settings.product_title }}
+                  {%- else -%}
+                    {% render 'product-art', art: first.settings.art %}
+                  {%- endif -%}
+                </div>
+                <span class="pv__badge" data-field="badge">{{ first.settings.badge }}</span>
+              </div>
+
+              <div class="pv__info">
+                <p class="pv__crumb" data-field="niche">{{ first.settings.niche }}</p>
+                <h2 class="pv__title" data-block data-block-name="{{ 'hero_editor.blocks.title' | t }}" data-field="title" data-editable tabindex="0">{{ first.settings.product_title }}</h2>
+
+                <div class="pv__rating" data-block data-block-name="{{ 'hero_editor.blocks.rating' | t }}" tabindex="0">
+                  <span class="pv__stars" data-field="stars" aria-hidden="true">
+                    {%- for i in (1..5) -%}<span>★</span>{%- endfor -%}
+                  </span>
+                  <span data-field="rating">{{ first.settings.rating }}</span>
+                  <span class="pv__reviews">· <span data-field="reviews">{{ first.settings.reviews }}</span> {{ 'hero_editor.reviews' | t }}</span>
+                </div>
+
+                <p class="pv__price" data-block data-block-name="{{ 'hero_editor.blocks.price' | t }}" data-field="price" data-editable tabindex="0">{{ first.settings.price }}</p>
+
+                <ul class="pv__tags" role="list" data-block data-block-name="{{ 'hero_editor.blocks.tags' | t }}" data-field="tags" tabindex="0">
+                  {%- for tag in tag_list -%}
+                    {%- assign t = tag | strip -%}
+                    <li><button type="button" class="pv__tag{% if t == first.settings.featured_tag %} is-featured{% endif %}" aria-pressed="{% if t == first.settings.featured_tag %}true{% else %}false{% endif %}">{{ t }}</button></li>
+                  {%- endfor -%}
+                </ul>
+
+                <p class="pv__pack" data-block data-block-name="{{ 'hero_editor.blocks.packaging' | t }}" data-field="packaging" data-editable tabindex="0">
+                  {% render 'icon', name: 'leaf', size: 16 %}<span data-text>{{ first.settings.packaging }}</span>
+                </p>
+
+                <div class="pv__group" data-group>
+                  <button type="button" class="pv__empty" data-ed-action="fill-group">
+                    {% render 'icon', name: 'plus', size: 16 %} {{ 'hero_editor.empty_group' | t }}
+                  </button>
+                </div>
+
+                <span class="pv__atc" data-block data-block-name="{{ 'hero_editor.blocks.button' | t }}" data-field="cta" data-editable tabindex="0">{{ 'hero_editor.add_to_cart' | t }}</span>
+              </div>
+            </div>
+          </div>
+
+          {%- comment -%} Calque de sélection (positionné en JS) {%- endcomment -%}
+          <div class="ed__hover" aria-hidden="true"></div>
+          <div class="ed__frame" data-ed-frame hidden>
+            <span class="ed__label" data-ed-label>{{ 'hero_editor.blocks.title' | t }}</span>
+            <div class="ed__mini" role="toolbar" aria-label="{{ 'hero_editor.block_actions' | t }}">
+              <button type="button" data-ed-action="duplicate" title="{{ 'hero_editor.duplicate' | t }}">{% render 'icon', name: 'copy', size: 15 %}<span class="visually-hidden">{{ 'hero_editor.duplicate' | t }}</span></button>
+              <button type="button" data-ed-action="hide" title="{{ 'hero_editor.hide' | t }}">{% render 'icon', name: 'eye-off', size: 15 %}<span class="visually-hidden">{{ 'hero_editor.hide' | t }}</span></button>
+              <button type="button" data-ed-action="delete" title="{{ 'hero_editor.delete' | t }}">{% render 'icon', name: 'trash', size: 15 %}<span class="visually-hidden">{{ 'hero_editor.delete' | t }}</span></button>
+            </div>
+            <button type="button" class="ed__plus" data-ed-action="add" title="{{ 'hero_editor.add_block' | t }}">{% render 'icon', name: 'plus', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.add_block' | t }}</span></button>
+          </div>
+        </div>
+
+        {%- comment -%} Panneau de réglages {%- endcomment -%}
+        <div class="ed__panel">
+          <div class="ed__panel-head">
+            <span class="ed__panel-icon">{% render 'icon', name: 'text-size', size: 16 %}</span>
+            <p class="ed__panel-name" data-ed-name>{{ 'hero_editor.blocks.title' | t }}</p>
+            <span class="ed__panel-hint">{{ 'hero_editor.panel_hint' | t }}</span>
+          </div>
+          <label class="ed__field-label" for="EdText-{{ section.id }}">{{ 'hero_editor.text' | t }}</label>
+          <div class="ed__field">
+            <div class="ed__rte" role="toolbar" aria-label="{{ 'hero_editor.format' | t }}">
+              <button type="button" class="ed__rte-ai" data-ed-action="ai" title="{{ 'hero_editor.ai' | t }}">{% render 'icon', name: 'sparkle', size: 15 %}<span>IA</span></button>
+              <button type="button" data-ed-action="size" title="{{ 'hero_editor.size' | t }}">{% render 'icon', name: 'text-size', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.size' | t }}</span></button>
+              <button type="button" data-ed-action="bold" aria-pressed="false" title="{{ 'hero_editor.bold' | t }}">{% render 'icon', name: 'bold', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.bold' | t }}</span></button>
+              <button type="button" data-ed-action="italic" aria-pressed="false" title="{{ 'hero_editor.italic' | t }}">{% render 'icon', name: 'italic', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.italic' | t }}</span></button>
+              <button type="button" data-ed-action="link" title="{{ 'hero_editor.link' | t }}">{% render 'icon', name: 'link', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.link' | t }}</span></button>
+              <button type="button" data-ed-action="list" title="{{ 'hero_editor.list' | t }}">{% render 'icon', name: 'list', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.list' | t }}</span></button>
+              <button type="button" data-ed-action="olist" title="{{ 'hero_editor.olist' | t }}">{% render 'icon', name: 'list-ordered', size: 16 %}<span class="visually-hidden">{{ 'hero_editor.olist' | t }}</span></button>
+            </div>
+            <textarea id="EdText-{{ section.id }}" class="ed__input" rows="2" data-ed-input spellcheck="false">{{ first.settings.product_title }}</textarea>
+          </div>
+          <p class="ed__live visually-hidden" aria-live="polite" data-ed-live></p>
+        </div>
+      </div>
+
+      {%- if kpis.size > 0 -%}
+        <div class="ed-kpis">
+          {%- for kpi in kpis -%}
+            <div class="ed-kpi ed-kpi--{{ forloop.index }}" {{ kpi.shopify_attributes }}>
+              <span class="ed-kpi__icon">{% render 'icon', name: kpi.settings.icon, size: 18 %}</span>
+              <div>
+                <p class="ed-kpi__label">{{ kpi.settings.label }}</p>
+                <p class="ed-kpi__value"><span class="ph" title="{{ 'general.placeholder' | t }}">{{ kpi.settings.value }}</span></p>
+              </div>
+              <span class="ed-kpi__delta">{% render 'icon', name: 'trending-up', size: 14 %} <span class="ph" title="{{ 'general.placeholder' | t }}">{{ kpi.settings.delta }}</span></span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Données des boutiques pour le script {%- endcomment -%}
+    <script type="application/json" data-ed-stores>
+      [
+        {%- for store in stores -%}
+          {
+            "name": {{ store.settings.name | json }},
+            "niche": {{ store.settings.niche | json }},
+            "accent": {{ store.settings.accent | json }},
+            "tint": {{ store.settings.tint | json }},
+            "title": {{ store.settings.product_title | json }},
+            "rating": {{ store.settings.rating | json }},
+            "reviews": {{ store.settings.reviews | json }},
+            "price": {{ store.settings.price | json }},
+            "tags": {{ store.settings.tags | split: ',' | json }},
+            "featured": {{ store.settings.featured_tag | json }},
+            "packaging": {{ store.settings.packaging | json }},
+            "badge": {{ store.settings.badge | json }},
+            "art": {{ store.settings.art | json }},
+            "image": {% if store.settings.image != blank %}{{ store.settings.image | image_url: width: 700 | json }}{% else %}null{% endif %},
+            "ai": {{ store.settings.ai_suggestions | split: '|' | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    </script>
+    <script type="application/json" data-ed-strings>
+      {
+        "saved": {{ 'hero_editor.saved' | t | json }},
+        "selected": {{ 'hero_editor.selected' | t | json }},
+        "newText": {{ 'hero_editor.new_text' | t | json }},
+        "newTextName": {{ 'hero_editor.blocks.text' | t | json }},
+        "groupBlock": {{ 'hero_editor.group_block' | t | json }},
+        "groupBlockName": {{ 'hero_editor.blocks.badge' | t | json }},
+        "notEditable": {{ 'hero_editor.not_editable' | t | json }},
+        "comingSoon": {{ 'hero_editor.coming_soon' | t | json }},
+        "hidden": {{ 'hero_editor.hidden' | t | json }},
+        "shown": {{ 'hero_editor.shown' | t | json }},
+        "deleted": {{ 'hero_editor.deleted' | t | json }},
+        "duplicated": {{ 'hero_editor.duplicated' | t | json }},
+        "switched": {{ 'hero_editor.switched' | t | json }}
+      }
+    </script>
+    <template data-ed-arts>
+      <div data-art="bottle">{% render 'product-art', art: 'bottle' %}</div>
+      <div data-art="bag">{% render 'product-art', art: 'bag' %}</div>
+      <div data-art="flask">{% render 'product-art', art: 'flask' %}</div>
+      <div data-art="candle">{% render 'product-art', art: 'candle' %}</div>
+    </template>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero éditeur en direct",
+  "tag": "div",
+  "class": "section-hero-editor",
+  "limit": 1,
+  "settings": [
+    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Thème Shopify 2.0 · Pensé pour vendre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Modifiez votre boutique" },
+    { "type": "text", "id": "heading_highlight", "label": "Fin du titre (mise en avant)", "default": "en direct." },
+    { "type": "textarea", "id": "subheading", "label": "Sous-titre", "default": "Cliquez sur un bloc, tapez, c'est en ligne. Kinetic réunit éditeur visuel, outils de conversion et vitesse de chargement dans un seul thème, sans une ligne de code." },
+    { "type": "text", "id": "hand_word", "label": "Mot manuscrit décoratif", "default": "en direct !" },
+    { "type": "header", "content": "Boutons" },
+    { "type": "text", "id": "cta_label", "label": "Bouton principal", "default": "Essayer gratuitement" },
+    { "type": "url", "id": "cta_link", "label": "Lien du bouton principal" },
+    { "type": "text", "id": "cta2_label", "label": "Bouton secondaire", "default": "Voir les boutiques démo" },
+    { "type": "url", "id": "cta2_link", "label": "Lien du bouton secondaire" },
+    { "type": "text", "id": "rating_text", "label": "Note et avis", "info": "Placeholder : remplacez par votre vraie note.", "default": "[4,9/5] · [250+] avis vérifiés" },
+    { "type": "header", "content": "Éditeur" },
+    { "type": "text", "id": "save_label", "label": "Libellé du bouton Enregistrer", "default": "Enregistrer" },
+    { "type": "color", "id": "tint", "label": "Teinte de fond (clair)", "default": "#EEF0FD" },
+    { "type": "color", "id": "tint_dark", "label": "Teinte de fond (sombre)", "default": "#17183A" }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Boutique démo",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nom de la boutique", "default": "Boutique démo" },
+        { "type": "text", "id": "niche", "label": "Niche", "default": "Cosmétique" },
+        { "type": "color", "id": "accent", "label": "Couleur de la boutique", "default": "#3F6E5B" },
+        { "type": "color", "id": "tint", "label": "Fond de la boutique", "default": "#EEF3EF" },
+        { "type": "text", "id": "product_title", "label": "Titre du produit", "default": "Produit vedette" },
+        { "type": "text", "id": "price", "label": "Prix affiché", "default": "29,00 €" },
+        { "type": "text", "id": "rating", "label": "Note", "default": "4,8" },
+        { "type": "text", "id": "reviews", "label": "Nombre d'avis", "default": "120" },
+        { "type": "text", "id": "tags", "label": "Tags (séparés par des virgules)", "default": "Vegan, Fabriqué en France, Nouveau" },
+        { "type": "text", "id": "featured_tag", "label": "Tag mis en avant", "default": "Vegan" },
+        { "type": "text", "id": "packaging", "label": "Conditionnement", "default": "Flacon 30 ml" },
+        { "type": "text", "id": "badge", "label": "Badge sur l'image", "default": "Nouveau" },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Illustration du produit",
+          "options": [
+            { "value": "bottle", "label": "Flacon" },
+            { "value": "bag", "label": "Sachet" },
+            { "value": "flask", "label": "Gourde" },
+            { "value": "candle", "label": "Bougie" }
+          ],
+          "default": "bottle"
+        },
+        { "type": "image_picker", "id": "image", "label": "Image produit (remplace l'illustration)" },
+        { "type": "textarea", "id": "ai_suggestions", "label": "Suggestions du bouton IA", "info": "Séparées par une barre verticale |", "default": "Produit vedette, version améliorée|Le best-seller de la saison" }
+      ]
+    },
+    {
+      "type": "kpi",
+      "name": "Carte KPI",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Libellé", "default": "Panier moyen" },
+        { "type": "text", "id": "value", "label": "Valeur", "info": "Placeholder : remplacez par une donnée réelle et sourcée.", "default": "[68,40 €]" },
+        { "type": "text", "id": "delta", "label": "Évolution", "default": "[+12 %]" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "cart", "label": "Panier" },
+            { "value": "trending-up", "label": "Courbe" },
+            { "value": "gauge", "label": "Jauge" },
+            { "value": "bolt", "label": "Éclair" }
+          ],
+          "default": "cart"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero éditeur en direct",
+      "blocks": [
+        { "type": "store", "settings": { "name": "Sève", "niche": "Cosmétique naturelle", "accent": "#3F6E5B", "tint": "#EEF3EF", "product_title": "Sérum éclat à la vitamine C", "price": "34,00 €", "rating": "4,8", "reviews": "126", "tags": "Peaux sensibles, Vegan, Sans parfum", "featured_tag": "Vegan", "packaging": "Flacon verre 30 ml · environ 2 mois", "badge": "Nouveau", "art": "bottle" } },
+        { "type": "store", "settings": { "name": "Ruelle", "niche": "Café de spécialité", "accent": "#8A4B2A", "tint": "#F5EDE3", "product_title": "Espresso n°3 — notes cacao", "price": "12,50 €", "rating": "4,9", "reviews": "312", "tags": "Grains entiers, Torréfié cette semaine, Bio", "featured_tag": "Torréfié cette semaine", "packaging": "Sachet kraft 250 g · valve fraîcheur", "badge": "Best-seller", "art": "bag" } },
+        { "type": "store", "settings": { "name": "Altitude", "niche": "Équipement outdoor", "accent": "#D9622B", "tint": "#FBEFE6", "product_title": "Gourde isotherme Crête 750 ml", "price": "29,90 €", "rating": "4,7", "reviews": "89", "tags": "24 h au frais, Inox recyclé, Sans BPA", "featured_tag": "Inox recyclé", "packaging": "Livrée sans plastique · carton recyclé", "badge": "−15 %", "art": "flask" } },
+        { "type": "kpi", "settings": { "label": "Panier moyen", "value": "[68,40 €]", "delta": "[+12 %]", "icon": "cart" } },
+        { "type": "kpi", "settings": { "label": "Taux de conversion", "value": "[3,4 %]", "delta": "[+0,8 pt]", "icon": "trending-up" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

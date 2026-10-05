@@ -1,0 +1,39 @@
+<section class="section" aria-labelledby="Benefits-{{ section.id }}">
+  <div class="page-width">
+    {%- assign hid = 'Benefits-' | append: section.id -%}
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
+    <ul class="grid grid--{{ section.settings.columns }}" role="list">
+      {%- for block in section.blocks -%}
+        <li class="card card--hover benefit" data-reveal style="--d: {{ forloop.index0 | modulo: 4 | times: 80 }}ms" {{ block.shopify_attributes }}>
+          <span class="icon-chip">{% render 'icon', name: block.settings.icon, size: 24 %}</span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bénéfices",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Pourquoi Kinetic" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Tout pour vendre. Rien qui ne ralentisse." },
+    { "type": "textarea", "id": "lead", "label": "Introduction" },
+    { "type": "select", "id": "columns", "label": "Colonnes (ordinateur)", "options": [{ "value": "3", "label": "3" }, { "value": "4", "label": "4" }], "default": "4" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "puzzle", "label": "Pièce de puzzle" },{ "value": "gauge", "label": "Jauge" },{ "value": "palette", "label": "Palette" },{ "value": "smartphone", "label": "Mobile" },{ "value": "bolt", "label": "Éclair" },{ "value": "layers", "label": "Calques" },{ "value": "code-off", "label": "Sans code" },{ "value": "image", "label": "Image" },{ "value": "cart", "label": "Panier" },{ "value": "tag", "label": "Étiquette" },{ "value": "globe", "label": "Globe" },{ "value": "shield", "label": "Bouclier" },{ "value": "truck", "label": "Livraison" },{ "value": "refresh", "label": "Retour" },{ "value": "headset", "label": "Support" },{ "value": "download", "label": "Téléchargement" },{ "value": "upload", "label": "Import" },{ "value": "rocket", "label": "Fusée" },{ "value": "leaf", "label": "Feuille" },{ "value": "sparkle", "label": "Étincelle" }], "default": "bolt" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Un bénéfice clair" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Expliquez en une phrase ce que le client y gagne." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Bénéfices", "blocks": [{ "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }] }]
+}
+{% endschema %}

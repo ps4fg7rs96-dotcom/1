@@ -1,5 +1,32 @@
 # Améliorations par rapport à la référence
 
+## Thème Shopify
+
+| Amélioration | Où | Pourquoi |
+|---|---|---|
+| **Éditeur en direct réellement interactif** (saisie temps réel, 3 boutiques, dupliquer/masquer/supprimer, annuler/rétablir, IA, groupe vide) | `sections/hero-editor.liquid`, `assets/hero-editor.js` | Le visiteur *essaie* le produit au lieu de le regarder. |
+| **Mode sombre** complet (auto / clair / sombre + bouton, sans flash) | `layout/theme.liquid`, `base.css` | Confort, tendance forte, cohérent avec le logo sur fond noir. |
+| **Tiroir panier AJAX** avec quantités, remises et réassurance | `snippets/cart-drawer.liquid`, `theme.js` | Le client reste sur la page produit → moins d'abandons. |
+| **Jauge de livraison offerte** (tiroir, page panier, fiche produit) | `snippets/free-shipping-bar.liquid` | Levier classique d'augmentation du panier moyen. |
+| **Barre d'achat collante sur mobile** | `main-product.liquid`, `theme.js` | Le bouton d'achat reste accessible au pouce après le défilement. |
+| **Ajout rapide** depuis les cartes produit (produits sans variantes) | `snippets/product-card.liquid` | Un clic de moins. |
+| **Sélecteur de variantes** : pastilles, valeurs indisponibles barrées, prix/média/URL mis à jour | `main-product.liquid`, `theme.js` | Clarté du choix, partage d'URL de variante. |
+| **Indicateur de stock bas** (seuil réglable) | bloc « État du stock » | Urgence honnête, basée sur le vrai stock. |
+| **Filtres et tri de collection** (Search & Discovery) avec envoi automatique et filtres actifs supprimables | `main-collection.liquid` | Navigation rapide dans les grands catalogues. |
+| **Recommandations produit** chargées à l'approche | `product-recommendations.liquid` | Ventes croisées sans pénaliser le chargement initial. |
+| **Blocs de thème + Section libre** (titre, texte, bouton, image, groupe imbriqué) | `blocks/`, `custom-section.liquid` | Créer de nouvelles sections sans développeur. |
+| **Gabarit landing page** (`page.landing`) | `templates/page.landing.json` | Pages de campagne sans page builder externe. |
+| **Bandeau logos défilant** accessible (pause au survol/focus, statique si mouvement réduit) | `logo-marquee.liquid` | Preuve sociale animée sans nuire à l'accessibilité. |
+| **Annonces rotatives** (pause au survol) | `announcement-bar.liquid` | Plusieurs messages sans encombrer. |
+| **Recherche en modale** + page de résultats produits/articles/pages | `header.liquid`, `main-search.liquid` | Trouver vite, sur mobile comme sur ordinateur. |
+| **Données structurées** Product/Offer, FAQPage, Organization, WebSite (SearchAction), BlogPosting | sections + snippets | Résultats enrichis Google. |
+| **Placeholders visibles** (`.ph`) | `base.css` | Aucun faux avis ou faux chiffre publié par erreur. |
+| **Polices réduites** (−60 %) et chargées seulement si utilisées | `assets/*.woff2` | Performance mobile. |
+| **Démo autonome générée depuis le thème** | `scripts/build-demo.mjs` | Montrer le thème sans boutique Shopify, sans écart avec le vrai rendu. |
+| **Page 404 et page mot de passe soignées** | `main-404.liquid`, `main-password.liquid` | Pages souvent négligées, vues par les premiers visiteurs. |
+
+## Site vitrine Next.js
+
 | Amélioration | Où | Pourquoi |
 |---|---|---|
 | **Mode sombre** complet (système + bascule mémorisée, sans flash) | `ThemeToggle`, `ThemeScript`, tokens `.dark` | Confort, cohérence avec le logo sur fond noir, attendu d'un produit « tech ». |

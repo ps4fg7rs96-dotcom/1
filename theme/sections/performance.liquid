@@ -1,0 +1,95 @@
+{%- liquid
+  assign points = section.blocks | where: 'type', 'point'
+  assign scores = section.blocks | where: 'type', 'score'
+  assign bars = section.blocks | where: 'type', 'bar'
+-%}
+<section class="section scheme-dark perf" aria-labelledby="Perf-{{ section.id }}">
+  <div class="page-width perf__grid">
+    <div>
+      {%- assign hid = 'Perf-' | append: section.id -%}
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid, align: 'left' %}
+      <ul class="perf__points" role="list">
+        {%- for block in points -%}
+          <li class="perf__point" data-reveal style="--d: {{ forloop.index0 | times: 90 }}ms" {{ block.shopify_attributes }}>
+            <span class="icon-chip">{% render 'icon', name: block.settings.icon, size: 22 %}</span>
+            <div><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="perf__panel" data-reveal>
+      {%- if scores.size > 0 -%}
+        <p class="perf__label">{{ section.settings.scores_title }}</p>
+        <ul class="rings" role="list">
+          {%- for block in scores -%}
+            {%- assign offset = 100 | minus: block.settings.value | times: 2.262 -%}
+            <li class="ring" {{ block.shopify_attributes }}>
+              <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" class="ring__bg"/><circle cx="42" cy="42" r="36" class="ring__fg" style="stroke-dashoffset: {{ offset }}"/></svg>
+              <span class="ring__value ph" title="{{ 'general.placeholder' | t }}">{{ block.settings.value }}</span>
+              <span>{{ block.settings.label }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if bars.size > 0 -%}
+        <hr class="perf__divider">
+        <p class="perf__label">{{ section.settings.bars_title }}</p>
+        <ul class="bars" role="list">
+          {%- for block in bars -%}
+            <li class="bar{% if block.settings.brand %} bar--brand{% endif %}" {{ block.shopify_attributes }}>
+              <div class="bar__head"><span>{{ block.settings.label }}</span><span class="ph" title="{{ 'general.placeholder' | t }}">{{ block.settings.value }}</span></div>
+              <div class="bar__track"><div class="bar__fill" style="width: {{ block.settings.width }}%"></div></div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.note != blank -%}<p class="perf__note">{{ section.settings.note }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Performance",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Performance" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Pensé pour être rapide. Mesuré pour le rester." },
+    { "type": "textarea", "id": "lead", "label": "Introduction" },
+    { "type": "text", "id": "scores_title", "label": "Titre des scores", "default": "Scores Lighthouse mobile" },
+    { "type": "text", "id": "bars_title", "label": "Titre de la comparaison", "default": "Affichage du contenu principal" },
+    { "type": "text", "id": "note", "label": "Note de bas de bloc", "default": "[Scores d'exemple — à remplacer par vos mesures]" }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Argument",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "layers", "label": "Calques" }, { "value": "code-off", "label": "Sans code" }, { "value": "image", "label": "Image" }, { "value": "bolt", "label": "Éclair" }, { "value": "gauge", "label": "Jauge" }], "default": "layers" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Chargement à la demande" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Seules les sections présentes sur la page envoient leur code." }
+      ]
+    },
+    {
+      "type": "score",
+      "name": "Score (anneau)",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Libellé", "default": "Performance" },
+        { "type": "range", "id": "value", "min": 0, "max": 100, "step": 1, "label": "Valeur", "default": 98 }
+      ]
+    },
+    {
+      "type": "bar",
+      "name": "Barre de comparaison",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Libellé", "default": "Kinetic" },
+        { "type": "text", "id": "value", "label": "Valeur affichée", "default": "[1,1 s]" },
+        { "type": "range", "id": "width", "min": 5, "max": 100, "step": 1, "unit": "%", "label": "Longueur", "default": 26 },
+        { "type": "checkbox", "id": "brand", "label": "Couleur de la marque", "default": true }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Performance", "blocks": [{ "type": "point" }, { "type": "score" }, { "type": "bar" }] }]
+}
+{% endschema %}

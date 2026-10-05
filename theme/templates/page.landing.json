@@ -1,0 +1,193 @@
+{
+  "sections": {
+    "banner": {
+      "type": "hero-banner",
+      "settings": {
+        "eyebrow": "Lancement",
+        "heading": "La nouvelle collection est là",
+        "text": "Une page de campagne construite avec les blocs du thème, sans page builder ni script externe.",
+        "cta_label": "Je découvre",
+        "cta2_label": "En savoir plus"
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": {
+        "eyebrow": "Pourquoi l'adopter",
+        "heading": "Trois bonnes raisons de craquer",
+        "columns": "3"
+      },
+      "blocks": {
+        "benefit-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Matières responsables",
+            "text": "Remplacez par l'argument n°1 de votre produit."
+          }
+        },
+        "benefit-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison express",
+            "text": "Expédié sous 24 h, livré en 48 h."
+          }
+        },
+        "benefit-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "refresh",
+            "title": "Satisfait ou remboursé",
+            "text": "30 jours pour changer d'avis."
+          }
+        }
+      },
+      "block_order": [
+        "benefit-1",
+        "benefit-2",
+        "benefit-3"
+      ]
+    },
+    "products": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "La sélection",
+        "heading": "Les pièces du moment",
+        "limit": 4,
+        "show_link": true
+      }
+    },
+    "free": {
+      "type": "custom-section",
+      "settings": {
+        "columns": "2",
+        "gap": 32,
+        "narrow": false,
+        "alt": true
+      },
+      "blocks": {
+        "heading-1": {
+          "type": "heading",
+          "settings": {
+            "eyebrow": "Notre histoire",
+            "text": "Une section libre composée de blocs",
+            "level": "h2",
+            "size": "h2",
+            "align": "left"
+          }
+        },
+        "text-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Ajoutez, imbriquez et réordonnez des blocs Titre, Texte, Bouton, Image ou Groupe pour construire la section dont vous avez besoin.</p>",
+            "align": "left",
+            "size": 1.1,
+            "muted": true
+          }
+        },
+        "button-3": {
+          "type": "button",
+          "settings": {
+            "label": "Découvrir la boutique",
+            "style": "primary",
+            "arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "heading-1",
+        "text-2",
+        "button-3"
+      ]
+    },
+    "reviews": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Avis",
+        "heading": "Ils l'ont adoptée",
+        "lead": "[Témoignages d'exemple à remplacer]"
+      },
+      "blocks": {
+        "testimonial-1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "[Avis à remplacer]",
+            "name": "[Prénom N.]",
+            "role": "[Cliente vérifiée]",
+            "rating": 5
+          }
+        },
+        "testimonial-2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "[Avis à remplacer]",
+            "name": "[Prénom N.]",
+            "role": "[Client vérifié]",
+            "rating": 5
+          }
+        },
+        "testimonial-3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "[Avis à remplacer]",
+            "name": "[Prénom N.]",
+            "role": "[Cliente vérifiée]",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial-1",
+        "testimonial-2",
+        "testimonial-3"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Questions fréquentes"
+      },
+      "blocks": {
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Remplacez par votre politique de livraison.</p>"
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je retourner un article ?",
+            "answer": "<p>Remplacez par votre politique de retour.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question-1",
+        "question-2"
+      ]
+    },
+    "cta": {
+      "type": "final-cta",
+      "settings": {
+        "heading": "Prêt à vous lancer ?",
+        "text": "Une offre de lancement, valable quelques jours seulement.",
+        "cta_label": "J'en profite",
+        "cta2_label": "",
+        "reassurance": "Livraison offerte | Retours 30 jours | Paiement sécurisé"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "benefits",
+    "products",
+    "free",
+    "reviews",
+    "faq",
+    "cta"
+  ]
+}

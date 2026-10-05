@@ -1,0 +1,39 @@
+<section class="section" aria-labelledby="Reco-{{ section.id }}">
+  <div class="page-width" data-reco data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=related">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <h2 id="Reco-{{ section.id }}" class="center" style="margin-bottom: 2.5rem;">{{ section.settings.heading }}</h2>
+      <ul class="product-grid product-grid--4" role="list">
+        {%- for p in recommendations.products -%}
+          <li>{% render 'product-card', product: p %}</li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <span id="Reco-{{ section.id }}" hidden></span>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+  (function () {
+    var el = document.querySelector('[data-reco][data-url*="section_id={{ section.id }}"]');
+    if (!el || el.querySelector('.product-grid') || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      fetch(el.dataset.url).then(function (r) { return r.text(); }).then(function (html) {
+        var d = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-reco]');
+        if (d) el.innerHTML = d.innerHTML;
+      });
+    }, { rootMargin: '0px 0px 300px 0px' });
+    io.observe(el);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Produits recommandés",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Vous aimerez aussi" },
+    { "type": "range", "id": "limit", "min": 2, "max": 8, "step": 1, "label": "Nombre de produits", "default": 4 }
+  ]
+}
+{% endschema %}

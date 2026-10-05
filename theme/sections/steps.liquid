@@ -1,0 +1,39 @@
+<section class="section" aria-labelledby="Steps-{{ section.id }}">
+  <div class="page-width">
+    {%- assign hid = 'Steps-' | append: section.id -%}
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
+    <ol class="steps" role="list">
+      {%- for block in section.blocks -%}
+        <li class="card step" data-reveal style="--d: {{ forloop.index0 | times: 110 }}ms" {{ block.shopify_attributes }}>
+          <span class="step__icon">{% render 'icon', name: block.settings.icon, size: 30 %}<span class="step__num">{{ forloop.index }}</span></span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Étapes d'installation",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Mise en route" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "En ligne en trois étapes" },
+    { "type": "textarea", "id": "lead", "label": "Introduction" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "download", "label": "Téléchargement" }, { "value": "upload", "label": "Import" }, { "value": "rocket", "label": "Fusée" }, { "value": "palette", "label": "Palette" }, { "value": "check", "label": "Validation" }], "default": "download" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Étape" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Décrivez l'étape en une phrase." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Étapes d'installation", "blocks": [{ "type": "step" }, { "type": "step", "settings": { "icon": "upload" } }, { "type": "step", "settings": { "icon": "rocket" } }] }]
+}
+{% endschema %}

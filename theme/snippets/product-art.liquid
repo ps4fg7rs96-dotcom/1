@@ -1,0 +1,52 @@
+{%- comment -%}
+  Illustrations produit vectorielles pour les boutiques démo (aucune photo).
+  Paramètre : art = bottle | bag | flask | candle. Couleur : variable CSS --art (accent de la boutique).
+{%- endcomment -%}
+{%- case art -%}
+  {%- when 'bag' -%}
+    <svg class="art art--bag" viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+      <path d="M52 40h96l14 180a10 10 0 0 1-10 11H48a10 10 0 0 1-10-11L52 40Z" fill="#c9a77c"/>
+      <path d="M52 40h96l4 50H48l4-50Z" fill="#b8915f"/>
+      <path d="M58 22h84l6 18H52l6-18Z" fill="#a67f50"/>
+      <rect x="62" y="104" width="76" height="86" rx="8" fill="var(--art)"/>
+      <rect x="74" y="120" width="52" height="6" rx="3" fill="#fff" opacity=".9"/>
+      <rect x="80" y="134" width="40" height="5" rx="2.5" fill="#fff" opacity=".65"/>
+      <circle cx="100" cy="163" r="13" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/>
+      <path d="M94 160c4-6 10-6 12 0s-6 9-12 4" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".85"/>
+      <circle cx="100" cy="66" r="7" fill="#8a6a40"/>
+    </svg>
+  {%- when 'flask' -%}
+    <svg class="art art--flask" viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+      <rect x="80" y="14" width="40" height="22" rx="6" fill="#2a2a30"/>
+      <rect x="86" y="8" width="28" height="10" rx="4" fill="#3a3a41"/>
+      <path d="M70 46a14 14 0 0 1 14-12h32a14 14 0 0 1 14 12l6 22v148a14 14 0 0 1-14 14H78a14 14 0 0 1-14-14V68l6-22Z" fill="var(--art)"/>
+      <path d="M64 96h72v70H64z" fill="#000" opacity=".12"/>
+      <rect x="76" y="110" width="48" height="6" rx="3" fill="#fff" opacity=".9"/>
+      <rect x="82" y="124" width="36" height="5" rx="2.5" fill="#fff" opacity=".6"/>
+      <path d="M84 50v160" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".22"/>
+    </svg>
+  {%- when 'candle' -%}
+    <svg class="art art--candle" viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+      <path d="M100 30c10 12 12 22 0 34-12-12-10-22 0-34Z" fill="#f2c230"/>
+      <path d="M100 44c5 6 5 11 0 16-5-5-5-10 0-16Z" fill="#fff6d6"/>
+      <rect x="98" y="62" width="4" height="16" rx="2" fill="#2a2a30"/>
+      <path d="M48 84h104v128a16 16 0 0 1-16 16H64a16 16 0 0 1-16-16V84Z" fill="var(--art)"/>
+      <ellipse cx="100" cy="84" rx="52" ry="10" fill="#f1efea"/>
+      <rect x="66" y="128" width="68" height="54" rx="6" fill="#f1efea" opacity=".9"/>
+      <rect x="76" y="142" width="48" height="6" rx="3" fill="var(--art)" opacity=".8"/>
+      <rect x="84" y="156" width="32" height="5" rx="2.5" fill="var(--art)" opacity=".55"/>
+    </svg>
+  {%- else -%}
+    <svg class="art art--bottle" viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+      <rect x="88" y="10" width="24" height="44" rx="6" fill="#2a2a30"/>
+      <ellipse cx="100" cy="12" rx="14" ry="6" fill="#3a3a41"/>
+      <rect x="82" y="50" width="36" height="16" rx="4" fill="#d2d2cf"/>
+      <path d="M62 92a26 26 0 0 1 26-26h24a26 26 0 0 1 26 26v116a20 20 0 0 1-20 20H82a20 20 0 0 1-20-20V92Z" fill="var(--art)"/>
+      <path d="M62 140h76v8H62z" fill="#000" opacity=".1"/>
+      <rect x="74" y="152" width="52" height="56" rx="6" fill="#fff" opacity=".9"/>
+      <rect x="82" y="164" width="36" height="6" rx="3" fill="var(--art)"/>
+      <rect x="86" y="178" width="28" height="4" rx="2" fill="var(--art)" opacity=".55"/>
+      <rect x="86" y="188" width="28" height="4" rx="2" fill="var(--art)" opacity=".35"/>
+      <path d="M76 90v100" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".28"/>
+    </svg>
+{%- endcase -%}

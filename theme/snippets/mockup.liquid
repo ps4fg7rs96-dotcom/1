@@ -1,0 +1,52 @@
+{%- comment -%}
+  Visuels d'illustration 100 % CSS/SVG (aucune image externe).
+  Paramètre : type = editor | cart | templates | landing | speed
+{%- endcomment -%}
+<div class="mock mock--{{ type }}" aria-hidden="true">
+  {%- case type -%}
+    {%- when 'editor' -%}
+      <div class="mock__side">
+        <p class="mock__label">{{ 'mockup.sections' | t }}</p>
+        {%- assign items = 'mockup.editor_blocks' | t | split: '|' -%}
+        {%- for it in items -%}
+          <span class="mock__row{% if forloop.index == 3 %} is-active{% endif %}"><i class="mock__grip"></i>{{ it }}</span>
+        {%- endfor -%}
+        <span class="mock__add">{% render 'icon', name: 'plus', size: 14 %} {{ 'mockup.add_block' | t }}</span>
+      </div>
+      <div class="mock__canvas">
+        <div class="mock__banner"><span></span><span></span><b></b></div>
+        <div class="mock__tiles"><i class="t1"></i><i class="t2"></i><i class="t3"></i></div>
+        <div class="mock__trust is-selected"><i></i><i></i><i></i></div>
+        <span class="mock__line"></span><span class="mock__line mock__line--short"></span>
+      </div>
+    {%- when 'cart' -%}
+      <div class="mock__drawer">
+        <p class="mock__drawer-title">{{ 'cart.title' | t }} · 1 <span>{% render 'icon', name: 'close', size: 16 %}</span></p>
+        <div class="ship-bar"><p class="ship-bar__text">{% render 'icon', name: 'truck', size: 16 %} {{ 'mockup.free_shipping' | t }}</p><div class="ship-bar__track"><span class="ship-bar__fill" style="width:78%"></span></div></div>
+        <div class="mock__item"><i class="mock__thumb mock__thumb--a"></i><span><b>{{ 'mockup.product' | t }}</b><small>49,00 €</small></span><em>− 1 +</em></div>
+        <div class="mock__upsell"><p>{{ 'mockup.upsell' | t }}</p><div class="mock__item"><i class="mock__thumb mock__thumb--b"></i><span><b>{{ 'mockup.upsell_item' | t }}</b><small>19,00 €</small></span><strong>{{ 'mockup.add' | t }}</strong></div></div>
+        <p class="mock__total"><span>{{ 'cart.subtotal' | t }}</span><b>49,00 €</b></p>
+        <span class="mock__checkout">{{ 'cart.checkout' | t }}</span>
+      </div>
+    {%- when 'templates' -%}
+      {%- assign names = 'mockup.templates' | t | split: '|' -%}
+      <div class="mock__grid">
+        {%- for n in names -%}
+          <div class="mock__tpl{% if forloop.index == 3 %} is-selected{% endif %}"><i class="mock__tpl-img v{{ forloop.index }}"></i><b>{{ n }}</b><span></span><span class="short"></span></div>
+        {%- endfor -%}
+      </div>
+    {%- when 'landing' -%}
+      <div class="mock__browser">
+        <p class="mock__bar"><i></i><i></i><i></i><span>{{ 'mockup.url' | t }}/pages/lancement</span></p>
+        <div class="mock__hero"><em>{{ 'mockup.launch' | t }}</em><b>{{ 'mockup.landing_title' | t }}</b><span>{{ 'mockup.discover' | t }}</span></div>
+        <p class="mock__countdown"><span>{{ 'mockup.countdown' | t }}</span><b>02</b><b>14</b><b>37</b><b>09</b></p>
+        <div class="mock__tiles"><i class="t1"></i><i class="t2"></i><i class="t3"></i></div>
+      </div>
+    {%- else -%}
+      <div class="mock__speed">
+        {%- for i in (1..4) -%}
+          <div class="ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" class="ring__bg"/><circle cx="42" cy="42" r="36" class="ring__fg" style="stroke-dashoffset: {% if i == 1 %}4.5{% else %}0{% endif %}"/></svg></div>
+        {%- endfor -%}
+      </div>
+  {%- endcase -%}
+</div>

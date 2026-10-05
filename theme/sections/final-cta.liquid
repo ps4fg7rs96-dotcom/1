@@ -1,0 +1,39 @@
+<section class="section" aria-labelledby="Cta-{{ section.id }}">
+  <div class="page-width">
+    <div class="final-cta" data-reveal>
+      <div class="final-cta__lines" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h2 id="Cta-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+      <div class="btn-row">
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--inverse btn--lg">{{ section.settings.cta_label }} {% render 'icon', name: 'arrow-right', size: 18 %}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_label != blank -%}
+          <a href="{{ section.settings.cta2_link | default: routes.root_url }}" class="btn btn--ghost-light btn--lg">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+      {%- assign items = section.settings.reassurance | split: '|' -%}
+      {%- if section.settings.reassurance != blank -%}
+        <ul class="final-cta__reassure" role="list">
+          {%- for it in items -%}<li>{% render 'icon', name: 'check', size: 16 %}{{ it | strip }}</li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Appel à l'action final",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Donnez de l'élan à votre boutique." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Installez Kinetic ce soir, publiez quand vous êtes prêt." },
+    { "type": "text", "id": "cta_label", "label": "Bouton principal", "default": "Démarrer l'essai gratuit" },
+    { "type": "url", "id": "cta_link", "label": "Lien principal" },
+    { "type": "text", "id": "cta2_label", "label": "Bouton secondaire", "default": "Parler à l'équipe" },
+    { "type": "url", "id": "cta2_link", "label": "Lien secondaire" },
+    { "type": "text", "id": "reassurance", "label": "Réassurance (séparée par |)", "default": "Essai gratuit 21 jours | Sans carte bancaire | Résiliable en 1 clic" }
+  ],
+  "presets": [{ "name": "Appel à l'action final" }]
+}
+{% endschema %}

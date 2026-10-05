@@ -1,0 +1,16 @@
+{%- comment -%}
+  Logo : image téléversée dans les réglages, sinon logo Kinetic vectoriel.
+  Paramètres : tagline (bool)
+{%- endcomment -%}
+{%- if settings.logo != blank -%}
+  {%- assign logo_h = settings.logo_width | divided_by: settings.logo.aspect_ratio | round -%}
+  {{ settings.logo | image_url: width: 600 | image_tag: width: settings.logo_width, height: logo_h, alt: shop.name, class: 'logo__img', loading: 'eager', widths: '200, 300, 400, 600' }}
+{%- else -%}
+  <span class="logo" style="--logo-w: {{ settings.logo_width }}px">
+    <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="13.5" fill="#2B37DE"/><rect x="19.6" y="14.9" width="8.4" height="34.9" rx="1.6" fill="#F1EFEA"/><path d="M28 27.8 42.4 14.9h9.7L35.7 32.3l16.4 17.5h-9.7L28 36.8z" fill="#F1EFEA"/><g fill="#EC7454"><rect x="6.7" y="23" width="8.9" height="3.8" rx="1.9"/><rect x="4.2" y="30.4" width="11.4" height="3.8" rx="1.9"/><rect x="6.7" y="37.8" width="8.9" height="3.8" rx="1.9"/></g></svg>
+    <span class="logo__text">
+      <span class="logo__name">{{ shop.name | upcase }}</span>
+      {%- if tagline -%}<span class="logo__tagline">{{ 'general.tagline' | t }}</span>{%- endif -%}
+    </span>
+  </span>
+{%- endif -%}

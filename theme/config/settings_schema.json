@@ -1,0 +1,223 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Kinetic",
+    "theme_version": "1.0.0",
+    "theme_author": "Kinetic Studio",
+    "theme_documentation_url": "https://kinetic-theme.com/docs",
+    "theme_support_url": "https://kinetic-theme.com/contact"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Laissez vide pour utiliser le logo Kinetic intégré (SVG)."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 260,
+        "step": 4,
+        "unit": "px",
+        "label": "Largeur du logo",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 × 32 px recommandé."
+      }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "header", "content": "Marque" },
+      { "type": "color", "id": "color_primary", "label": "Primaire (boutons, liens)", "default": "#2B37DE" },
+      { "type": "color", "id": "color_primary_hover", "label": "Primaire au survol", "default": "#2129B8" },
+      { "type": "color", "id": "color_accent", "label": "Accent (détails, badges)", "default": "#EC7454" },
+      { "type": "color", "id": "color_accent_text", "label": "Accent pour texte sur fond clair", "default": "#A53619" },
+      { "type": "header", "content": "Thème clair" },
+      { "type": "color", "id": "color_bg", "label": "Fond", "default": "#FBFAF7" },
+      { "type": "color", "id": "color_surface", "label": "Cartes", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_surface_alt", "label": "Fond alterné", "default": "#F1EFEA" },
+      { "type": "color", "id": "color_text", "label": "Texte", "default": "#121214" },
+      { "type": "color", "id": "color_muted", "label": "Texte secondaire", "default": "#52525A" },
+      { "type": "color", "id": "color_border", "label": "Bordures", "default": "#E6E5E0" },
+      { "type": "header", "content": "Thème sombre" },
+      { "type": "color", "id": "color_dark_bg", "label": "Fond", "default": "#121214" },
+      { "type": "color", "id": "color_dark_surface", "label": "Cartes", "default": "#18181C" },
+      { "type": "color", "id": "color_dark_surface_alt", "label": "Fond alterné", "default": "#24242A" },
+      { "type": "color", "id": "color_dark_text", "label": "Texte", "default": "#F1EFEA" },
+      { "type": "color", "id": "color_dark_muted", "label": "Texte secondaire", "default": "#A3A3A9" },
+      { "type": "color", "id": "color_dark_border", "label": "Bordures", "default": "#2C2C33" },
+      { "type": "color", "id": "color_dark_link", "label": "Liens", "default": "#9DA4FF" },
+      { "type": "header", "content": "États" },
+      { "type": "color", "id": "color_success", "label": "Succès / hausse", "default": "#15803D" },
+      { "type": "color", "id": "color_danger", "label": "Erreur / prix barré", "default": "#B91C1C" },
+      { "type": "color", "id": "color_sale", "label": "Badge promo", "default": "#EC7454" }
+    ]
+  },
+  {
+    "name": "Mode sombre",
+    "settings": [
+      {
+        "type": "select",
+        "id": "color_mode",
+        "label": "Thème par défaut",
+        "options": [
+          { "value": "auto", "label": "Suivre l'appareil du visiteur" },
+          { "value": "light", "label": "Toujours clair" },
+          { "value": "dark", "label": "Toujours sombre" }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_mode_toggle",
+        "label": "Afficher le bouton clair / sombre dans l'en-tête",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_brand_fonts",
+        "label": "Utiliser les polices de la marque Kinetic",
+        "info": "Archivo étendue (titres) et Inter (texte), auto-hébergées. Décochez pour choisir dans la bibliothèque Shopify.",
+        "default": true
+      },
+      { "type": "font_picker", "id": "type_heading_font", "label": "Police des titres", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "type_body_font", "label": "Police du texte", "default": "assistant_n4" },
+      {
+        "type": "range",
+        "id": "type_heading_scale",
+        "min": 80,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Taille des titres",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "type_body_size",
+        "min": 14,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "label": "Taille du texte",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Largeur maximale",
+        "default": 1220
+      },
+      {
+        "type": "range",
+        "id": "radius",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "label": "Arrondi des cartes",
+        "default": 20
+      },
+      {
+        "type": "select",
+        "id": "button_shape",
+        "label": "Forme des boutons",
+        "options": [
+          { "value": "pill", "label": "Pilule" },
+          { "value": "rounded", "label": "Arrondie" },
+          { "value": "square", "label": "Carrée" }
+        ],
+        "default": "pill"
+      },
+      { "type": "checkbox", "id": "shadows", "label": "Ombres douces sur les cartes", "default": true },
+      { "type": "checkbox", "id": "animations", "label": "Animations au défilement", "info": "Toujours désactivées si le visiteur a demandé moins d'animations.", "default": true }
+    ]
+  },
+  {
+    "name": "Produits",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Format des images produit",
+        "options": [
+          { "value": "square", "label": "Carré" },
+          { "value": "portrait", "label": "Portrait" },
+          { "value": "landscape", "label": "Paysage" }
+        ],
+        "default": "square"
+      },
+      { "type": "checkbox", "id": "card_show_secondary_image", "label": "Afficher la 2e image au survol", "default": true },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "Afficher la marque", "default": false },
+      { "type": "checkbox", "id": "card_show_rating", "label": "Afficher la note", "info": "Nécessite une application d'avis qui remplit le métachamp reviews.rating.", "default": true },
+      { "type": "checkbox", "id": "card_quick_add", "label": "Ajout rapide au panier", "default": true }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Type de panier",
+        "options": [
+          { "value": "drawer", "label": "Tiroir latéral" },
+          { "value": "page", "label": "Page panier" }
+        ],
+        "default": "drawer"
+      },
+      { "type": "checkbox", "id": "show_free_shipping", "label": "Afficher la jauge de livraison offerte", "default": true },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Seuil de livraison offerte",
+        "info": "Montant dans la devise principale de la boutique (ex. 60).",
+        "default": 60
+      },
+      { "type": "checkbox", "id": "cart_show_note", "label": "Autoriser une note de commande", "default": true },
+      { "type": "text", "id": "cart_reassurance", "label": "Message de réassurance", "default": "Paiement sécurisé · Retours gratuits 30 jours" }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "info": "https://instagram.com/…" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest" },
+      { "type": "text", "id": "social_linkedin", "label": "LinkedIn" }
+    ]
+  },
+  {
+    "name": "Référencement",
+    "settings": [
+      { "type": "image_picker", "id": "share_image", "label": "Image de partage par défaut", "info": "1200 × 630 px." },
+      { "type": "text", "id": "organization_email", "label": "E-mail de contact (données structurées)" }
+    ]
+  }
+]

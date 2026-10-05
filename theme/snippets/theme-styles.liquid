@@ -1,0 +1,82 @@
+{%- comment -%}
+  Variables CSS générées depuis les réglages du thème (Personnaliser > Paramètres du thème).
+  Toutes les couleurs, rayons et polices de base.css passent par ces variables.
+{%- endcomment -%}
+{%- liquid
+  case settings.button_shape
+    when 'pill'
+      assign btn_radius = '999px'
+    when 'rounded'
+      assign btn_radius = '12px'
+    else
+      assign btn_radius = '0px'
+  endcase
+  if settings.use_brand_fonts
+    assign heading_family = '"Kinetic Display", "Arial Black", Arial, sans-serif'
+    assign body_family = '"Kinetic Text", system-ui, -apple-system, "Segoe UI", Arial, sans-serif'
+    assign heading_weight = 800
+    assign body_weight = 400
+  else
+    assign heading_family = settings.type_heading_font.family | append: ', ' | append: settings.type_heading_font.fallback_families
+    assign body_family = settings.type_body_font.family | append: ', ' | append: settings.type_body_font.fallback_families
+    assign heading_weight = settings.type_heading_font.weight
+    assign body_weight = settings.type_body_font.weight
+  endif
+-%}
+<style>
+  {%- if settings.use_brand_fonts -%}
+    @font-face { font-family: "Kinetic Display"; src: url({{ 'kinetic-archivo-wide.woff2' | asset_url }}) format("woff2"); font-weight: 700 800; font-display: swap; }
+    @font-face { font-family: "Kinetic Text"; src: url({{ 'kinetic-inter.woff2' | asset_url }}) format("woff2"); font-weight: 400 700; font-display: swap; }
+  {%- else -%}
+    {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+    {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    {%- assign body_bold = settings.type_body_font | font_modify: 'weight', 'bold' -%}
+    {{ body_bold | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  @font-face { font-family: "Kinetic Hand"; src: url({{ 'kinetic-caveat.woff2' | asset_url }}) format("woff2"); font-weight: 600; font-display: swap; }
+
+  :root {
+    --c-primary: {{ settings.color_primary }};
+    --c-primary-hover: {{ settings.color_primary_hover }};
+    --c-on-primary: #ffffff;
+    --c-accent: {{ settings.color_accent }};
+    --c-accent-text: {{ settings.color_accent_text }};
+    --c-bg: {{ settings.color_bg }};
+    --c-surface: {{ settings.color_surface }};
+    --c-surface-alt: {{ settings.color_surface_alt }};
+    --c-text: {{ settings.color_text }};
+    --c-muted: {{ settings.color_muted }};
+    --c-border: {{ settings.color_border }};
+    --c-link: {{ settings.color_primary }};
+    --c-success: {{ settings.color_success }};
+    --c-danger: {{ settings.color_danger }};
+    --c-sale: {{ settings.color_sale }};
+    --c-dark-bg: {{ settings.color_dark_bg }};
+    --c-dark-surface: {{ settings.color_dark_surface }};
+    --c-dark-surface-alt: {{ settings.color_dark_surface_alt }};
+    --c-dark-text: {{ settings.color_dark_text }};
+    --c-dark-muted: {{ settings.color_dark_muted }};
+    --c-dark-border: {{ settings.color_dark_border }};
+    --c-dark-link: {{ settings.color_dark_link }};
+
+    --font-heading: {{ heading_family }};
+    --font-body: {{ body_family }};
+    --font-hand: "Kinetic Hand", "Segoe Script", "Bradley Hand", cursive;
+    --fw-heading: {{ heading_weight }};
+    --fw-body: {{ body_weight }};
+    --fs-base: {{ settings.type_body_size }}px;
+    --h-scale: {{ settings.type_heading_scale | divided_by: 100.0 }};
+
+    --page-width: {{ settings.page_width }}px;
+    --radius: {{ settings.radius }}px;
+    --radius-sm: {{ settings.radius | divided_by: 2 }}px;
+    --btn-radius: {{ btn_radius }};
+    {%- if settings.shadows %}
+      --shadow-sm: 0 1px 2px rgb(18 18 20 / .06), 0 2px 6px rgb(18 18 20 / .04);
+      --shadow-md: 0 2px 4px rgb(18 18 20 / .04), 0 10px 28px rgb(18 18 20 / .09);
+      --shadow-lg: 0 6px 12px rgb(18 18 20 / .05), 0 28px 56px -14px rgb(18 18 20 / .22);
+    {%- else %}
+      --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+    {%- endif %}
+  }
+</style>

@@ -1,0 +1,60 @@
+<section class="section" id="avis" aria-labelledby="Reviews-{{ section.id }}">
+  <div class="page-width" data-carousel>
+    <div class="carousel__head">
+      {%- assign hid = 'Reviews-' | append: section.id -%}
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid, align: 'left' %}
+      <div class="carousel__nav">
+        <button type="button" class="carousel__btn" data-carousel-prev aria-label="{{ 'sections.testimonials.previous' | t }}">{% render 'icon', name: 'chevron-left' %}</button>
+        <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label="{{ 'sections.testimonials.next' | t }}">{% render 'icon', name: 'chevron-right' %}</button>
+      </div>
+    </div>
+    <div class="carousel__track" data-carousel-track role="region" aria-roledescription="carousel" aria-label="{{ section.settings.heading | escape }}" tabindex="0">
+      {%- for block in section.blocks -%}
+        <div class="carousel__slide" role="group" aria-roledescription="slide" aria-label="{{ 'sections.testimonials.slide' | t: n: forloop.index, total: forloop.length }}" {{ block.shopify_attributes }}>
+          <figure class="testimonial" title="{{ 'general.placeholder' | t }}">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              {% render 'stars', rating: block.settings.rating %}
+              <span style="color: color-mix(in srgb, var(--c-primary) 18%, transparent)">{% render 'icon', name: 'quote', size: 28 %}</span>
+            </div>
+            <blockquote><p>{{ block.settings.quote }}</p></blockquote>
+            <figcaption>
+              <span class="testimonial__avatar" aria-hidden="true">
+                {%- if block.settings.avatar != blank -%}
+                  {{ block.settings.avatar | image_url: width: 96 | image_tag: loading: 'lazy', width: 48, height: 48, alt: '' }}
+                {%- else -%}
+                  {{ block.settings.name | remove: '[' | slice: 0 | default: '·' }}
+                {%- endif -%}
+              </span>
+              <span><span class="testimonial__name">{{ block.settings.name }}</span><span class="testimonial__role">{{ block.settings.role }}</span></span>
+            </figcaption>
+          </figure>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Témoignages",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Avis clients" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Ce que disent les marchands" },
+    { "type": "textarea", "id": "lead", "label": "Introduction", "default": "[Témoignages d'exemple — remplacez-les par de vrais avis vérifiés.]" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Témoignage",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Citation", "default": "[Avis à remplacer] Décrivez le résultat concret obtenu par le client." },
+        { "type": "text", "id": "name", "label": "Nom", "default": "[Prénom N.]" },
+        { "type": "text", "id": "role", "label": "Rôle / boutique", "default": "[Fondatrice · boutique de mode]" },
+        { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Note", "default": 5 },
+        { "type": "image_picker", "id": "avatar", "label": "Photo" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Témoignages", "blocks": [{ "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" }] }]
+}
+{% endschema %}

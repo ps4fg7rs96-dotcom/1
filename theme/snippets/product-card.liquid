@@ -1,0 +1,62 @@
+{%- comment -%}
+  Carte produit. Paramètres : product (objet ou vide → carte d'exemple), index, lazy (bool)
+{%- endcomment -%}
+{%- liquid
+  case settings.card_image_ratio
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    else
+      assign ratio = '1 / 1'
+  endcase
+  assign loading = 'lazy'
+  if lazy == false
+    assign loading = 'eager'
+  endif
+-%}
+<article class="product-card" style="--ratio: {{ ratio }}">
+  {%- if product != blank -%}
+    {%- assign variant = product.selected_or_first_available_variant -%}
+    <a href="{{ product.url }}" class="product-card__media" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 900 | image_tag: loading: loading, sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', widths: '240, 360, 480, 600, 720, 900', class: 'product-card__img', alt: product.featured_media.alt | default: product.title }}
+        {%- if settings.card_show_secondary_image and product.media[1] -%}
+          {{ product.media[1] | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, 50vw', widths: '360, 600, 900', class: 'product-card__img product-card__img--alt', alt: '' }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+    {%- if product.available == false -%}
+      <span class="badge badge--muted product-card__badge">{{ 'products.product.sold_out' | t }}</span>
+    {%- elsif variant.compare_at_price > variant.price -%}
+      {%- assign saving = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price -%}
+      <span class="badge badge--sale product-card__badge">−{{ saving }} %</span>
+    {%- endif -%}
+    <div class="product-card__info">
+      {%- if settings.card_show_vendor -%}<p class="product-card__vendor">{{ product.vendor }}</p>{%- endif -%}
+      <h3 class="product-card__title"><a href="{{ product.url }}" class="product-card__link">{{ product.title }}</a></h3>
+      {%- if settings.card_show_rating and product.metafields.reviews.rating.value != blank -%}
+        {% render 'stars', rating: product.metafields.reviews.rating.value.rating, count: product.metafields.reviews.rating_count %}
+      {%- endif -%}
+      {% render 'price', product: product %}
+    </div>
+    {%- if settings.card_quick_add and product.available and product.has_only_default_variant -%}
+      {%- form 'product', product, class: 'product-card__quick', data-cart-form: '' -%}
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <button type="submit" class="btn btn--icon product-card__add" aria-label="{{ 'products.product.quick_add' | t: title: product.title | escape }}">
+          {% render 'icon', name: 'plus', size: 18 %}
+        </button>
+      {%- endform -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign ph_index = index | default: 1 | modulo: 6 | plus: 1 -%}
+    {%- assign ph_name = 'product-' | append: ph_index -%}
+    <div class="product-card__media">{{ ph_name | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    <div class="product-card__info">
+      <h3 class="product-card__title">{{ 'products.product.example_title' | t }}</h3>
+      <div class="price"><span class="price__current">{{ 4900 | money }}</span></div>
+    </div>
+  {%- endif -%}
+</article>

@@ -1,0 +1,11 @@
+{%- comment -%} Étoiles de note. Paramètres : rating (0–5), count (optionnel), class {%- endcomment -%}
+{%- assign r = rating | default: 0 | times: 1.0 -%}
+<span class="stars {{ class }}" role="img" aria-label="{{ 'products.product.rating_label' | t: rating: r, max: 5 }}">
+  <span class="stars__row" aria-hidden="true">
+    {%- for i in (1..5) -%}
+      {%- assign threshold = i | minus: 0.5 -%}
+      <span class="stars__star{% if r >= threshold %} is-on{% endif %}">{% render 'icon', name: 'star', size: 16 %}</span>
+    {%- endfor -%}
+  </span>
+  {%- if count -%}<span class="stars__count">({{ count }})</span>{%- endif -%}
+</span>

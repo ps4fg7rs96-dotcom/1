@@ -1,6 +1,8 @@
 # Kinetic — Identité de marque
 
-> Tokens centralisés dans [`app/globals.css`](app/globals.css) (Tailwind v4, `@theme`). Toute modification de couleur, rayon, ombre ou police se fait **uniquement** là.
+> Source du logo : [`brand/logo.png`](brand/logo.png).
+> **Thème Shopify** : identité appliquée comme valeurs par défaut dans [`theme/config/settings_data.json`](theme/config/settings_data.json) et exposée dans *Personnaliser › Paramètres du thème* (voir § 9).
+> **Site vitrine** : tokens centralisés dans [`app/globals.css`](app/globals.css).
 
 ## 1. Analyse du logo
 
@@ -93,3 +95,27 @@ Jeu maison ([`components/ui/Icon.tsx`](components/ui/Icon.tsx)) : grille 24 px, 
 Règles : phrases courtes, un bénéfice par phrase, verbes d'action en tête de CTA (« Démarrer », « Explorer »), métaphore du **mouvement / élan** utilisée avec parcimonie, espaces insécables avant `: ; ? !` en français.
 
 Exemples : « Tout ce qu'il faut pour vendre. Rien qui ne ralentisse. » · « Arrêtez d'empiler les abonnements. » · « Donnez de l'élan à votre boutique. »
+
+## 9. Application dans le thème Shopify
+
+Toutes les valeurs ci-dessus sont des **réglages du thème** (modifiables sans code) et deviennent des variables CSS via `snippets/theme-styles.liquid` :
+
+| Réglage (Paramètres du thème) | Valeur par défaut | Variable CSS |
+|---|---|---|
+| Couleurs › Primaire / survol | `#2B37DE` / `#2129B8` | `--c-primary`, `--c-primary-hover` |
+| Couleurs › Accent / accent texte | `#EC7454` / `#A53619` | `--c-accent`, `--c-accent-text` |
+| Couleurs › Thème clair (fond, cartes, alterné, texte, secondaire, bordures) | `#FBFAF7`, `#FFFFFF`, `#F1EFEA`, `#121214`, `#52525A`, `#E6E5E0` | `--c-bg` … `--c-border` |
+| Couleurs › Thème sombre | `#121214`, `#18181C`, `#24242A`, `#F1EFEA`, `#A3A3A9`, `#2C2C33`, liens `#9DA4FF` | `--c-dark-*` (appliquées sous `.dark`) |
+| Couleurs › États | succès `#15803D`, erreur `#B91C1C`, promo `#EC7454` | `--c-success`, `--c-danger`, `--c-sale` |
+| Mode sombre | Suivre l'appareil + bouton dans l'en-tête | classe `dark` sur `<html>` |
+| Typographie › Polices de la marque | Archivo étendue 700–800 + Inter 400–700 (woff2 du thème) — ou n'importe quelle police Shopify | `--font-heading`, `--font-body` |
+| Typographie › tailles | titres 100 %, texte 16 px | `--h-scale`, `--fs-base` |
+| Mise en page › Arrondi des cartes | 20 px | `--radius`, `--radius-sm` |
+| Mise en page › Forme des boutons | Pilule | `--btn-radius` |
+| Mise en page › Ombres douces | Activées | `--shadow-sm/md/lg` |
+
+**Polices du thème** : `kinetic-archivo-wide.woff2` (24 Ko), `kinetic-inter.woff2` (35 Ko) et `kinetic-caveat.woff2` (Caveat 600, 42 Ko — uniquement pour le mot manuscrit décoratif du hero ; téléchargée seulement si la section l'affiche).
+
+**Couleur d'édition** : dans le hero « éditeur en direct », le cadre de sélection utilise un bleu d'interface `#2B6CF6` (texte `#1D4ED8` pour le contraste AA), distinct du bleu de marque pour ne pas confondre l'outil et la boutique.
+
+**Boutiques démo** : chaque boutique fictive a sa propre mini-identité (Sève `#3F6E5B`, Ruelle `#8A4B2A`, Altitude `#D9622B`, Lueur `#B4567A`, Atelier Soleil `#C99A1E`, Ondes `#2B37DE`) pour montrer que le thème s'adapte à toute charte.

@@ -1,0 +1,18 @@
+{%- if block.settings.label != blank -%}
+  <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="btn btn--{{ block.settings.style }} btn--lg" {{ block.shopify_attributes }}>
+    {{ block.settings.label }}{% if block.settings.arrow %} {% render 'icon', name: 'arrow-right', size: 18 %}{% endif %}
+  </a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bouton",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Texte", "default": "Découvrir" },
+    { "type": "url", "id": "link", "label": "Lien" },
+    { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "primary", "label": "Principal" }, { "value": "secondary", "label": "Secondaire" }], "default": "primary" },
+    { "type": "checkbox", "id": "arrow", "label": "Flèche", "default": true }
+  ],
+  "presets": [{ "name": "Bouton" }]
+}
+{% endschema %}

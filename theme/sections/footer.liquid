@@ -1,0 +1,114 @@
+<footer class="footer{% if section.settings.dark %} scheme-dark{% else %} section--alt{% endif %}" style="--cols: {{ section.blocks.size | minus: 1 | at_least: 1 }}">
+  <div class="page-width">
+    <div class="footer__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'brand' -%}
+            <div class="footer__brand" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="header__logo">{% render 'logo', tagline: true %}<span class="visually-hidden">{{ 'general.home' | t }}</span></a>
+              {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+              {%- if block.settings.show_social -%}{% render 'social-icons' %}{%- endif -%}
+            </div>
+          {%- when 'menu' -%}
+            <nav aria-label="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
+              <p class="footer__title">{{ block.settings.title }}</p>
+              <ul class="footer__links" role="list">
+                {%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+              </ul>
+            </nav>
+          {%- when 'newsletter' -%}
+            <div class="footer__newsletter" {{ block.shopify_attributes }}>
+              <p class="footer__title">{{ block.settings.title }}</p>
+              {%- if block.settings.text != blank -%}<p class="muted small" style="margin-top: .75rem;">{{ block.settings.text }}</p>{%- endif -%}
+              {%- form 'customer', id: 'FooterNewsletter', class: 'footer__form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                {%- if form.posted_successfully? -%}
+                  <p class="form-message form-message--success" role="status">{{ 'sections.footer.newsletter_success' | t }}</p>
+                {%- endif -%}
+                {%- if form.errors -%}
+                  <p class="form-message form-message--error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+                {%- endif -%}
+                <div class="inline-form">
+                  <label for="FooterEmail-{{ block.id }}" class="visually-hidden">{{ 'sections.footer.email' | t }}</label>
+                  <input id="FooterEmail-{{ block.id }}" class="input" type="email" name="contact[email]" autocomplete="email" required placeholder="{{ 'sections.footer.email' | t }}">
+                  <button type="submit" class="btn btn--primary" aria-label="{{ 'sections.footer.subscribe' | t }}">{% render 'icon', name: 'arrow-right', size: 18 %}</button>
+                </div>
+              {%- endform -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. {{ section.settings.copyright }}</p>
+      {%- if section.settings.show_localization and localization.available_countries.size > 1 or section.settings.show_localization and localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'localization', data-auto-submit: '' -%}
+          {%- if localization.available_countries.size > 1 -%}
+            <label class="visually-hidden" for="FooterCountry">{{ 'sections.footer.country' | t }}</label>
+            <select id="FooterCountry" name="country_code" class="select">
+              {%- for c in localization.available_countries -%}
+                <option value="{{ c.iso_code }}"{% if c.iso_code == localization.country.iso_code %} selected{% endif %}>{{ c.name }} ({{ c.currency.iso_code }})</option>
+              {%- endfor -%}
+            </select>
+          {%- endif -%}
+          {%- if localization.available_languages.size > 1 -%}
+            <label class="visually-hidden" for="FooterLanguage">{{ 'sections.footer.language' | t }}</label>
+            <select id="FooterLanguage" name="language_code" class="select">
+              {%- for l in localization.available_languages -%}
+                <option value="{{ l.iso_code }}" lang="{{ l.iso_code }}"{% if l.iso_code == localization.language.iso_code %} selected{% endif %}>{{ l.endonym_name | capitalize }}</option>
+              {%- endfor -%}
+            </select>
+          {%- endif -%}
+          <noscript><button type="submit" class="btn btn--sm btn--secondary">OK</button></noscript>
+        {%- endform -%}
+      {%- endif -%}
+      {%- if section.settings.show_payment -%}
+        <ul class="payment-icons" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+          {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "class": "section-footer",
+  "settings": [
+    { "type": "checkbox", "id": "dark", "label": "Fond sombre", "default": true },
+    { "type": "text", "id": "copyright", "label": "Mention", "default": "Tous droits réservés." },
+    { "type": "checkbox", "id": "show_payment", "label": "Afficher les moyens de paiement", "default": true },
+    { "type": "checkbox", "id": "show_localization", "label": "Sélecteurs pays / langue", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Marque",
+      "limit": 1,
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Le thème Shopify rapide, pensé pour la conversion." },
+        { "type": "checkbox", "id": "show_social", "label": "Réseaux sociaux", "default": true }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Boutique" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Newsletter" },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Nouveautés et conseils, une fois par mois." }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

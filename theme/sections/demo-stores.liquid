@@ -1,0 +1,60 @@
+<section class="section" id="demos" aria-labelledby="Demos-{{ section.id }}">
+  <div class="page-width">
+    {%- assign hid = 'Demos-' | append: section.id -%}
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
+    <ul class="grid grid--3" role="list">
+      {%- for block in section.blocks -%}
+        <li data-reveal style="--d: {{ forloop.index0 | modulo: 3 | times: 80 }}ms" {{ block.shopify_attributes }}>
+          <article class="demo-card" style="--demo-accent: {{ block.settings.accent }}; --demo-tint: {{ block.settings.tint }}; --art: {{ block.settings.accent }};">
+            <div class="demo-card__media">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw' }}
+              {%- else -%}
+                <div class="demo-card__art">{% render 'product-art', art: block.settings.art %}</div>
+              {%- endif -%}
+              <div class="demo-card__bar" aria-hidden="true"><span>{{ block.settings.name }}</span><span>{% render 'icon', name: 'search', size: 15 %}{% render 'icon', name: 'cart', size: 15 %}</span></div>
+              <span class="demo-card__pill" aria-hidden="true">{{ block.settings.niche }}</span>
+            </div>
+            <div class="demo-card__body">
+              <div>
+                <h3>{{ block.settings.name }}</h3>
+                <p>{{ block.settings.niche }}</p>
+              </div>
+              <a href="{{ block.settings.link | default: '#' }}" class="demo-card__cta"{% if block.settings.link != blank %} target="_blank" rel="noopener"{% endif %}>
+                {{ section.settings.cta_label }}<span class="visually-hidden"> — {{ block.settings.name }}</span>{% render 'icon', name: 'arrow-up-right', size: 15 %}
+              </a>
+            </div>
+          </article>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Boutiques démo",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Boutiques démo" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Une base, autant de boutiques que de marques" },
+    { "type": "textarea", "id": "lead", "label": "Introduction" },
+    { "type": "text", "id": "cta_label", "label": "Texte du lien", "default": "Voir la démo" }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Boutique",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nom", "default": "Boutique démo" },
+        { "type": "text", "id": "niche", "label": "Niche", "default": "Mode" },
+        { "type": "color", "id": "accent", "label": "Couleur", "default": "#2B37DE" },
+        { "type": "color", "id": "tint", "label": "Fond", "default": "#EEF0FF" },
+        { "type": "select", "id": "art", "label": "Illustration", "options": [{ "value": "bottle", "label": "Flacon" }, { "value": "bag", "label": "Sachet" }, { "value": "flask", "label": "Gourde" }, { "value": "candle", "label": "Bougie" }], "default": "bottle" },
+        { "type": "image_picker", "id": "image", "label": "Capture de la boutique (remplace l'illustration)" },
+        { "type": "url", "id": "link", "label": "Lien vers la démo" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Boutiques démo", "blocks": [{ "type": "store" }, { "type": "store" }, { "type": "store" }] }]
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+{%- comment -%} En-tête de section. Paramètres : eyebrow, heading, lead (texte ou HTML), align ('left'|'center'), id, h1 (bool) {%- endcomment -%}
+{%- if heading != blank or eyebrow != blank -%}
+  <div class="section-head{% if align == 'left' %} section-head--left{% endif %}" data-reveal>
+    {%- if eyebrow != blank -%}<p class="eyebrow">{{ eyebrow }}</p>{%- endif -%}
+    {%- if heading != blank -%}
+      {%- if h1 -%}<h1 class="h1"{% if id %} id="{{ id }}"{% endif %}>{{ heading }}</h1>{%- else -%}<h2{% if id %} id="{{ id }}"{% endif %}>{{ heading }}</h2>{%- endif -%}
+    {%- endif -%}
+    {%- if lead != blank -%}<div class="lead">{{ lead }}</div>{%- endif -%}
+  </div>
+{%- endif -%}

@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {}
+    },
+    "reco": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Complétez votre commande",
+        "limit": 4,
+        "show_link": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reco"
+  ]
+}

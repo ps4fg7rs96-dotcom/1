@@ -1,0 +1,109 @@
+{%- paginate collection.products by section.settings.per_page -%}
+  <div class="page-width collection-hero">
+    <p class="eyebrow">{{ 'collections.label' | t }}</p>
+    <h1 style="margin-top:.75rem">{{ collection.title }}</h1>
+    {%- if section.settings.show_description and collection.description != blank -%}
+      <div class="rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+
+  <section class="page-width section--tight" style="padding-top: 0" aria-label="{{ 'collections.products' | t }}">
+    <form class="toolbar" data-auto-submit>
+      {%- if section.settings.enable_filters and collection.filters.size > 0 -%}
+        <div class="facets">
+          {%- for filter in collection.filters -%}
+            <details class="facet" data-dismissable>
+              <summary>{{ filter.label }}{% if filter.active_values.size > 0 %} ({{ filter.active_values.size }}){% endif %} {% render 'icon', name: 'chevron-down', size: 14 %}</summary>
+              <div class="facet__panel">
+                {%- case filter.type -%}
+                  {%- when 'price_range' -%}
+                    <div class="facet__price">
+                      <label class="visually-hidden" for="{{ filter.min_value.param_name }}">{{ 'collections.price_min' | t }}</label>
+                      <input class="input" type="number" id="{{ filter.min_value.param_name }}" name="{{ filter.min_value.param_name }}" placeholder="0" value="{{ filter.min_value.value | money_without_currency | replace: ',', '.' }}" min="0">
+                      <label class="visually-hidden" for="{{ filter.max_value.param_name }}">{{ 'collections.price_max' | t }}</label>
+                      <input class="input" type="number" id="{{ filter.max_value.param_name }}" name="{{ filter.max_value.param_name }}" placeholder="{{ filter.range_max | money_without_currency | replace: ',', '.' }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '.' }}" min="0">
+                    </div>
+                    <button type="submit" class="btn btn--sm btn--primary">{{ 'collections.apply' | t }}</button>
+                  {%- else -%}
+                    {%- for value in filter.values -%}
+                      <label{% if value.count == 0 and value.active == false %} style="opacity:.45"{% endif %}>
+                        <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                        {{ value.label }} <span class="muted">({{ value.count }})</span>
+                      </label>
+                    {%- endfor -%}
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.enable_sorting -%}
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <label for="SortBy" class="small muted">{{ 'collections.sort_by' | t }}</label>
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          <select id="SortBy" name="sort_by" class="select" style="width:auto">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+      <noscript><button type="submit" class="btn btn--sm btn--secondary">{{ 'collections.apply' | t }}</button></noscript>
+    </form>
+
+    {%- assign active = 0 -%}
+    {%- for filter in collection.filters -%}{%- assign active = active | plus: filter.active_values.size -%}{%- endfor -%}
+    {%- if active > 0 -%}
+      <div class="active-filters">
+        {%- for filter in collection.filters -%}
+          {%- for v in filter.active_values -%}
+            <a href="{{ v.url_to_remove }}">{{ v.label }} {% render 'icon', name: 'close', size: 14 %}<span class="visually-hidden">{{ 'collections.remove_filter' | t }}</span></a>
+          {%- endfor -%}
+        {%- endfor -%}
+        <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="link">{{ 'collections.clear_all' | t }}</a>
+      </div>
+    {%- endif -%}
+
+    {%- if collection.products.size > 0 -%}
+      <ul class="product-grid product-grid--4" role="list">
+        {%- for product in collection.products -%}
+          <li>
+            {%- if forloop.index <= 4 -%}
+              {% render 'product-card', product: product, lazy: false %}
+            {%- else -%}
+              {% render 'product-card', product: product %}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <div class="empty-state">
+        <span class="empty-icon">{% render 'icon', name: 'search', size: 28 %}</span>
+        <p>{{ 'collections.empty' | t }}</p>
+        <a href="{{ collection.url }}" class="link">{{ 'collections.clear_all' | t }}</a>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endpaginate -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ collection.title | json }},
+    "url": {{ request.origin | append: collection.url | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Grille de collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Produits par page", "default": 16 },
+    { "type": "checkbox", "id": "show_description", "label": "Afficher la description", "default": true },
+    { "type": "checkbox", "id": "enable_filters", "label": "Filtres", "default": true },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Tri", "default": true }
+  ]
+}
+{% endschema %}

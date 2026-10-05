@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="no-js{% if settings.color_mode == 'dark' %} dark{% endif %}" lang="{{ request.locale.iso_code }}" data-mode="{{ settings.color_mode }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_bg }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- else -%}
+      <link rel="icon" type="image/svg+xml" href="{{ 'kinetic-mark.svg' | asset_url }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.tagged_with' | t: tags: current_tags.first }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% render 'meta-tags' %}
+    {% render 'theme-styles' %}
+    {%- if settings.use_brand_fonts -%}
+      {{ 'kinetic-archivo-wide.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {%- endif -%}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.classList.replace('no-js', 'js');
+        try {
+          var m = localStorage.getItem('kinetic-mode') || d.getAttribute('data-mode');
+          if (m === 'dark' || (m === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) d.classList.add('dark');
+          else d.classList.remove('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    {{ content_for_header }}
+    {% render 'structured-data-organization' %}
+  </head>
+
+  <body class="template-{{ template.name | handle }}{% if settings.animations %} has-animations{% endif %}">
+    <a class="skip-link btn btn--primary" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {% render 'cart-drawer' %}
+    {%- endif -%}
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+    <script>
+      window.Kinetic = {
+        routes: {
+          root: {{ routes.root_url | json }},
+          cart: {{ routes.cart_url | json }},
+          cartAdd: {{ routes.cart_add_url | json }},
+          cartChange: {{ routes.cart_change_url | json }}
+        },
+        cartType: {{ settings.cart_type | json }},
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          added: {{ 'cart.added' | t | json }},
+          error: {{ 'cart.error' | t | json }}
+        }
+      };
+    </script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  </body>
+</html>
