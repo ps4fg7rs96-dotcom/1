@@ -5,6 +5,17 @@
 {%- liquid
   assign menu = section.settings.menu
   assign layout = section.settings.layout
+  # Lien « Fonctionnalités » : page choisie, sinon la page dont l'identifiant est « fonctionnalites »
+  assign fpage = section.settings.features_page | default: pages['fonctionnalites']
+  assign show_flink = false
+  if section.settings.features_link and fpage != blank
+    assign show_flink = true
+    for link in menu.links
+      if link.url == fpage.url or link.title == section.settings.features_label
+        assign show_flink = false
+      endif
+    endfor
+  endif
 -%}
 <div class="header-wrap scheme-{{ section.settings.color_scheme }} header-wrap--{{ section.settings.sticky }}" data-header data-sticky="{{ section.settings.sticky }}">
   <header class="page-width header header--{{ layout }}">
@@ -29,6 +40,7 @@
             <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }} {% render 'icon', name: 'arrow-right' %}</a>
           {%- endif -%}
         {%- endfor -%}
+        {%- if show_flink -%}<a href="{{ fpage.url }}"{% if page.id == fpage.id %} aria-current="page"{% endif %}>{{ section.settings.features_label }} {% render 'icon', name: 'arrow-right' %}</a>{%- endif -%}
         <div class="menu-drawer__extra">
           {%- if shop.customer_accounts_enabled and section.settings.show_account -%}<a href="{{ routes.account_url }}">{% render 'icon', name: 'account', size: 18 %} {{ 'sections.header.account' | t }}</a>{%- endif -%}
           {%- if settings.wishlist_enable -%}<a href="{{ settings.wishlist_url | default: routes.root_url }}">{% render 'icon', name: 'heart', size: 18 %} {{ 'features.wishlist.title' | t }}</a>{%- endif -%}
@@ -114,6 +126,9 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
+        {%- if show_flink -%}
+          <li><a href="{{ fpage.url }}" class="header__link"{% if page.id == fpage.id %} aria-current="page"{% endif %}>{{ section.settings.features_label }}</a></li>
+        {%- endif -%}
       </ul>
     </nav>
 
@@ -175,15 +190,48 @@
   "name": "En-tête",
   "class": "section-header",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Un menu à 3 niveaux s'affiche automatiquement en méga-menu." },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Un menu à 3 niveaux s'affiche automatiquement en méga-menu."
+    },
+    {
+      "type": "checkbox",
+      "id": "features_link",
+      "label": "Ajouter le lien « Fonctionnalités » au menu",
+      "info": "Apparaît dès qu'une page avec l'identifiant « fonctionnalites » existe (modèle « features »), ou la page choisie ci-dessous. Ignoré s'il est déjà dans le menu.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "features_label",
+      "label": "Libellé du lien",
+      "default": "Fonctionnalités"
+    },
+    {
+      "type": "page",
+      "id": "features_page",
+      "label": "Page « Fonctionnalités »"
+    },
     {
       "type": "select",
       "id": "layout",
       "label": "Disposition",
       "options": [
-        { "value": "left", "label": "Logo à gauche, menu au centre" },
-        { "value": "center", "label": "Menu à gauche, logo au centre" },
-        { "value": "stacked", "label": "Logo centré, menu en dessous" }
+        {
+          "value": "left",
+          "label": "Logo à gauche, menu au centre"
+        },
+        {
+          "value": "center",
+          "label": "Menu à gauche, logo au centre"
+        },
+        {
+          "value": "stacked",
+          "label": "Logo centré, menu en dessous"
+        }
       ],
       "default": "left"
     },
@@ -192,9 +240,18 @@
       "id": "sticky",
       "label": "En-tête fixe",
       "options": [
-        { "value": "always", "label": "Toujours visible" },
-        { "value": "scroll-up", "label": "Réapparaît en remontant" },
-        { "value": "none", "label": "Non fixe" }
+        {
+          "value": "always",
+          "label": "Toujours visible"
+        },
+        {
+          "value": "scroll-up",
+          "label": "Réapparaît en remontant"
+        },
+        {
+          "value": "none",
+          "label": "Non fixe"
+        }
       ],
       "default": "always"
     },
@@ -203,39 +260,125 @@
       "id": "color_scheme",
       "label": "Palette de couleurs",
       "options": [
-        { "value": "theme", "label": "Thème" },
-        { "value": "alt", "label": "Alternée" },
-        { "value": "tint", "label": "Teintée" },
-        { "value": "dark", "label": "Sombre" },
-        { "value": "primary", "label": "Couleur primaire" },
-        { "value": "custom-1", "label": "Personnalisée 1" },
-        { "value": "custom-2", "label": "Personnalisée 2" }
+        {
+          "value": "theme",
+          "label": "Thème"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "tint",
+          "label": "Teintée"
+        },
+        {
+          "value": "dark",
+          "label": "Sombre"
+        },
+        {
+          "value": "primary",
+          "label": "Couleur primaire"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
       ],
       "default": "theme"
     },
-    { "type": "text", "id": "cta_label", "label": "Bouton d'action", "default": "Essai gratuit" },
-    { "type": "url", "id": "cta_link", "label": "Lien du bouton" },
-    { "type": "checkbox", "id": "show_search", "label": "Afficher la recherche", "default": true },
-    { "type": "text", "id": "search_suggestions", "label": "Recherches populaires", "info": "Séparées par des virgules, affichées sous le champ de recherche.", "default": "Nouveautés, Meilleures ventes, Cadeaux" },
-    { "type": "checkbox", "id": "show_account", "label": "Afficher le compte client", "default": true }
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Bouton d'action",
+      "default": "Essai gratuit"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Afficher la recherche",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_suggestions",
+      "label": "Recherches populaires",
+      "info": "Séparées par des virgules, affichées sous le champ de recherche.",
+      "default": "Nouveautés, Meilleures ventes, Cadeaux"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Afficher le compte client",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "mega_menu",
       "name": "Méga-menu",
       "settings": [
-        { "type": "text", "id": "menu_item", "label": "Élément du menu", "info": "Titre exact de l'élément de premier niveau (ex. « Boutique »)." },
-        { "type": "header", "content": "Visuel 1" },
-        { "type": "image_picker", "id": "image_1", "label": "Image" },
-        { "type": "text", "id": "title_1", "label": "Titre", "default": "Nouvelle collection" },
-        { "type": "url", "id": "link_1", "label": "Lien" },
-        { "type": "header", "content": "Visuel 2" },
-        { "type": "image_picker", "id": "image_2", "label": "Image" },
-        { "type": "text", "id": "title_2", "label": "Titre" },
-        { "type": "url", "id": "link_2", "label": "Lien" }
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Élément du menu",
+          "info": "Titre exact de l'élément de premier niveau (ex. « Boutique »)."
+        },
+        {
+          "type": "header",
+          "content": "Visuel 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Titre",
+          "default": "Nouvelle collection"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Lien"
+        },
+        {
+          "type": "header",
+          "content": "Visuel 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Titre"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Lien"
+        }
       ]
     }
   ],
-  "enabled_on": { "groups": ["header"] }
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
 }
 {% endschema %}

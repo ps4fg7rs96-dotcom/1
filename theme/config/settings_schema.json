@@ -673,6 +673,38 @@
       },
       {
         "type": "header",
+        "content": "Cadeau offert"
+      },
+      {
+        "type": "paragraph",
+        "content": "Un produit offert dès un montant de panier. Pour qu'il soit gratuit, créez la réduction automatique correspondante dans Shopify › Réductions."
+      },
+      {
+        "type": "product",
+        "id": "gift_product",
+        "label": "Produit offert"
+      },
+      {
+        "type": "number",
+        "id": "gift_threshold",
+        "label": "À partir de (montant)",
+        "default": 80
+      },
+      {
+        "type": "text",
+        "id": "gift_heading",
+        "label": "Titre",
+        "default": "Vous avez débloqué un cadeau !"
+      },
+      {
+        "type": "checkbox",
+        "id": "gift_auto",
+        "label": "Ajouter automatiquement (produit sans variantes)",
+        "info": "Retiré automatiquement si le panier repasse sous le seuil.",
+        "default": true
+      },
+      {
+        "type": "header",
         "content": "Ventes additionnelles dans le panier"
       },
       {

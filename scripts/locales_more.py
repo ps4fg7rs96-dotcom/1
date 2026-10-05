@@ -67,3 +67,44 @@ en_more = {
    "countdown": {"d": "d", "days": "days", "hours": "h", "minutes": "min", "seconds": "s"},
    "delivery": {"between": "Estimated delivery between", "and": "and", "order_within": "Order within", "ships_today": "to ship today"}},
 }
+
+# Page « Fonctionnalités », abonnement, cadeau offert
+_fr_feat = {
+ "cart": {"gift": {"add": "Ajouter mon cadeau", "added": "{{ title }} offert, ajouté à votre panier", "badge": "Offert", "choose": "Choisir la variante du cadeau",
+   "from": "Cadeau à partir de {{ amount }}", "remaining_html": "Plus que <strong>{{ amount }}</strong> pour recevoir {{ title }} en cadeau", "removed": "Le cadeau est réservé aux paniers de {{ amount }} et plus"}},
+ "features": {
+  "subscription": {"once": "Achat unique", "subscribe": "S'abonner", "frequency": "Fréquence de livraison", "setup": "Bloc abonnement : créez un plan d'abonnement pour ce produit (application gratuite Shopify Subscriptions) pour l'afficher."},
+  "catalog": {"all": "Toutes", "count": "fonctionnalités intégrées", "per_month": "d'applications évitées par mois", "no_app": "application à installer", "filter": "Filtrer par catégorie",
+    "search": "Rechercher une fonctionnalité", "empty": "Aucune fonctionnalité ne correspond.", "save": "Économisez {{ amount }} €/mois", "included": "Inclus", "see": "Voir en action",
+    "kind": {"block": "Bloc", "section": "Section", "setting": "Réglage"},
+    "cat": {"conversion": "Conversion", "cart": "Panier", "navigation": "Navigation", "trust": "Confiance", "content": "Contenu", "design": "Design"},
+    "mock": {"qty_title": "Plus vous en prenez…", "popular": "Le plus choisi", "bundle_title": "Souvent achetés ensemble", "add_all": "Ajouter les 3 au panier",
+      "gift_title": "Vous avez débloqué un cadeau !", "gift_sub": "Choisissez les options du produit offert.", "gift_from": "Cadeau dès 80 €",
+      "sub_choose": "Choisissez votre option :", "sub_freq": "Chaque mois, −10 %", "sub_pause": "Pause ou annulation à tout moment",
+      "cd_title": "L'offre se termine dans", "stock": "Plus que 4 en stock", "delivery": "Livré entre jeudi 8 et lundi 12", "cutoff": "Commandez dans les 2 h 15 pour un envoi aujourd'hui",
+      "upsell": "Vous aimerez aussi", "rewards": "Plus que 12 € pour votre cadeau", "free_ship": "Livraison offerte", "gift": "Cadeau",
+      "terms": "J'accepte les CGV", "applied": "appliqué", "get_code": "Recevoir mon code", "bis": "Prévenez-moi du retour", "preorder_note": "Expédition prévue sous 3 semaines",
+      "engrave": "Texte à graver", "recent": "Vous avez regardé", "color": "Couleur", "price": "Prix", "brand": "Marque", "size_guide": "Guide des tailles",
+      "chest": "Poitrine", "waist": "Taille", "before": "Avant", "after": "Après", "us": "Nous", "others": "Autres", "age": "Avez-vous 18 ans ?", "limited": "Édition limitée", "save": "Enregistrer"}}}}
+_en_feat = {
+ "cart": {"gift": {"add": "Add my gift", "added": "Free {{ title }} added to your cart", "badge": "Free", "choose": "Choose the gift variant",
+   "from": "Free gift from {{ amount }}", "remaining_html": "Only <strong>{{ amount }}</strong> away from a free {{ title }}", "removed": "The gift is for carts of {{ amount }} or more"}},
+ "features": {
+  "subscription": {"once": "One-time purchase", "subscribe": "Subscribe", "frequency": "Delivery frequency", "setup": "Subscription block: create a selling plan for this product (free Shopify Subscriptions app) to show it."},
+  "catalog": {"all": "All", "count": "built-in features", "per_month": "of apps avoided per month", "no_app": "app to install", "filter": "Filter by category",
+    "search": "Search a feature", "empty": "No feature matches.", "save": "Save €{{ amount }}/month", "included": "Included", "see": "See it in action",
+    "kind": {"block": "Block", "section": "Section", "setting": "Setting"},
+    "cat": {"conversion": "Conversion", "cart": "Cart", "navigation": "Navigation", "trust": "Trust", "content": "Content", "design": "Design"},
+    "mock": {"qty_title": "The more you take…", "popular": "Most popular", "bundle_title": "Frequently bought together", "add_all": "Add all 3 to cart",
+      "gift_title": "You unlocked a gift!", "gift_sub": "Choose options for your free product.", "gift_from": "Gift from €80",
+      "sub_choose": "Choose your option:", "sub_freq": "Every month, −10%", "sub_pause": "Pause or cancel anytime",
+      "cd_title": "Offer ends in", "stock": "Only 4 left in stock", "delivery": "Arrives Thu 8 – Mon 12", "cutoff": "Order within 2h15 to ship today",
+      "upsell": "You may also like", "rewards": "€12 away from your gift", "free_ship": "Free shipping", "gift": "Gift",
+      "terms": "I accept the terms", "applied": "applied", "get_code": "Get my code", "bis": "Notify me when back", "preorder_note": "Ships within 3 weeks",
+      "engrave": "Text to engrave", "recent": "Recently viewed", "color": "Colour", "price": "Price", "brand": "Brand", "size_guide": "Size guide",
+      "chest": "Chest", "waist": "Waist", "before": "Before", "after": "After", "us": "Us", "others": "Others", "age": "Are you 18 or over?", "limited": "Limited edition", "save": "Save"}}}}
+def _merge(a, b):
+    for k, v in b.items():
+        if isinstance(v, dict) and isinstance(a.get(k), dict): _merge(a[k], v)
+        else: a[k] = v
+_merge(fr_more, _fr_feat); _merge(en_more, _en_feat)

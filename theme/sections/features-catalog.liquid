@@ -1,0 +1,482 @@
+{%- comment -%}
+  FONCTIONNALITÉS — catalogue illustré de tout ce que fait le thème : aperçu, description,
+  économie estimée, type (bloc / section / réglage) et catégorie. Filtres par catégorie + recherche.
+{%- endcomment -%}
+{{ 'section-features.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign features = section.blocks | where: 'type', 'feature'
+  assign total_savings = 0
+  for b in features
+    assign total_savings = total_savings | plus: b.settings.savings
+  endfor
+  assign cats = 'conversion,cart,navigation,trust,content,design' | split: ','
+  assign card_tag = 'h3'
+  if section.settings.heading_h1
+    assign card_tag = 'h2'
+  endif
+-%}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }} features" data-features>
+  <div class="page-width">
+    <div class="features__head" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading_h1 -%}<h1 class="h1">{{ section.settings.heading }}</h1>{%- else -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.lead != blank -%}<div class="lead">{{ section.settings.lead }}</div>{%- endif -%}
+      {%- if section.settings.show_summary -%}
+        <ul class="features__summary" role="list">
+          <li><b>{{ features.size }}</b><span>{{ 'features.catalog.count' | t }}</span></li>
+          <li><b class="ph" title="{{ 'general.placeholder' | t }}">≈ {{ total_savings }} €</b><span>{{ 'features.catalog.per_month' | t }}</span></li>
+          <li><b>0</b><span>{{ 'features.catalog.no_app' | t }}</span></li>
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_filters -%}
+      <div class="features__tools">
+        <div class="features__filters" role="group" aria-label="{{ 'features.catalog.filter' | t }}">
+          <button type="button" class="chip is-active" data-fcat="all" aria-pressed="true">{{ 'features.catalog.all' | t }} <span>{{ features.size }}</span></button>
+          {%- for c in cats -%}
+            {%- assign count = 0 -%}
+            {%- for b in features -%}{%- if b.settings.category == c -%}{%- assign count = count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+            {%- if count > 0 -%}
+              {%- assign ck = 'features.catalog.cat.' | append: c -%}
+              <button type="button" class="chip" data-fcat="{{ c }}" aria-pressed="false">{{ ck | t }} <span>{{ count }}</span></button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <label class="features__search">
+          {% render 'icon', name: 'search', size: 18 %}
+          <span class="visually-hidden">{{ 'features.catalog.search' | t }}</span>
+          <input class="input" type="search" placeholder="{{ 'features.catalog.search' | t }}" data-fsearch>
+        </label>
+      </div>
+    {%- endif -%}
+
+    <ul class="features__grid features__grid--{{ section.settings.columns }}" role="list">
+      {%- for block in features -%}
+        {%- liquid
+          assign kk = 'features.catalog.kind.' | append: block.settings.kind
+          assign ck = 'features.catalog.cat.' | append: block.settings.category
+        -%}
+        <li class="fcard" data-fcard data-cat="{{ block.settings.category }}" data-q="{{ block.settings.title | append: ' ' | append: block.settings.text | downcase | escape }}" {{ block.shopify_attributes }}>
+          <div class="fcard__preview">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400, 700, 1000', sizes: '(min-width: 990px) 45vw, 92vw', class: 'fcard__img', alt: block.settings.title }}
+            {%- else -%}
+              {% render 'feature-preview', key: block.settings.preview %}
+            {%- endif -%}
+          </div>
+          <div class="fcard__body">
+            <{{ card_tag }} class="fcard__title h3">{{ block.settings.title }}</{{ card_tag }}>
+            <p class="fcard__text">{{ block.settings.text }}</p>
+            <ul class="fcard__chips" role="list">
+              <li class="fchip fchip--save">{% render 'icon', name: 'sparkle', size: 16 %}
+                {%- if block.settings.savings > 0 -%}<span class="ph" title="{{ 'general.placeholder' | t }}">{{ 'features.catalog.save' | t: amount: block.settings.savings }}</span>{%- else -%}{{ 'features.catalog.included' | t }}{%- endif -%}
+              </li>
+              <li class="fchip">{{ kk | t }}</li>
+              <li class="fchip">{{ ck | t }}</li>
+            </ul>
+            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="link fcard__link">{{ 'features.catalog.see' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <p class="features__empty muted" data-fempty hidden>{{ 'features.catalog.empty' | t }}</p>
+    {%- if section.settings.savings_note != blank -%}<p class="small muted features__note">{{ section.settings.savings_note }}</p>{%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <div class="features__cta card">
+        <span class="hero-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+        <p class="h3">{{ section.settings.cta_heading }}</p>
+        <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg">{{ section.settings.cta_label }} {% render 'icon', name: 'arrow-right', size: 18 %}</a>
+      </div>
+    {%- endif -%}
+  </div>
+  <script>
+    (function () {
+      var root = document.currentScript.closest('[data-features]');
+      var cards = Array.prototype.slice.call(root.querySelectorAll('[data-fcard]'));
+      var input = root.querySelector('[data-fsearch]');
+      var empty = root.querySelector('[data-fempty]');
+      var cat = 'all';
+      function apply() {
+        var q = input ? input.value.trim().toLowerCase() : '', n = 0;
+        cards.forEach(function (c) { var ok = (cat === 'all' || c.dataset.cat === cat) && (!q || c.dataset.q.indexOf(q) > -1); c.hidden = !ok; if (ok) n++; });
+        if (empty) empty.hidden = n > 0;
+      }
+      root.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-fcat]');
+        if (!b) return;
+        cat = b.dataset.fcat;
+        root.querySelectorAll('[data-fcat]').forEach(function (x) { var on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-pressed', String(on)); });
+        apply();
+      });
+      if (input) input.addEventListener('input', apply);
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Fonctionnalités",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Fonctionnalités"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Tout est déjà dans le thème"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_h1",
+      "label": "Titre principal de la page (H1)",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "<p>Les fonctions que l'on loue habituellement à l'unité sous forme d'applications sont intégrées, activables en un clic et pensées pour rester rapides.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Afficher le résumé (nombre, économies)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Filtres par catégorie et recherche",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Colonnes (ordinateur)",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "text",
+      "id": "savings_note",
+      "label": "Note sur les économies",
+      "default": "[Économies estimées à partir des tarifs publics courants d'applications équivalentes — à vérifier]"
+    },
+    {
+      "type": "header",
+      "content": "Appel à l'action"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Titre",
+      "default": "Prêt à tout activer ?"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Bouton",
+      "default": "Essayer gratuitement"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien du bouton"
+    },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Fonctionnalité",
+      "settings": [
+        {
+          "type": "select",
+          "id": "preview",
+          "label": "Aperçu illustré",
+          "options": [
+            {
+              "value": "qty_breaks",
+              "label": "Remises par quantité"
+            },
+            {
+              "value": "bundle",
+              "label": "Souvent achetés ensemble"
+            },
+            {
+              "value": "gift",
+              "label": "Cadeau offert au panier"
+            },
+            {
+              "value": "subscription",
+              "label": "Abonnement"
+            },
+            {
+              "value": "countdown",
+              "label": "Compte à rebours"
+            },
+            {
+              "value": "stock",
+              "label": "Stock en direct"
+            },
+            {
+              "value": "delivery",
+              "label": "Estimation de livraison"
+            },
+            {
+              "value": "sticky_atc",
+              "label": "Barre d'achat collante"
+            },
+            {
+              "value": "upsell",
+              "label": "Suggestions dans le panier"
+            },
+            {
+              "value": "rewards",
+              "label": "Paliers de récompense"
+            },
+            {
+              "value": "gift_wrap",
+              "label": "Options du panier"
+            },
+            {
+              "value": "discount",
+              "label": "Code promo"
+            },
+            {
+              "value": "popup",
+              "label": "Pop-up"
+            },
+            {
+              "value": "back_in_stock",
+              "label": "Retour en stock"
+            },
+            {
+              "value": "preorder",
+              "label": "Précommande"
+            },
+            {
+              "value": "engraving",
+              "label": "Personnalisation"
+            },
+            {
+              "value": "mega_menu",
+              "label": "Méga-menu"
+            },
+            {
+              "value": "predictive_search",
+              "label": "Recherche prédictive"
+            },
+            {
+              "value": "quick_view",
+              "label": "Aperçu rapide"
+            },
+            {
+              "value": "wishlist",
+              "label": "Liste d'envies"
+            },
+            {
+              "value": "recently_viewed",
+              "label": "Récemment consultés"
+            },
+            {
+              "value": "filters",
+              "label": "Filtres"
+            },
+            {
+              "value": "load_more",
+              "label": "Voir plus"
+            },
+            {
+              "value": "mobile_nav",
+              "label": "Barre mobile"
+            },
+            {
+              "value": "reviews",
+              "label": "Avis clients"
+            },
+            {
+              "value": "size_chart",
+              "label": "Guide des tailles"
+            },
+            {
+              "value": "lookbook",
+              "label": "Lookbook"
+            },
+            {
+              "value": "ugc",
+              "label": "Galerie sociale"
+            },
+            {
+              "value": "before_after",
+              "label": "Avant / après"
+            },
+            {
+              "value": "comparison",
+              "label": "Tableau comparatif"
+            },
+            {
+              "value": "store_locator",
+              "label": "Points de vente"
+            },
+            {
+              "value": "age_gate",
+              "label": "Vérification de l'âge"
+            },
+            {
+              "value": "badges",
+              "label": "Badges et pastilles"
+            },
+            {
+              "value": "zoom",
+              "label": "Zoom"
+            },
+            {
+              "value": "styles",
+              "label": "Styles de boutique"
+            },
+            {
+              "value": "palettes",
+              "label": "Palettes de sections"
+            },
+            {
+              "value": "header",
+              "label": "En-têtes"
+            },
+            {
+              "value": "gallery",
+              "label": "Galeries produit"
+            },
+            {
+              "value": "sections",
+              "label": "Sections"
+            },
+            {
+              "value": "editor",
+              "label": "Éditeur"
+            }
+          ],
+          "default": "qty_breaks"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ou une capture d'écran (remplace l'aperçu)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Remises par quantité"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Proposez des lots (1, 2, 3 articles) avec la remise affichée : le panier moyen grimpe sans effort."
+        },
+        {
+          "type": "number",
+          "id": "savings",
+          "label": "Économie mensuelle estimée (€)",
+          "info": "0 pour afficher « Inclus ».",
+          "default": 15
+        },
+        {
+          "type": "select",
+          "id": "kind",
+          "label": "Type",
+          "options": [
+            {
+              "value": "block",
+              "label": "Bloc"
+            },
+            {
+              "value": "section",
+              "label": "Section"
+            },
+            {
+              "value": "setting",
+              "label": "Réglage"
+            }
+          ],
+          "default": "block"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Catégorie",
+          "options": [
+            {
+              "value": "conversion",
+              "label": "Conversion"
+            },
+            {
+              "value": "cart",
+              "label": "Panier"
+            },
+            {
+              "value": "navigation",
+              "label": "Navigation"
+            },
+            {
+              "value": "trust",
+              "label": "Confiance"
+            },
+            {
+              "value": "content",
+              "label": "Contenu"
+            },
+            {
+              "value": "design",
+              "label": "Design"
+            }
+          ],
+          "default": "conversion"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien « Voir en action » (facultatif)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fonctionnalités",
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "preview": "gift",
+            "title": "Cadeau offert au panier",
+            "category": "cart",
+            "kind": "setting"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

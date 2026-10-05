@@ -30,6 +30,7 @@ Tout se remplace **dans l'éditeur Shopify** (Personnaliser), sans toucher au co
 | Sections « Points de vente » et « Formulaire de contact » | adresses `[Boutique Paris]`, e-mail `[contact@votre-boutique.fr]` | `templates/page.stores.json`, `page.contact.json` |
 | Fiche produit › Remises par quantité / Lot | pourcentages affichés : **créez les réductions correspondantes** dans Shopify › Réductions | `templates/product.json` |
 | Comptes à rebours | date de fin (2026-12-31 par défaut) | blocs et sections |
+| Page Fonctionnalités | économies « Économisez X €/mois » et total « ≈ 322 € » : **estimations** à vérifier ou retirer (champ par bloc, 0 = « Inclus ») | `templates/page.features.json` |
 | Pop-up | code promo (vide) et texte : section désactivée par défaut | `sections/footer-group.json` |
 
 Note produit : les étoiles des fiches et cartes produit s'affichent **uniquement** si une application d'avis remplit le métachamp `reviews.rating` — rien n'est inventé.

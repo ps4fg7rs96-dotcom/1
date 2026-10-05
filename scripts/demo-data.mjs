@@ -72,7 +72,7 @@ export function makeCatalog(img) {
       available: variants.some((v) => v.available), has_only_default_variant: opts.length === 0,
       options_with_values: opts, options: opts.map((o) => o.name), variants, selected_or_first_available_variant: first,
       featured_media: media[0], media, images: media, published_at: new Date(Date.now() - daysOld * 864e5).toISOString(),
-      metafields: {}, gift_card: false, 'gift_card?': false, type: '',
+      metafields: {}, gift_card: false, 'gift_card?': false, type: '', selling_plan_groups: [], requires_selling_plan: false,
     };
   };
 
@@ -87,6 +87,11 @@ export function makeCatalog(img) {
     mk({ handle: 'trousse-voyage', title: 'Trousse voyage trio', vendor: 'Sève', art: 'bag', color: '#7C3AED', price: 12, tags: ['badge:Édition limitée'], description: 'Trois mini formats pour partir léger.' }),
   ];
   const byHandle = Object.fromEntries(products.map((p) => [p.handle, p]));
+  // Plans d'abonnement (normalement créés par une appli d'abonnements)
+  byHandle['gourde-crete'].selling_plan_groups = [{ name: 'Abonnement', selling_plans: [
+    { id: 9001, name: 'Livré chaque mois, 10 % de réduction', price_adjustments: [{ value_type: 'percentage', value: 10 }] },
+    { id: 9002, name: 'Tous les 2 mois, 5 % de réduction', price_adjustments: [{ value_type: 'percentage', value: 5 }] },
+  ] }];
   // Produits complémentaires (normalement fournis par Search & Discovery)
   const comp = (h, list) => { byHandle[h].metafields = { 'shopify--discovery--product_recommendation': { complementary_products: { value: list.map((x) => byHandle[x]) } } }; };
   comp('gourde-crete', ['tasse-double-paroi', 'bougie-lueur', 'trousse-voyage']);

@@ -492,6 +492,75 @@
   const termsInit = () => $$('input[data-terms]').forEach((c) => $$('[name="checkout"]', c.form || document).forEach((b) => { b.disabled = !c.checked; }));
   document.addEventListener('kinetic:cart-updated', termsInit);
 
+  /* ---------- Abonnement (selling plans Shopify) ---------- */
+  const subscriptions = () => {
+    $$('[data-subscription]').forEach((w) => {
+      if (!once(w, 'kSub')) return;
+      const root = w.closest('[data-product]');
+      const json = root && root.querySelector('[data-product-json]');
+      const data = json ? JSON.parse(json.textContent || '{}') : {};
+      const idInput = root && root.querySelector('input[name="id"]');
+      const input = $('[data-sub-input]', w);
+      const plan = $('[data-sub-plan]', w);
+      const variantPrice = () => {
+        const id = idInput ? Number(idInput.value) : 0;
+        const v = (data.variants || []).find((x) => x.id === id);
+        return v && typeof v.price === 'number' ? v.price : null;
+      };
+      const update = () => {
+        const base = variantPrice();
+        const sub = $('input[value="subscribe"]', w);
+        input.disabled = !(sub && sub.checked);
+        input.value = plan.value;
+        const opt = plan.selectedOptions[0];
+        const type = opt ? opt.dataset.adjType : 'none';
+        const val = opt ? Number(opt.dataset.adj) : 0;
+        if (base === null) return;
+        let price = base;
+        if (type === 'percentage') price = Math.round(base * (1 - val / 100));
+        else if (type === 'fixed_amount') price = Math.max(0, base - val);
+        else if (type === 'price') price = val;
+        const once = $('[data-sub-once]', w);
+        if (once) once.textContent = fmt(base);
+        $('[data-sub-price]', w).textContent = fmt(price);
+        const cmp = $('[data-sub-compare]', w);
+        cmp.textContent = fmt(base);
+        cmp.hidden = price >= base;
+        const badge = $('[data-sub-badge]', w);
+        const pct = Math.round((1 - price / base) * 100);
+        badge.hidden = !(pct > 0);
+        badge.textContent = `−${pct} %`;
+      };
+      w.addEventListener('change', update);
+      if (root) root.addEventListener('kinetic:variant-change', () => setTimeout(update, 0));
+      update();
+    });
+  };
+
+  /* ---------- Cadeau offert (palier de panier) ---------- */
+  let giftBusy = false;
+  const gifts = async () => {
+    if (giftBusy) return;
+    const remove = $('[data-gift-remove]');
+    const auto = $('form[data-gift-auto]');
+    if (!remove && !auto) return;
+    giftBusy = true;
+    try {
+      if (remove) {
+        await fetch(`${K.routes.cartChange}.js`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: remove.dataset.giftRemove, quantity: 0 }) });
+      } else if (auto && !sessionStorage.getItem('kinetic-gift-declined')) {
+        await fetch(`${K.routes.cartAdd}.js`, { method: 'POST', body: new FormData(auto) });
+      } else return;
+      if (K.refreshCart && $('[data-cart-drawer]')) await K.refreshCart(); else if (remove || auto) window.location.reload();
+    } catch (e) { /* hors boutique */ } finally { giftBusy = false; }
+  };
+  // Si le client retire lui-même le cadeau, on ne le rajoute pas automatiquement
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-qty-change="0"]');
+    if (b && b.closest('[data-gift-line]')) { try { sessionStorage.setItem('kinetic-gift-declined', '1'); } catch (err) { /* ignoré */ } }
+  });
+  document.addEventListener('kinetic:cart-updated', () => setTimeout(gifts, 50));
+
   /* ---------- Code promo (panier) ---------- */
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-discount-apply]');
@@ -685,7 +754,7 @@
   const init = () => {
     hoverMenus(); stickyHeader(); predictive(); wishlist.sync(); wishlistPage(); recentlyViewed(); popups();
     countdowns(); beforeAfter(); backToTop(); loadMore(); gridPref(); bundles(); qtyBreaks(); termsInit(); tabs(); counters();
-    slideshows(); delivery();
+    slideshows(); delivery(); subscriptions(); gifts();
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   document.addEventListener('shopify:section:load', init);

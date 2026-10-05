@@ -17,7 +17,7 @@
       <ul class="cart-upsell__list" role="list">
         {%- for p in pool -%}
           {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
-          {%- if in_cart contains p.id or p.available == false or p.id == settings.gift_wrap_product.id -%}{%- continue -%}{%- endif -%}
+          {%- if in_cart contains p.id or p.available == false or p.id == settings.gift_wrap_product.id or p.id == settings.gift_product.id -%}{%- continue -%}{%- endif -%}
           {%- assign shown = shown | plus: 1 -%}
           <li class="mini-product">
             <a href="{{ p.url }}" class="mini-product__img">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 140 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</a>

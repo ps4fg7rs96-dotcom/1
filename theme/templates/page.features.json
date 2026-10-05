@@ -1,0 +1,498 @@
+{
+  "sections": {
+    "features": {
+      "type": "features-catalog",
+      "settings": {
+        "color_scheme": "theme",
+        "padding": "l"
+      },
+      "blocks": {
+        "feature-1": {
+          "type": "feature",
+          "settings": {
+            "preview": "qty_breaks",
+            "title": "Remises par quantité",
+            "text": "Proposez des lots de 1, 2 ou 3 articles avec la remise et le prix total affichés : le panier moyen grimpe sans effort.",
+            "savings": 15,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-2": {
+          "type": "feature",
+          "settings": {
+            "preview": "bundle",
+            "title": "Souvent achetés ensemble",
+            "text": "Le produit et ses compléments cochés d'avance, avec le total du lot et un seul bouton pour tout ajouter.",
+            "savings": 20,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-3": {
+          "type": "feature",
+          "settings": {
+            "preview": "gift",
+            "title": "Cadeau offert au panier",
+            "text": "Un cadeau se débloque dès un montant de panier : choix de la variante, ajout automatique, retrait si le panier redescend.",
+            "savings": 15,
+            "kind": "setting",
+            "category": "cart"
+          }
+        },
+        "feature-4": {
+          "type": "feature",
+          "settings": {
+            "preview": "subscription",
+            "title": "Bloc abonnement",
+            "text": "« Achat unique » ou « S'abonner » avec la fréquence et la remise affichées, cumulable avec les lots et les ventes croisées.",
+            "savings": 10,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-5": {
+          "type": "feature",
+          "settings": {
+            "preview": "countdown",
+            "title": "Compte à rebours",
+            "text": "Une vraie date de fin d'offre sur la fiche produit, en bannière ou dans le bandeau d'annonce ; masqué automatiquement à la fin.",
+            "savings": 9,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-6": {
+          "type": "feature",
+          "settings": {
+            "preview": "stock",
+            "title": "Stock en direct",
+            "text": "Le stock réel de la variante choisie, avec une jauge et un message « plus que X » sous votre seuil.",
+            "savings": 6,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-7": {
+          "type": "feature",
+          "settings": {
+            "preview": "delivery",
+            "title": "Estimation de livraison",
+            "text": "Les dates de livraison calculées en jours ouvrés, avec l'heure limite pour une expédition le jour même.",
+            "savings": 7,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-8": {
+          "type": "feature",
+          "settings": {
+            "preview": "sticky_atc",
+            "title": "Barre d'achat collante",
+            "text": "Sur mobile, le prix et le bouton d'achat restent sous le pouce pendant la lecture de la fiche.",
+            "savings": 5,
+            "kind": "setting",
+            "category": "conversion"
+          }
+        },
+        "feature-9": {
+          "type": "feature",
+          "settings": {
+            "preview": "upsell",
+            "title": "Suggestions dans le panier",
+            "text": "Les produits complémentaires du premier article apparaissent dans le tiroir panier, ajoutables en un geste.",
+            "savings": 15,
+            "kind": "setting",
+            "category": "cart"
+          }
+        },
+        "feature-10": {
+          "type": "feature",
+          "settings": {
+            "preview": "rewards",
+            "title": "Paliers de récompense",
+            "text": "Une jauge à deux étapes : livraison offerte, puis un second palier (cadeau, remise) pour motiver la commande.",
+            "savings": 10,
+            "kind": "setting",
+            "category": "cart"
+          }
+        },
+        "feature-11": {
+          "type": "feature",
+          "settings": {
+            "preview": "gift_wrap",
+            "title": "Emballage cadeau, date et CGV",
+            "text": "Case emballage cadeau facturée, date de livraison souhaitée, note de commande et acceptation obligatoire des CGV.",
+            "savings": 8,
+            "kind": "setting",
+            "category": "cart"
+          }
+        },
+        "feature-12": {
+          "type": "feature",
+          "settings": {
+            "preview": "discount",
+            "title": "Code promo dans le panier",
+            "text": "Le client saisit son code avant le paiement et voit la remise appliquée tout de suite.",
+            "savings": 5,
+            "kind": "setting",
+            "category": "cart"
+          }
+        },
+        "feature-13": {
+          "type": "feature",
+          "settings": {
+            "preview": "popup",
+            "title": "Pop-up newsletter et promo",
+            "text": "Inscription avec code de bienvenue, annonce ou code à copier ; après un délai, au défilement ou à l'intention de sortie.",
+            "savings": 10,
+            "kind": "section",
+            "category": "conversion"
+          }
+        },
+        "feature-14": {
+          "type": "feature",
+          "settings": {
+            "preview": "back_in_stock",
+            "title": "Alerte retour en stock",
+            "text": "Quand la variante est épuisée, un formulaire remplace le bouton d'achat et vous transmet les demandes.",
+            "savings": 10,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-15": {
+          "type": "feature",
+          "settings": {
+            "preview": "preorder",
+            "title": "Précommande",
+            "text": "Les produits vendus en rupture affichent automatiquement « Précommander » au lieu de « Ajouter au panier ».",
+            "savings": 10,
+            "kind": "setting",
+            "category": "conversion"
+          }
+        },
+        "feature-16": {
+          "type": "feature",
+          "settings": {
+            "preview": "engraving",
+            "title": "Personnalisation produit",
+            "text": "Un champ libre (gravure, prénom, message) enregistré avec la commande ; cartes cadeaux envoyées au destinataire.",
+            "savings": 15,
+            "kind": "block",
+            "category": "conversion"
+          }
+        },
+        "feature-17": {
+          "type": "feature",
+          "settings": {
+            "preview": "mega_menu",
+            "title": "Méga-menu",
+            "text": "Les menus à trois niveaux s'affichent en colonnes, avec jusqu'à deux visuels mis en avant.",
+            "savings": 8,
+            "kind": "block",
+            "category": "navigation"
+          }
+        },
+        "feature-18": {
+          "type": "feature",
+          "settings": {
+            "preview": "predictive_search",
+            "title": "Recherche prédictive",
+            "text": "Produits, collections, pages et suggestions dès la deuxième lettre, navigables au clavier.",
+            "savings": 15,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-19": {
+          "type": "feature",
+          "settings": {
+            "preview": "quick_view",
+            "title": "Aperçu rapide",
+            "text": "Choisir une variante et ajouter au panier sans quitter la collection.",
+            "savings": 8,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-20": {
+          "type": "feature",
+          "settings": {
+            "preview": "wishlist",
+            "title": "Liste d'envies",
+            "text": "Un cœur sur chaque produit, un compteur dans l'en-tête et une page dédiée, sans compte client.",
+            "savings": 10,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-21": {
+          "type": "feature",
+          "settings": {
+            "preview": "recently_viewed",
+            "title": "Récemment consultés",
+            "text": "Les derniers produits vus reviennent sur la fiche produit, la collection et le panier.",
+            "savings": 5,
+            "kind": "section",
+            "category": "navigation"
+          }
+        },
+        "feature-22": {
+          "type": "feature",
+          "settings": {
+            "preview": "filters",
+            "title": "Filtres et pastilles",
+            "text": "Filtres en colonne ou en tiroir, pastilles de couleur, prix, disponibilité et filtres actifs supprimables.",
+            "savings": 10,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-23": {
+          "type": "feature",
+          "settings": {
+            "preview": "load_more",
+            "title": "Voir plus et défilement infini",
+            "text": "Remplacez la pagination par un bouton « Voir plus » ou un chargement continu.",
+            "savings": 5,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-24": {
+          "type": "feature",
+          "settings": {
+            "preview": "mobile_nav",
+            "title": "Barre d'onglets mobile",
+            "text": "Accueil, recherche, boutique, envies et panier toujours accessibles, comme dans une application.",
+            "savings": 7,
+            "kind": "setting",
+            "category": "navigation"
+          }
+        },
+        "feature-25": {
+          "type": "feature",
+          "settings": {
+            "preview": "reviews",
+            "title": "Avis clients",
+            "text": "Note moyenne et répartition calculées, filtre par étoiles, photos et badge « achat vérifié ».",
+            "savings": 15,
+            "kind": "section",
+            "category": "trust"
+          }
+        },
+        "feature-26": {
+          "type": "feature",
+          "settings": {
+            "preview": "size_chart",
+            "title": "Guide des tailles",
+            "text": "Un tableau de tailles en fenêtre, depuis une page ou un texte, sans quitter la fiche.",
+            "savings": 6,
+            "kind": "block",
+            "category": "trust"
+          }
+        },
+        "feature-27": {
+          "type": "feature",
+          "settings": {
+            "preview": "badges",
+            "title": "Badges et pastilles automatiques",
+            "text": "Promo en %, nouveauté, épuisé et badges personnalisés par tag ; pastilles de couleur sur les cartes.",
+            "savings": 8,
+            "kind": "setting",
+            "category": "conversion"
+          }
+        },
+        "feature-28": {
+          "type": "feature",
+          "settings": {
+            "preview": "zoom",
+            "title": "Zoom plein écran",
+            "text": "Toutes les images du produit en grand, en un toucher.",
+            "savings": 5,
+            "kind": "setting",
+            "category": "trust"
+          }
+        },
+        "feature-29": {
+          "type": "feature",
+          "settings": {
+            "preview": "lookbook",
+            "title": "Shop the look",
+            "text": "Une photo d'ambiance avec des points cliquables qui ouvrent les produits.",
+            "savings": 10,
+            "kind": "section",
+            "category": "content"
+          }
+        },
+        "feature-30": {
+          "type": "feature",
+          "settings": {
+            "preview": "ugc",
+            "title": "Galerie sociale achetable",
+            "text": "Vos photos Instagram ou clients, chacune reliée à un produit achetable en aperçu rapide.",
+            "savings": 15,
+            "kind": "section",
+            "category": "content"
+          }
+        },
+        "feature-31": {
+          "type": "feature",
+          "settings": {
+            "preview": "before_after",
+            "title": "Avant / après",
+            "text": "Un curseur à faire glisser pour comparer deux images.",
+            "savings": 5,
+            "kind": "section",
+            "category": "content"
+          }
+        },
+        "feature-32": {
+          "type": "feature",
+          "settings": {
+            "preview": "comparison",
+            "title": "Tableau comparatif",
+            "text": "Votre produit face aux alternatives, ligne par ligne, lisible sur mobile.",
+            "savings": 5,
+            "kind": "section",
+            "category": "trust"
+          }
+        },
+        "feature-33": {
+          "type": "feature",
+          "settings": {
+            "preview": "store_locator",
+            "title": "Points de vente",
+            "text": "Vos boutiques et revendeurs avec recherche, horaires et itinéraire.",
+            "savings": 10,
+            "kind": "section",
+            "category": "trust"
+          }
+        },
+        "feature-34": {
+          "type": "feature",
+          "settings": {
+            "preview": "age_gate",
+            "title": "Vérification de l'âge",
+            "text": "Pour l'alcool, le CBD ou le vapotage : confirmation demandée avant l'accès, mémorisée ensuite.",
+            "savings": 5,
+            "kind": "section",
+            "category": "trust"
+          }
+        },
+        "feature-35": {
+          "type": "feature",
+          "settings": {
+            "preview": "styles",
+            "title": "10 styles de boutique",
+            "text": "Minimaliste, luxe, nature, audacieux, doux, tech, ludique, gourmand, sport : couleurs, polices et formes en un clic.",
+            "savings": 0,
+            "kind": "setting",
+            "category": "design"
+          }
+        },
+        "feature-36": {
+          "type": "feature",
+          "settings": {
+            "preview": "palettes",
+            "title": "Palettes par section",
+            "text": "Huit palettes et cinq espacements sur chaque section pour rythmer vos pages.",
+            "savings": 0,
+            "kind": "setting",
+            "category": "design"
+          }
+        },
+        "feature-37": {
+          "type": "feature",
+          "settings": {
+            "preview": "header",
+            "title": "Trois en-têtes",
+            "text": "Logo à gauche, centré, ou centré avec le menu dessous ; fixe ou réapparition en remontant.",
+            "savings": 0,
+            "kind": "setting",
+            "category": "design"
+          }
+        },
+        "feature-38": {
+          "type": "feature",
+          "settings": {
+            "preview": "gallery",
+            "title": "Quatre galeries produit",
+            "text": "Vignettes dessous ou à gauche, grille, images empilées ; carrousel sur mobile.",
+            "savings": 0,
+            "kind": "setting",
+            "category": "design"
+          }
+        },
+        "feature-39": {
+          "type": "feature",
+          "settings": {
+            "preview": "sections",
+            "title": "26 sections universelles",
+            "text": "Diaporama, mosaïque, vidéo, onglets, frise, chiffres clés, newsletter… pour construire n'importe quelle page.",
+            "savings": 0,
+            "kind": "section",
+            "category": "design"
+          }
+        },
+        "feature-40": {
+          "type": "feature",
+          "settings": {
+            "preview": "editor",
+            "title": "100 % éditable sans code",
+            "text": "Tout se règle dans l'éditeur Shopify : textes, couleurs, ordre des blocs et des sections.",
+            "savings": 0,
+            "kind": "setting",
+            "category": "design"
+          }
+        }
+      },
+      "block_order": [
+        "feature-1",
+        "feature-2",
+        "feature-3",
+        "feature-4",
+        "feature-5",
+        "feature-6",
+        "feature-7",
+        "feature-8",
+        "feature-9",
+        "feature-10",
+        "feature-11",
+        "feature-12",
+        "feature-13",
+        "feature-14",
+        "feature-15",
+        "feature-16",
+        "feature-17",
+        "feature-18",
+        "feature-19",
+        "feature-20",
+        "feature-21",
+        "feature-22",
+        "feature-23",
+        "feature-24",
+        "feature-25",
+        "feature-26",
+        "feature-27",
+        "feature-28",
+        "feature-29",
+        "feature-30",
+        "feature-31",
+        "feature-32",
+        "feature-33",
+        "feature-34",
+        "feature-35",
+        "feature-36",
+        "feature-37",
+        "feature-38",
+        "feature-39",
+        "feature-40"
+      ]
+    }
+  },
+  "order": [
+    "features"
+  ]
+}

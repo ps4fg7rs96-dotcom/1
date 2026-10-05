@@ -464,7 +464,16 @@
     "apply_discount": "Apply",
     "delivery_date": "Preferred delivery date",
     "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}",
-    "reward_done": "Nice, you've unlocked {{ reward }}!"
+    "reward_done": "Nice, you've unlocked {{ reward }}!",
+    "gift": {
+      "add": "Add my gift",
+      "added": "Free {{ title }} added to your cart",
+      "badge": "Free",
+      "choose": "Choose the gift variant",
+      "from": "Free gift from {{ amount }}",
+      "remaining_html": "Only <strong>{{ amount }}</strong> away from a free {{ title }}",
+      "removed": "The gift is for carts of {{ amount }} or more"
+    }
   },
   "collections": {
     "label": "Collection",
@@ -576,6 +585,77 @@
       "and": "and",
       "order_within": "Order within",
       "ships_today": "to ship today"
+    },
+    "subscription": {
+      "once": "One-time purchase",
+      "subscribe": "Subscribe",
+      "frequency": "Delivery frequency",
+      "setup": "Subscription block: create a selling plan for this product (free Shopify Subscriptions app) to show it."
+    },
+    "catalog": {
+      "all": "All",
+      "count": "built-in features",
+      "per_month": "of apps avoided per month",
+      "no_app": "app to install",
+      "filter": "Filter by category",
+      "search": "Search a feature",
+      "empty": "No feature matches.",
+      "save": "Save €{{ amount }}/month",
+      "included": "Included",
+      "see": "See it in action",
+      "kind": {
+        "block": "Block",
+        "section": "Section",
+        "setting": "Setting"
+      },
+      "cat": {
+        "conversion": "Conversion",
+        "cart": "Cart",
+        "navigation": "Navigation",
+        "trust": "Trust",
+        "content": "Content",
+        "design": "Design"
+      },
+      "mock": {
+        "qty_title": "The more you take…",
+        "popular": "Most popular",
+        "bundle_title": "Frequently bought together",
+        "add_all": "Add all 3 to cart",
+        "gift_title": "You unlocked a gift!",
+        "gift_sub": "Choose options for your free product.",
+        "gift_from": "Gift from €80",
+        "sub_choose": "Choose your option:",
+        "sub_freq": "Every month, −10%",
+        "sub_pause": "Pause or cancel anytime",
+        "cd_title": "Offer ends in",
+        "stock": "Only 4 left in stock",
+        "delivery": "Arrives Thu 8 – Mon 12",
+        "cutoff": "Order within 2h15 to ship today",
+        "upsell": "You may also like",
+        "rewards": "€12 away from your gift",
+        "free_ship": "Free shipping",
+        "gift": "Gift",
+        "terms": "I accept the terms",
+        "applied": "applied",
+        "get_code": "Get my code",
+        "bis": "Notify me when back",
+        "preorder_note": "Ships within 3 weeks",
+        "engrave": "Text to engrave",
+        "recent": "Recently viewed",
+        "color": "Colour",
+        "price": "Price",
+        "brand": "Brand",
+        "size_guide": "Size guide",
+        "chest": "Chest",
+        "waist": "Waist",
+        "before": "Before",
+        "after": "After",
+        "us": "Us",
+        "others": "Others",
+        "age": "Are you 18 or over?",
+        "limited": "Limited edition",
+        "save": "Save"
+      }
     }
   }
 }

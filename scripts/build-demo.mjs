@@ -29,7 +29,7 @@ const locales = readJson(LOCALE === 'fr' ? 'locales/fr.default.json' : `locales/
 const linklists = {
   'main-menu': {
     links: [
-      { title: LOCALE === 'fr' ? 'Fonctionnalités' : 'Features', url: '#fonctionnalites', links: [] },
+      { title: LOCALE === 'fr' ? 'Fonctionnalités' : 'Features', url: LOCALE === 'fr' ? 'fonctionnalites.html' : 'features.en.html', links: [] },
       { title: LOCALE === 'fr' ? 'Démos' : 'Demos', url: '#demos', links: [] },
       { title: LOCALE === 'fr' ? 'Avis' : 'Reviews', url: '#avis', links: [] },
       { title: 'FAQ', url: '#faq', links: [] },
@@ -245,6 +245,7 @@ const baseGlobals = {
   settings: themeSettings,
   shop: { name: 'Kinetic', description: 'Thème Shopify', customer_accounts_enabled: true, enabled_payment_types: [], currency: 'EUR', money_format: '{{amount_with_comma_separator}} €', url: '#' },
   request: { locale: { iso_code: LOCALE }, page_type: 'index', design_mode: false, origin: 'https://demo.kinetic-theme.com' },
+  pages: {},
   routes: { root_url: '/', cart_url: '#', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '#', account_url: '#', all_products_collection_url: '#', collections_url: '#', product_recommendations_url: '#' },
   cart: { item_count: 0, items: [], total_price: 0, currency: { iso_code: 'EUR' }, cart_level_discount_applications: [], attributes: {} },
   localization: { available_countries: [], available_languages: [] },
@@ -258,6 +259,7 @@ const FR = LOCALE === 'fr';
 const PAGES = [
   { file: FR ? 'demo.html' : `demo.${LOCALE}.html`, template: 'templates/index.json', name: 'index', title: FR ? 'Kinetic — Démo du thème Shopify' : 'Kinetic — Shopify theme demo', description: FR ? "Démo autonome du thème Shopify Kinetic : éditeur en direct, outils de conversion intégrés et chargement rapide." : 'Standalone demo of the Kinetic Shopify theme: live editor, built-in conversion tools and fast loading.' },
   { file: FR ? 'sections.html' : `sections.${LOCALE}.html`, template: '../scripts/demo-sections.json', name: 'page', title: FR ? 'Kinetic — Sections universelles' : 'Kinetic — Universal sections', description: FR ? 'Toutes les sections universelles du thème Kinetic avec des données d\'exemple.' : 'All universal sections of the Kinetic theme with sample data.' },
+  { file: FR ? 'fonctionnalites.html' : `features.${LOCALE}.html`, template: 'templates/page.features.json', name: 'page', title: FR ? 'Kinetic — Fonctionnalités' : 'Kinetic — Features', description: FR ? 'Toutes les fonctionnalités du thème Kinetic, illustrées.' : 'Every Kinetic theme feature, illustrated.' },
   { file: FR ? 'produit.html' : `product.${LOCALE}.html`, template: 'templates/product.json', name: 'product', product: 'gourde-crete', title: FR ? 'Kinetic — Fiche produit' : 'Kinetic — Product page', description: FR ? 'Fiche produit Kinetic : remises par quantité, lot, stock en direct, livraison estimée…' : 'Kinetic product page demo.' },
   { file: FR ? 'collection.html' : `collection.${LOCALE}.html`, template: 'templates/collection.json', name: 'collection', collection: 'tout', title: FR ? 'Kinetic — Collection' : 'Kinetic — Collection', description: FR ? 'Page collection Kinetic : filtres, pastilles, colonnes, vignette promo.' : 'Kinetic collection page demo.' },
 ];

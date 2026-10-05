@@ -56,7 +56,14 @@
             "default": 2
           }
         },
-        "buy_buttons-10": {
+        "subscription-10": {
+          "type": "subscription",
+          "settings": {
+            "heading": "Choisissez votre option :",
+            "default_subscribe": true
+          }
+        },
+        "buy_buttons-11": {
           "type": "buy_buttons",
           "settings": {
             "show_quantity": true,
@@ -66,13 +73,13 @@
             "show_pickup": true
           }
         },
-        "back_in_stock-11": {
+        "back_in_stock-12": {
           "type": "back_in_stock",
           "settings": {
             "heading": "Prévenez-moi du retour en stock"
           }
         },
-        "delivery-12": {
+        "delivery-13": {
           "type": "delivery",
           "settings": {
             "min_days": 2,
@@ -80,11 +87,11 @@
             "cutoff": 14
           }
         },
-        "free_shipping-13": {
+        "free_shipping-14": {
           "type": "free_shipping",
           "settings": {}
         },
-        "bundle-14": {
+        "bundle-15": {
           "type": "bundle",
           "settings": {
             "heading": "Souvent achetés ensemble",
@@ -92,7 +99,7 @@
             "discount": 0
           }
         },
-        "trust-15": {
+        "trust-16": {
           "type": "trust",
           "settings": {
             "line_1": "Livraison offerte dès 60 €",
@@ -100,13 +107,13 @@
             "line_3": "Paiement 100 % sécurisé"
           }
         },
-        "description-16": {
+        "description-17": {
           "type": "description",
           "settings": {
             "collapsed": false
           }
         },
-        "collapsible-17": {
+        "collapsible-18": {
           "type": "collapsible",
           "settings": {
             "heading": "Livraison et retours",
@@ -114,7 +121,7 @@
             "content": "<p>Expédition sous 24 h ouvrées. Retours gratuits pendant 30 jours.</p>"
           }
         },
-        "collapsible-18": {
+        "collapsible-19": {
           "type": "collapsible",
           "settings": {
             "heading": "Composition et entretien",
@@ -122,14 +129,14 @@
             "content": "<p>Remplacez par les informations de votre produit.</p>"
           }
         },
-        "complementary-19": {
+        "complementary-20": {
           "type": "complementary",
           "settings": {
             "heading": "Complétez avec",
             "limit": 3
           }
         },
-        "share-20": {
+        "share-21": {
           "type": "share",
           "settings": {}
         }
@@ -144,17 +151,18 @@
         "variant_picker-7",
         "size_chart-8",
         "quantity_breaks-9",
-        "buy_buttons-10",
-        "back_in_stock-11",
-        "delivery-12",
-        "free_shipping-13",
-        "bundle-14",
-        "trust-15",
-        "description-16",
-        "collapsible-17",
+        "subscription-10",
+        "buy_buttons-11",
+        "back_in_stock-12",
+        "delivery-13",
+        "free_shipping-14",
+        "bundle-15",
+        "trust-16",
+        "description-17",
         "collapsible-18",
-        "complementary-19",
-        "share-20"
+        "collapsible-19",
+        "complementary-20",
+        "share-21"
       ]
     },
     "reco": {

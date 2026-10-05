@@ -11,11 +11,12 @@
       </header>
 
       {% render 'free-shipping-bar' %}
+      {% render 'cart-gift' %}
 
       {%- if cart.item_count > 0 -%}
         <ul class="cart-lines" role="list">
           {%- for item in cart.items -%}
-            <li class="cart-line" data-line="{{ forloop.index }}">
+            <li class="cart-line" data-line="{{ forloop.index }}"{% if item.properties._gift %} data-gift-line{% endif %}>
               <a href="{{ item.url }}" class="cart-line__media" tabindex="-1" aria-hidden="true">
                 {%- if item.image -%}
                   {{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', width: 80, height: 80, alt: '' }}
@@ -25,6 +26,7 @@
               </a>
               <div class="cart-line__info">
                 <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+                {%- if item.properties._gift -%}<span class="badge badge--accent">{% render 'icon', name: 'gift', size: 12 %} {{ 'cart.gift.badge' | t }}</span>{%- endif -%}
                 {%- unless item.product.has_only_default_variant -%}
                   <p class="cart-line__variant">{{ item.variant.title }}</p>
                 {%- endunless -%}

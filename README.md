@@ -5,7 +5,7 @@ Ce dépôt contient trois livrables autour de la marque **Kinetic** :
 | Livrable | Où | Quoi |
 |---|---|---|
 | **Thème Shopify** (Online Store 2.0) | [`theme/`](theme) → **[`theme.zip`](theme.zip)** | Thème complet, importable tel quel, éditable sans code |
-| **Démos autonomes** | **[`demo/`](demo)** | 4 pages HTML autonomes générées depuis le thème : accueil (éditeur en direct), sections universelles, fiche produit, collection — avec un sélecteur des 10 styles |
+| **Démos autonomes** | **[`demo/`](demo)** | 5 pages HTML autonomes générées depuis le thème : accueil (éditeur en direct), fonctionnalités, sections universelles, fiche produit, collection — avec un sélecteur des 10 styles |
 | Site vitrine (Next.js) | `app/`, `components/`… | Site marketing de la marque (livré précédemment) |
 
 | Documents | |
@@ -34,6 +34,7 @@ Ce dépôt contient trois livrables autour de la marque **Kinetic** :
 3. *Pages* : créer une page « Liste d'envies » avec le modèle **wishlist**, puis la choisir dans *Paramètres du thème › Fonctionnalités*. Idem si besoin pour les modèles **contact** et **stores** (points de vente).
 4. *Paramètres du thème › Panier* : seuils de récompense, produit « emballage cadeau », collection de secours pour les suggestions.
 5. Pour les produits complémentaires et les filtres : installer l'application **gratuite** Shopify *Search & Discovery*.
+6. **Page « Fonctionnalités »** : *Boutique en ligne › Pages › Ajouter une page*, titre « Fonctionnalités » (identifiant `fonctionnalites`), modèle **features**. Le lien s'ajoute tout seul au menu de l'en-tête (réglable dans *En-tête › Lien « Fonctionnalités »*).
 
 ### Prévisualiser / développer avec Shopify CLI
 ```bash
@@ -48,7 +49,7 @@ shopify theme push --path theme --unpublished                          # envoyer
 npm install                       # installe liquidjs (rendu de la démo)
 npm run theme:check               # shopify theme check
 npm run theme:zip                 # → theme.zip (vérifié automatiquement)
-npm run demo:build                # → demo/*.html (4 pages)
+npm run demo:build                # → demo/*.html (5 pages)
 python3 scripts/gen-templates.py  # régénère les templates JSON (contenu FR par défaut)
 python3 scripts/gen-locales.py    # régénère locales/fr.default.json et en.json (clés vérifiées identiques)
 python3 scripts/section-style.py <section>  # ajoute « Palette » + « Espacement » à une nouvelle section
@@ -59,7 +60,7 @@ python3 scripts/section-style.py <section>  # ajoute « Palette » + « Espaceme
 theme/
   layout/      theme.liquid (SEO, mode sombre sans flash, tiroir panier, barre mobile), password.liquid
   templates/   index · product · collection · list-collections · cart · page · page.landing · page.contact ·
-               page.stores · page.wishlist · blog · article · search · 404 · password (JSON) + gift_card.liquid
+               page.stores · page.wishlist · page.features · blog · article · search · 404 · password (JSON) + gift_card.liquid
   sections/    59 fichiers (dont 26 nouvelles sections universelles) — voir le tableau ci-dessous + groupes header-group.json / footer-group.json
   blocks/      heading, text, button, image, group (blocs de thème imbriquables)
   snippets/    product-card, product-gallery, variant-picker, product-json, cart-drawer, cart-upsell,
@@ -90,7 +91,7 @@ theme/
 | Mise en avant | Diaporama, Bannière (image, vidéo, image mobile), Image avec texte, Texte enrichi, Vidéo (Shopify, YouTube, Vimeo, vidéo achetable), Mosaïque, Bannière compte à rebours, Texte défilant, Hero éditeur en direct |
 | Produits | Collection en vedette (grille ou carrousel), Produits par onglets, Produit en vedette (achetable), Liste de collections, Recommandations, Récemment consultés, Lookbook / shop the look, Galerie sociale achetable |
 | Confiance | Avis clients (note moyenne et répartition, filtres), Témoignages, Barre de réassurance, Colonnes (icônes / images), Chiffres clés, Tableau comparatif, Avant / après, Logos, FAQ |
-| Marque & contact | Frise chronologique, Newsletter (code de bienvenue), Formulaire de contact, Points de vente, Étapes, CTA final, Section libre (blocs imbriqués) |
+| Marque & contact | Fonctionnalités (catalogue illustré), Frise chronologique, Newsletter (code de bienvenue), Formulaire de contact, Points de vente, Étapes, CTA final, Section libre (blocs imbriqués) |
 | Pied de page | Pop-up (newsletter, code promo, annonce ; délai, défilement, intention de sortie), Vérification de l'âge (désactivées par défaut) |
 
 ### Fonctions intégrées qui remplacent des applications payantes
@@ -113,6 +114,8 @@ theme/
 | Paliers de récompense (livraison puis cadeau) | Paramètres › Panier | appli « free shipping bar » |
 | Suggestions dans le panier, emballage cadeau, code promo, date de livraison, case CGV | Paramètres › Panier | applis d'upsell / cart |
 | Pop-ups et vérification d'âge | Pied de page | applis de pop-up / age gate |
+| Cadeau offert dès un montant (choix de variante, ajout et retrait automatiques) | Paramètres › Panier › Cadeau offert | appli « gift with purchase » |
+| Bloc abonnement (achat unique / s'abonner, fréquence, remise) | Fiche produit › bloc Abonnement | widget d'abonnement (les plans restent créés par une appli, ex. Shopify Subscriptions, gratuite) |
 | Récemment consultés, lookbook, galerie sociale achetable, avant/après, points de vente, avis | Sections | applis dédiées |
 | Barre d'onglets mobile, retour en haut, « Voir plus » / défilement infini | Paramètres › Fonctionnalités, Collection | applis d'UX |
 
@@ -130,6 +133,7 @@ Ouvrez simplement un fichier dans un navigateur : aucune dépendance, aucun rés
 | Page | Contenu |
 |---|---|
 | [`demo.html`](demo/demo.html) | Page d'accueil Kinetic avec l'éditeur en direct |
+| [`fonctionnalites.html`](demo/fonctionnalites.html) | **Page « Fonctionnalités »** : les 40 fonctions avec aperçu illustré, économie estimée, type et catégorie, filtres et recherche |
 | [`sections.html`](demo/sections.html) | Les sections universelles (diaporama, onglets, lookbook, avant/après, avis, comparatif…) |
 | [`produit.html`](demo/produit.html) | Fiche produit complète : pastilles, stock, remises par quantité, lot, livraison, guide des tailles, zoom |
 | [`collection.html`](demo/collection.html) | Collection : filtres en colonne (tiroir sur mobile), pastilles, badges, choix des colonnes |
@@ -142,11 +146,12 @@ Un sélecteur **« Style »** (en bas à droite) applique en direct les 10 style
 
 | Vérification | Résultat |
 |---|---|
-| `shopify theme check` (CLI 3.94) | **109 fichiers, 0 erreur, 0 avertissement** |
-| `theme.zip` | 121 fichiers, 332 Ko, 8 dossiers à la racine |
+| `shopify theme check` (CLI 3.94) | **113 fichiers, 0 erreur, 0 avertissement** |
+| `theme.zip` | 126 fichiers, 353 Ko, 8 dossiers à la racine |
 | Fonctions v2 (Playwright, ordinateur + mobile tactile) | **25/25** : pastilles → image, stock et prix ; variante épuisée → alerte retour en stock ; remises par quantité ; total du lot ; guide des tailles et zoom ; liste d'envies (persistante) ; compte à rebours ; onglets ; lookbook ; avant/après ; diaporama ; points de vente ; tiroir de filtres mobile ; colonnes ; aucune erreur JS |
+| Page Fonctionnalités + abonnement | **11/11** : lien du menu, 40 cartes, filtre par catégorie, recherche, état vide, bloc abonnement (badge, plan, prix, achat unique) |
 | Éditeur en direct (non-régression) | 12/12 |
-| Lighthouse mobile (démos servies en gzip) | accueil **93** · sections **99** · produit **100** · collection **100** en performance ; **100** en accessibilité, bonnes pratiques et SEO sur les 4 pages |
+| Lighthouse mobile (démos servies en gzip) | accueil **93** · fonctionnalités **92** · sections **99** · produit **100** · collection **100** en performance ; **100** en accessibilité, bonnes pratiques et SEO sur les 5 pages |
 
 Limite : le thème n'a pas pu être testé dans une vraie boutique Shopify depuis cet environnement. Les fonctions qui dépendent de Shopify (panier AJAX, aperçu rapide, recherche prédictive, filtres, code promo, retrait en boutique, paiement fractionné) suivent les API documentées et sont validées par `theme check`, mais doivent être vérifiées sur la boutique après import.
 

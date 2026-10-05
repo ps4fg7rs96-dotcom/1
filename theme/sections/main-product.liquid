@@ -103,6 +103,57 @@
               {%- endfor -%}
               {%- if block.settings.note != blank -%}<p class="small muted">{{ block.settings.note }}</p>{%- endif -%}
             </fieldset>
+          {%- when 'subscription' -%}
+            {%- if product.selling_plan_groups.size > 0 -%}
+              {%- liquid
+                assign sub_default = block.settings.default_subscribe
+                if product.requires_selling_plan
+                  assign sub_default = true
+                endif
+                assign first_plan = product.selling_plan_groups.first.selling_plans.first
+              -%}
+              <fieldset class="subscribe" data-subscription data-form="{{ form_id }}" {{ block.shopify_attributes }}>
+                <legend class="subscribe__title">{{ block.settings.heading }}</legend>
+                {%- unless product.requires_selling_plan -%}
+                  <label class="subscribe__opt">
+                    <input type="radio" name="purchase-{{ section.id }}" value="once"{% unless sub_default %} checked{% endunless %}>
+                    <span class="subscribe__box">
+                      <span class="subscribe__radio" aria-hidden="true"></span>
+                      <span class="subscribe__name">{{ 'features.subscription.once' | t }}</span>
+                      <span class="subscribe__price" data-sub-once>{{ current_variant.price | money }}</span>
+                    </span>
+                  </label>
+                {%- endunless -%}
+                <label class="subscribe__opt">
+                  <input type="radio" name="purchase-{{ section.id }}" value="subscribe"{% if sub_default %} checked{% endif %}>
+                  <span class="subscribe__box">
+                    <span class="subscribe__radio" aria-hidden="true"></span>
+                    <span class="subscribe__name">{{ 'features.subscription.subscribe' | t }}</span>
+                    <span class="subscribe__price"><b data-sub-price>{{ current_variant.price | money }}</b> <s data-sub-compare hidden>{{ current_variant.price | money }}</s> <span class="subscribe__badge" data-sub-badge hidden></span></span>
+                    <span class="subscribe__more">
+                      <label class="visually-hidden" for="Plan-{{ section.id }}">{{ 'features.subscription.frequency' | t }}</label>
+                      <select id="Plan-{{ section.id }}" class="select select--sm" data-sub-plan>
+                        {%- for group in product.selling_plan_groups -%}
+                          {%- for plan in group.selling_plans -%}
+                            {%- assign adj = plan.price_adjustments.first -%}
+                            <option value="{{ plan.id }}" data-adj-type="{{ adj.value_type | default: 'none' }}" data-adj="{{ adj.value | default: 0 }}"{% if plan.id == first_plan.id %} selected{% endif %}>{{ plan.name }}</option>
+                          {%- endfor -%}
+                        {%- endfor -%}
+                      </select>
+                      {%- if block.settings.benefits != blank -%}
+                        <ul class="subscribe__benefits" role="list">
+                          {%- assign lines = block.settings.benefits | newline_to_br | split: '<br />' -%}
+                          {%- for l in lines -%}{%- assign lx = l | strip -%}{%- if lx != blank -%}<li>{% render 'icon', name: 'check', size: 14 %} {{ lx }}</li>{%- endif -%}{%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </span>
+                  </span>
+                </label>
+                <input type="hidden" name="selling_plan" value="{{ first_plan.id }}" form="{{ form_id }}" data-sub-input{% unless sub_default %} disabled{% endunless %}>
+              </fieldset>
+            {%- elsif request.design_mode -%}
+              <p class="form-message" {{ block.shopify_attributes }}>{{ 'features.subscription.setup' | t }}</p>
+            {%- endif -%}
           {%- when 'buy_buttons' -%}
             <div class="product__buy" {{ block.shopify_attributes }}>
               {%- form 'product', product, id: form_id, class: 'product__form', data-cart-form: '', novalidate: 'novalidate' -%}
@@ -369,130 +420,856 @@
 {
   "name": "Fiche produit",
   "settings": [
-    { "type": "header", "content": "Galerie" },
-    { "type": "select", "id": "gallery_style", "label": "Style de la galerie", "options": [
-      { "value": "thumbs", "label": "Image + vignettes dessous" },
-      { "value": "thumbs-left", "label": "Image + vignettes à gauche" },
-      { "value": "grid", "label": "Grille 2 colonnes" },
-      { "value": "stack", "label": "Images empilées" }
-    ], "default": "thumbs" },
-    { "type": "select", "id": "media_position", "label": "Position de la galerie", "options": [{ "value": "left", "label": "À gauche" }, { "value": "right", "label": "À droite" }], "default": "left" },
-    { "type": "select", "id": "media_size", "label": "Largeur de la galerie", "options": [{ "value": "s", "label": "Petite" }, { "value": "m", "label": "Moyenne" }, { "value": "l", "label": "Grande" }], "default": "m" },
-    { "type": "select", "id": "media_ratio", "label": "Format des médias", "options": [{ "value": "square", "label": "Carré" }, { "value": "portrait", "label": "Portrait" }, { "value": "natural", "label": "Format d'origine" }], "default": "square" },
-    { "type": "checkbox", "id": "enable_zoom", "label": "Zoom plein écran sur les images", "default": true },
-    { "type": "header", "content": "Informations" },
-    { "type": "checkbox", "id": "sticky_info", "label": "Colonne d'informations fixe au défilement", "default": true },
-    { "type": "checkbox", "id": "sticky_atc", "label": "Barre d'achat collante sur mobile", "default": true },
-    { "type": "header", "content": "Mise en forme de la section" },
-    { "type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{ "value": "theme", "label": "Thème" }, { "value": "alt", "label": "Alternée" }, { "value": "tint", "label": "Teintée" }, { "value": "dark", "label": "Sombre" }, { "value": "custom-1", "label": "Personnalisée 1" }, { "value": "custom-2", "label": "Personnalisée 2" }], "default": "theme" },
-    { "type": "select", "id": "padding", "label": "Espacement vertical", "options": [{ "value": "none", "label": "Aucun" }, { "value": "s", "label": "Petit" }, { "value": "m", "label": "Moyen" }, { "value": "l", "label": "Grand" }], "default": "m" }
+    {
+      "type": "header",
+      "content": "Galerie"
+    },
+    {
+      "type": "select",
+      "id": "gallery_style",
+      "label": "Style de la galerie",
+      "options": [
+        {
+          "value": "thumbs",
+          "label": "Image + vignettes dessous"
+        },
+        {
+          "value": "thumbs-left",
+          "label": "Image + vignettes à gauche"
+        },
+        {
+          "value": "grid",
+          "label": "Grille 2 colonnes"
+        },
+        {
+          "value": "stack",
+          "label": "Images empilées"
+        }
+      ],
+      "default": "thumbs"
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Position de la galerie",
+      "options": [
+        {
+          "value": "left",
+          "label": "À gauche"
+        },
+        {
+          "value": "right",
+          "label": "À droite"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "label": "Largeur de la galerie",
+      "options": [
+        {
+          "value": "s",
+          "label": "Petite"
+        },
+        {
+          "value": "m",
+          "label": "Moyenne"
+        },
+        {
+          "value": "l",
+          "label": "Grande"
+        }
+      ],
+      "default": "m"
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Format des médias",
+      "options": [
+        {
+          "value": "square",
+          "label": "Carré"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "natural",
+          "label": "Format d'origine"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom plein écran sur les images",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Informations"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_info",
+      "label": "Colonne d'informations fixe au défilement",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_atc",
+      "label": "Barre d'achat collante sur mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mise en forme de la section"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Thème"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "tint",
+          "label": "Teintée"
+        },
+        {
+          "value": "dark",
+          "label": "Sombre"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Espacement vertical",
+      "options": [
+        {
+          "value": "none",
+          "label": "Aucun"
+        },
+        {
+          "value": "s",
+          "label": "Petit"
+        },
+        {
+          "value": "m",
+          "label": "Moyen"
+        },
+        {
+          "value": "l",
+          "label": "Grand"
+        }
+      ],
+      "default": "m"
+    }
   ],
   "blocks": [
-    { "type": "@app" },
-    { "type": "vendor", "name": "Marque", "limit": 1 },
-    { "type": "title", "name": "Titre", "limit": 1 },
-    { "type": "sku", "name": "Référence (SKU)", "limit": 1 },
-    { "type": "rating", "name": "Note (métachamp reviews)", "limit": 1 },
-    { "type": "price", "name": "Prix", "limit": 1, "settings": [{ "type": "checkbox", "id": "show_tax_note", "label": "Mention « Taxes incluses »", "default": false }] },
-    { "type": "tags", "name": "Tags produit", "limit": 1, "settings": [{ "type": "range", "id": "limit", "min": 1, "max": 8, "step": 1, "label": "Nombre max.", "default": 4 }] },
-    { "type": "text", "name": "Texte", "settings": [{ "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Un argument clé sur le produit.</p>" }, { "type": "checkbox", "id": "muted", "label": "Texte discret", "default": true }] },
-    { "type": "inventory", "name": "Stock en direct", "limit": 1, "settings": [
-      { "type": "range", "id": "threshold", "min": 1, "max": 30, "step": 1, "label": "Seuil « stock bas »", "default": 8 },
-      { "type": "checkbox", "id": "show_bar", "label": "Jauge de stock", "default": true },
-      { "type": "paragraph", "content": "Basé sur le vrai stock Shopify : aucun chiffre inventé." }
-    ] },
-    { "type": "variant_picker", "name": "Sélecteur de variantes", "limit": 1, "settings": [
-      { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "buttons", "label": "Boutons" }, { "value": "swatches", "label": "Pastilles de couleur + boutons" }, { "value": "dropdown", "label": "Listes déroulantes" }], "default": "swatches" }
-    ] },
-    { "type": "quantity_breaks", "name": "Remises par quantité", "limit": 1, "settings": [
-      { "type": "paragraph", "content": "Affiche des lots (1, 2, 3…) et règle la quantité. Créez la remise correspondante dans Shopify › Réductions (réduction automatique « Achetez X »)." },
-      { "type": "text", "id": "heading", "label": "Titre", "default": "Plus vous en prenez, plus vous économisez" },
-      { "type": "range", "id": "default", "min": 1, "max": 3, "step": 1, "label": "Lot sélectionné par défaut", "default": 2 },
-      { "type": "header", "content": "Lot 1" },
-      { "type": "number", "id": "qty_1", "label": "Quantité", "default": 1 },
-      { "type": "text", "id": "label_1", "label": "Libellé", "default": "1 article" },
-      { "type": "range", "id": "discount_1", "min": 0, "max": 60, "step": 1, "unit": "%", "label": "Remise", "default": 0 },
-      { "type": "text", "id": "badge_1", "label": "Badge" },
-      { "type": "header", "content": "Lot 2" },
-      { "type": "number", "id": "qty_2", "label": "Quantité", "default": 2 },
-      { "type": "text", "id": "label_2", "label": "Libellé", "default": "2 articles" },
-      { "type": "range", "id": "discount_2", "min": 0, "max": 60, "step": 1, "unit": "%", "label": "Remise", "default": 10 },
-      { "type": "text", "id": "badge_2", "label": "Badge", "default": "Le plus choisi" },
-      { "type": "header", "content": "Lot 3" },
-      { "type": "number", "id": "qty_3", "label": "Quantité", "default": 3 },
-      { "type": "text", "id": "label_3", "label": "Libellé", "default": "3 articles" },
-      { "type": "range", "id": "discount_3", "min": 0, "max": 60, "step": 1, "unit": "%", "label": "Remise", "default": 15 },
-      { "type": "text", "id": "badge_3", "label": "Badge", "default": "Meilleure affaire" },
-      { "type": "text", "id": "note", "label": "Note", "default": "La remise s'applique automatiquement au panier." }
-    ] },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "vendor",
+      "name": "Marque",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Titre",
+      "limit": 1
+    },
+    {
+      "type": "sku",
+      "name": "Référence (SKU)",
+      "limit": 1
+    },
+    {
+      "type": "rating",
+      "name": "Note (métachamp reviews)",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Prix",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_tax_note",
+          "label": "Mention « Taxes incluses »",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "tags",
+      "name": "Tags produit",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "limit",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "label": "Nombre max.",
+          "default": 4
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texte",
+          "default": "<p>Un argument clé sur le produit.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "muted",
+          "label": "Texte discret",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "inventory",
+      "name": "Stock en direct",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "threshold",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "Seuil « stock bas »",
+          "default": 8
+        },
+        {
+          "type": "checkbox",
+          "id": "show_bar",
+          "label": "Jauge de stock",
+          "default": true
+        },
+        {
+          "type": "paragraph",
+          "content": "Basé sur le vrai stock Shopify : aucun chiffre inventé."
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Sélecteur de variantes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            {
+              "value": "buttons",
+              "label": "Boutons"
+            },
+            {
+              "value": "swatches",
+              "label": "Pastilles de couleur + boutons"
+            },
+            {
+              "value": "dropdown",
+              "label": "Listes déroulantes"
+            }
+          ],
+          "default": "swatches"
+        }
+      ]
+    },
+    {
+      "type": "quantity_breaks",
+      "name": "Remises par quantité",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Affiche des lots (1, 2, 3…) et règle la quantité. Créez la remise correspondante dans Shopify › Réductions (réduction automatique « Achetez X »)."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Plus vous en prenez, plus vous économisez"
+        },
+        {
+          "type": "range",
+          "id": "default",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "label": "Lot sélectionné par défaut",
+          "default": 2
+        },
+        {
+          "type": "header",
+          "content": "Lot 1"
+        },
+        {
+          "type": "number",
+          "id": "qty_1",
+          "label": "Quantité",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Libellé",
+          "default": "1 article"
+        },
+        {
+          "type": "range",
+          "id": "discount_1",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "label": "Remise",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "badge_1",
+          "label": "Badge"
+        },
+        {
+          "type": "header",
+          "content": "Lot 2"
+        },
+        {
+          "type": "number",
+          "id": "qty_2",
+          "label": "Quantité",
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Libellé",
+          "default": "2 articles"
+        },
+        {
+          "type": "range",
+          "id": "discount_2",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "label": "Remise",
+          "default": 10
+        },
+        {
+          "type": "text",
+          "id": "badge_2",
+          "label": "Badge",
+          "default": "Le plus choisi"
+        },
+        {
+          "type": "header",
+          "content": "Lot 3"
+        },
+        {
+          "type": "number",
+          "id": "qty_3",
+          "label": "Quantité",
+          "default": 3
+        },
+        {
+          "type": "text",
+          "id": "label_3",
+          "label": "Libellé",
+          "default": "3 articles"
+        },
+        {
+          "type": "range",
+          "id": "discount_3",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "label": "Remise",
+          "default": 15
+        },
+        {
+          "type": "text",
+          "id": "badge_3",
+          "label": "Badge",
+          "default": "Meilleure affaire"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note",
+          "default": "La remise s'applique automatiquement au panier."
+        }
+      ]
+    },
+    {
+      "type": "subscription",
+      "name": "Abonnement",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Affiche « Achat unique / S'abonner » quand le produit a un plan d'abonnement (créé avec l'application gratuite Shopify Subscriptions ou une autre appli d'abonnements). Se cumule avec les remises par quantité et les ventes croisées."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Choisissez votre option :"
+        },
+        {
+          "type": "checkbox",
+          "id": "default_subscribe",
+          "label": "Abonnement sélectionné par défaut",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "benefits",
+          "label": "Avantages (un par ligne)",
+          "default": "Pause ou annulation à tout moment\nGarantie satisfait ou remboursé sous 30 jours"
+        }
+      ]
+    },
     {
       "type": "buy_buttons",
       "name": "Boutons d'achat",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "show_quantity", "label": "Sélecteur de quantité", "default": true },
-        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Paiement accéléré (Shop Pay, Apple Pay…)", "default": true },
-        { "type": "checkbox", "id": "show_installments", "label": "Paiement en plusieurs fois (Shop Pay Installments)", "default": true },
-        { "type": "checkbox", "id": "show_wishlist", "label": "Bouton liste d'envies", "default": true },
-        { "type": "checkbox", "id": "show_pickup", "label": "Disponibilité du retrait en boutique", "default": true },
-        { "type": "checkbox", "id": "gift_card_recipient", "label": "Cartes cadeaux : formulaire « offrir à quelqu'un »", "default": true },
-        { "type": "header", "content": "Personnalisation" },
-        { "type": "checkbox", "id": "engraving", "label": "Champ de personnalisation (gravure, prénom…)", "default": false },
-        { "type": "text", "id": "engraving_label", "label": "Libellé du champ", "default": "Texte à graver" },
-        { "type": "number", "id": "engraving_max", "label": "Nombre de caractères max.", "default": 20 }
+        {
+          "type": "checkbox",
+          "id": "show_quantity",
+          "label": "Sélecteur de quantité",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Paiement accéléré (Shop Pay, Apple Pay…)",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_installments",
+          "label": "Paiement en plusieurs fois (Shop Pay Installments)",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Bouton liste d'envies",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_pickup",
+          "label": "Disponibilité du retrait en boutique",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "gift_card_recipient",
+          "label": "Cartes cadeaux : formulaire « offrir à quelqu'un »",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Personnalisation"
+        },
+        {
+          "type": "checkbox",
+          "id": "engraving",
+          "label": "Champ de personnalisation (gravure, prénom…)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "engraving_label",
+          "label": "Libellé du champ",
+          "default": "Texte à graver"
+        },
+        {
+          "type": "number",
+          "id": "engraving_max",
+          "label": "Nombre de caractères max.",
+          "default": 20
+        }
       ]
     },
-    { "type": "back_in_stock", "name": "Alerte retour en stock", "limit": 1, "settings": [
-      { "type": "paragraph", "content": "Visible uniquement quand la variante est épuisée. Les demandes arrivent dans votre boîte mail (formulaire de contact Shopify, tag « back-in-stock »)." },
-      { "type": "text", "id": "heading", "label": "Titre", "default": "Prévenez-moi du retour en stock" },
-      { "type": "text", "id": "text", "label": "Texte", "default": "Un seul e-mail, dès que l'article revient." },
-      { "type": "text", "id": "button", "label": "Bouton", "default": "M'alerter" },
-      { "type": "text", "id": "success", "label": "Message de confirmation", "default": "C'est noté ! Nous vous écrivons dès son retour." }
-    ] },
-    { "type": "countdown", "name": "Compte à rebours", "limit": 1, "settings": [
-      { "type": "text", "id": "heading", "label": "Titre", "default": "L'offre se termine dans" },
-      { "type": "select", "id": "mode", "label": "Type", "options": [{ "value": "date", "label": "Date de fin fixe" }, { "value": "evergreen", "label": "Durée par visiteur (evergreen)" }], "default": "date" },
-      { "type": "text", "id": "end_date", "label": "Date de fin (AAAA-MM-JJ)", "default": "2026-12-31" },
-      { "type": "text", "id": "end_time", "label": "Heure de fin (HH:MM)", "default": "23:59" },
-      { "type": "range", "id": "hours", "min": 1, "max": 72, "step": 1, "unit": "h", "label": "Durée evergreen", "default": 24 },
-      { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "boxed", "label": "Encadré" }, { "value": "inline", "label": "En ligne" }], "default": "boxed" },
-      { "type": "checkbox", "id": "hide_ended", "label": "Masquer à la fin", "default": true },
-      { "type": "paragraph", "content": "Utilisez-le pour de vraies offres limitées : l'evergreen redémarre pour chaque visiteur, à réserver aux offres de bienvenue réelles." }
-    ] },
-    { "type": "delivery", "name": "Estimation de livraison", "limit": 1, "settings": [
-      { "type": "range", "id": "min_days", "min": 0, "max": 20, "step": 1, "label": "Délai minimum (jours ouvrés)", "default": 2 },
-      { "type": "range", "id": "max_days", "min": 1, "max": 30, "step": 1, "label": "Délai maximum (jours ouvrés)", "default": 4 },
-      { "type": "range", "id": "cutoff", "min": 8, "max": 22, "step": 1, "unit": "h", "label": "Heure limite d'expédition le jour même", "default": 14 },
-      { "type": "checkbox", "id": "ship_saturday", "label": "Expédition le samedi", "default": false }
-    ] },
-    { "type": "size_chart", "name": "Guide des tailles", "limit": 1, "settings": [
-      { "type": "text", "id": "label", "label": "Libellé", "default": "Guide des tailles" },
-      { "type": "richtext", "id": "content", "label": "Contenu", "default": "<p>Ajoutez un tableau dans une page et choisissez-la ci-dessous, ou écrivez vos repères ici.</p>" },
-      { "type": "page", "id": "page", "label": "Page contenant le tableau" }
-    ] },
-    { "type": "bundle", "name": "Souvent achetés ensemble", "limit": 1, "settings": [
-      { "type": "text", "id": "heading", "label": "Titre", "default": "Souvent achetés ensemble" },
-      { "type": "product_list", "id": "products", "label": "Produits", "limit": 3 },
-      { "type": "checkbox", "id": "use_recommendations", "label": "Sinon, utiliser les produits complémentaires (Search & Discovery)", "default": true },
-      { "type": "range", "id": "discount", "min": 0, "max": 40, "step": 1, "unit": "%", "label": "Remise affichée pour le lot", "info": "Créez la réduction correspondante dans Shopify pour qu'elle s'applique.", "default": 0 },
-      { "type": "text", "id": "button", "label": "Bouton", "default": "Ajouter la sélection au panier" }
-    ] },
-    { "type": "complementary", "name": "Produits complémentaires", "limit": 1, "settings": [
-      { "type": "paragraph", "content": "Produits définis dans l'application gratuite Shopify Search & Discovery." },
-      { "type": "text", "id": "heading", "label": "Titre", "default": "Complétez avec" },
-      { "type": "range", "id": "limit", "min": 1, "max": 5, "step": 1, "label": "Nombre de produits", "default": 3 }
-    ] },
-    { "type": "free_shipping", "name": "Jauge livraison offerte", "limit": 1 },
-    { "type": "description", "name": "Description", "limit": 1, "settings": [{ "type": "checkbox", "id": "collapsed", "label": "Dans un onglet repliable", "default": false }] },
+    {
+      "type": "back_in_stock",
+      "name": "Alerte retour en stock",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Visible uniquement quand la variante est épuisée. Les demandes arrivent dans votre boîte mail (formulaire de contact Shopify, tag « back-in-stock »)."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Prévenez-moi du retour en stock"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Un seul e-mail, dès que l'article revient."
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Bouton",
+          "default": "M'alerter"
+        },
+        {
+          "type": "text",
+          "id": "success",
+          "label": "Message de confirmation",
+          "default": "C'est noté ! Nous vous écrivons dès son retour."
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Compte à rebours",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "L'offre se termine dans"
+        },
+        {
+          "type": "select",
+          "id": "mode",
+          "label": "Type",
+          "options": [
+            {
+              "value": "date",
+              "label": "Date de fin fixe"
+            },
+            {
+              "value": "evergreen",
+              "label": "Durée par visiteur (evergreen)"
+            }
+          ],
+          "default": "date"
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "Date de fin (AAAA-MM-JJ)",
+          "default": "2026-12-31"
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "Heure de fin (HH:MM)",
+          "default": "23:59"
+        },
+        {
+          "type": "range",
+          "id": "hours",
+          "min": 1,
+          "max": 72,
+          "step": 1,
+          "unit": "h",
+          "label": "Durée evergreen",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            {
+              "value": "boxed",
+              "label": "Encadré"
+            },
+            {
+              "value": "inline",
+              "label": "En ligne"
+            }
+          ],
+          "default": "boxed"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_ended",
+          "label": "Masquer à la fin",
+          "default": true
+        },
+        {
+          "type": "paragraph",
+          "content": "Utilisez-le pour de vraies offres limitées : l'evergreen redémarre pour chaque visiteur, à réserver aux offres de bienvenue réelles."
+        }
+      ]
+    },
+    {
+      "type": "delivery",
+      "name": "Estimation de livraison",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "min_days",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "label": "Délai minimum (jours ouvrés)",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "max_days",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "Délai maximum (jours ouvrés)",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "cutoff",
+          "min": 8,
+          "max": 22,
+          "step": 1,
+          "unit": "h",
+          "label": "Heure limite d'expédition le jour même",
+          "default": 14
+        },
+        {
+          "type": "checkbox",
+          "id": "ship_saturday",
+          "label": "Expédition le samedi",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "size_chart",
+      "name": "Guide des tailles",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Libellé",
+          "default": "Guide des tailles"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu",
+          "default": "<p>Ajoutez un tableau dans une page et choisissez-la ci-dessous, ou écrivez vos repères ici.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page contenant le tableau"
+        }
+      ]
+    },
+    {
+      "type": "bundle",
+      "name": "Souvent achetés ensemble",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Souvent achetés ensemble"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Produits",
+          "limit": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "use_recommendations",
+          "label": "Sinon, utiliser les produits complémentaires (Search & Discovery)",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "discount",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "%",
+          "label": "Remise affichée pour le lot",
+          "info": "Créez la réduction correspondante dans Shopify pour qu'elle s'applique.",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Bouton",
+          "default": "Ajouter la sélection au panier"
+        }
+      ]
+    },
+    {
+      "type": "complementary",
+      "name": "Produits complémentaires",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Produits définis dans l'application gratuite Shopify Search & Discovery."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Complétez avec"
+        },
+        {
+          "type": "range",
+          "id": "limit",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Nombre de produits",
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "free_shipping",
+      "name": "Jauge livraison offerte",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "collapsed",
+          "label": "Dans un onglet repliable",
+          "default": false
+        }
+      ]
+    },
     {
       "type": "collapsible",
       "name": "Onglet repliable",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Titre", "default": "Livraison et retours" },
-        { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "none", "label": "Aucune" }, { "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "leaf", "label": "Feuille" }, { "value": "droplet", "label": "Goutte" }, { "value": "ruler", "label": "Règle" }, { "value": "info", "label": "Info" }, { "value": "shield", "label": "Bouclier" }, { "value": "package", "label": "Colis" }, { "value": "recycle", "label": "Recyclage" }], "default": "none" },
-        { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false },
-        { "type": "richtext", "id": "content", "label": "Contenu", "default": "<p>Expédition sous 24 h, retours gratuits pendant 30 jours.</p>" },
-        { "type": "page", "id": "page", "label": "Contenu d'une page" }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Livraison et retours"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            {
+              "value": "none",
+              "label": "Aucune"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "refresh",
+              "label": "Retour"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "droplet",
+              "label": "Goutte"
+            },
+            {
+              "value": "ruler",
+              "label": "Règle"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "package",
+              "label": "Colis"
+            },
+            {
+              "value": "recycle",
+              "label": "Recyclage"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Ouvert par défaut",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu",
+          "default": "<p>Expédition sous 24 h, retours gratuits pendant 30 jours.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Contenu d'une page"
+        }
       ]
     },
     {
@@ -500,17 +1277,168 @@
       "name": "Réassurance",
       "limit": 1,
       "settings": [
-        { "type": "select", "id": "icon_1", "label": "Icône 1", "options": [{ "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" }, { "value": "gift", "label": "Cadeau" }, { "value": "leaf", "label": "Feuille" }, { "value": "award", "label": "Médaille" }, { "value": "chat", "label": "Support" }], "default": "truck" },
-        { "type": "text", "id": "line_1", "label": "Ligne 1", "default": "Livraison offerte dès 60 €" },
-        { "type": "select", "id": "icon_2", "label": "Icône 2", "options": [{ "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" }, { "value": "gift", "label": "Cadeau" }, { "value": "leaf", "label": "Feuille" }, { "value": "award", "label": "Médaille" }, { "value": "chat", "label": "Support" }], "default": "refresh" },
-        { "type": "text", "id": "line_2", "label": "Ligne 2", "default": "Retours gratuits sous 30 jours" },
-        { "type": "select", "id": "icon_3", "label": "Icône 3", "options": [{ "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" }, { "value": "gift", "label": "Cadeau" }, { "value": "leaf", "label": "Feuille" }, { "value": "award", "label": "Médaille" }, { "value": "chat", "label": "Support" }], "default": "lock" },
-        { "type": "text", "id": "line_3", "label": "Ligne 3", "default": "Paiement 100 % sécurisé" }
+        {
+          "type": "select",
+          "id": "icon_1",
+          "label": "Icône 1",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "refresh",
+              "label": "Retour"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "lock",
+              "label": "Cadenas"
+            },
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "award",
+              "label": "Médaille"
+            },
+            {
+              "value": "chat",
+              "label": "Support"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "line_1",
+          "label": "Ligne 1",
+          "default": "Livraison offerte dès 60 €"
+        },
+        {
+          "type": "select",
+          "id": "icon_2",
+          "label": "Icône 2",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "refresh",
+              "label": "Retour"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "lock",
+              "label": "Cadenas"
+            },
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "award",
+              "label": "Médaille"
+            },
+            {
+              "value": "chat",
+              "label": "Support"
+            }
+          ],
+          "default": "refresh"
+        },
+        {
+          "type": "text",
+          "id": "line_2",
+          "label": "Ligne 2",
+          "default": "Retours gratuits sous 30 jours"
+        },
+        {
+          "type": "select",
+          "id": "icon_3",
+          "label": "Icône 3",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "refresh",
+              "label": "Retour"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "lock",
+              "label": "Cadenas"
+            },
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "award",
+              "label": "Médaille"
+            },
+            {
+              "value": "chat",
+              "label": "Support"
+            }
+          ],
+          "default": "lock"
+        },
+        {
+          "type": "text",
+          "id": "line_3",
+          "label": "Ligne 3",
+          "default": "Paiement 100 % sécurisé"
+        }
       ]
     },
-    { "type": "payment_icons", "name": "Moyens de paiement", "limit": 1 },
-    { "type": "share", "name": "Partager", "limit": 1 },
-    { "type": "custom_liquid", "name": "Liquid personnalisé", "settings": [{ "type": "liquid", "id": "custom_liquid", "label": "Code Liquid", "info": "Pour intégrer un widget ou un métachamp." }] }
+    {
+      "type": "payment_icons",
+      "name": "Moyens de paiement",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "Partager",
+      "limit": 1
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Liquid personnalisé",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Code Liquid",
+          "info": "Pour intégrer un widget ou un métachamp."
+        }
+      ]
+    }
   ]
 }
 {% endschema %}

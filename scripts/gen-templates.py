@@ -185,6 +185,7 @@ write('product.json', template([
       B("vendor"), B("title"), B("rating"), B("price", show_tax_note=True), B("sku"), B("inventory", threshold=8, show_bar=True),
       B("variant_picker", style="swatches"), B("size_chart", label="Guide des tailles"),
       B("quantity_breaks", heading="Plus vous en prenez, plus vous économisez", default=2),
+      B("subscription", heading="Choisissez votre option :", default_subscribe=True),
       B("buy_buttons", show_quantity=True, show_dynamic_checkout=True, show_installments=True, show_wishlist=True, show_pickup=True),
       B("back_in_stock", heading="Prévenez-moi du retour en stock"),
       B("delivery", min_days=2, max_days=4, cutoff=14), B("free_shipping"),
@@ -238,4 +239,52 @@ write('article.json', template([("main", section("main-article", {"show_author":
 write('search.json', template([("main", section("main-search"))]))
 write('404.json', template([("main", section("main-404"))]))
 write('password.json', template([("main", section("main-password", {"heading": "Ouverture très bientôt"}))], layout="password"))
+
+FEATURES = [
+  # (aperçu, titre, description, économie €/mois, type, catégorie)
+  ("qty_breaks", "Remises par quantité", "Proposez des lots de 1, 2 ou 3 articles avec la remise et le prix total affichés : le panier moyen grimpe sans effort.", 15, "block", "conversion"),
+  ("bundle", "Souvent achetés ensemble", "Le produit et ses compléments cochés d'avance, avec le total du lot et un seul bouton pour tout ajouter.", 20, "block", "conversion"),
+  ("gift", "Cadeau offert au panier", "Un cadeau se débloque dès un montant de panier : choix de la variante, ajout automatique, retrait si le panier redescend.", 15, "setting", "cart"),
+  ("subscription", "Bloc abonnement", "« Achat unique » ou « S'abonner » avec la fréquence et la remise affichées, cumulable avec les lots et les ventes croisées.", 10, "block", "conversion"),
+  ("countdown", "Compte à rebours", "Une vraie date de fin d'offre sur la fiche produit, en bannière ou dans le bandeau d'annonce ; masqué automatiquement à la fin.", 9, "block", "conversion"),
+  ("stock", "Stock en direct", "Le stock réel de la variante choisie, avec une jauge et un message « plus que X » sous votre seuil.", 6, "block", "conversion"),
+  ("delivery", "Estimation de livraison", "Les dates de livraison calculées en jours ouvrés, avec l'heure limite pour une expédition le jour même.", 7, "block", "conversion"),
+  ("sticky_atc", "Barre d'achat collante", "Sur mobile, le prix et le bouton d'achat restent sous le pouce pendant la lecture de la fiche.", 5, "setting", "conversion"),
+  ("upsell", "Suggestions dans le panier", "Les produits complémentaires du premier article apparaissent dans le tiroir panier, ajoutables en un geste.", 15, "setting", "cart"),
+  ("rewards", "Paliers de récompense", "Une jauge à deux étapes : livraison offerte, puis un second palier (cadeau, remise) pour motiver la commande.", 10, "setting", "cart"),
+  ("gift_wrap", "Emballage cadeau, date et CGV", "Case emballage cadeau facturée, date de livraison souhaitée, note de commande et acceptation obligatoire des CGV.", 8, "setting", "cart"),
+  ("discount", "Code promo dans le panier", "Le client saisit son code avant le paiement et voit la remise appliquée tout de suite.", 5, "setting", "cart"),
+  ("popup", "Pop-up newsletter et promo", "Inscription avec code de bienvenue, annonce ou code à copier ; après un délai, au défilement ou à l'intention de sortie.", 10, "section", "conversion"),
+  ("back_in_stock", "Alerte retour en stock", "Quand la variante est épuisée, un formulaire remplace le bouton d'achat et vous transmet les demandes.", 10, "block", "conversion"),
+  ("preorder", "Précommande", "Les produits vendus en rupture affichent automatiquement « Précommander » au lieu de « Ajouter au panier ».", 10, "setting", "conversion"),
+  ("engraving", "Personnalisation produit", "Un champ libre (gravure, prénom, message) enregistré avec la commande ; cartes cadeaux envoyées au destinataire.", 15, "block", "conversion"),
+  ("mega_menu", "Méga-menu", "Les menus à trois niveaux s'affichent en colonnes, avec jusqu'à deux visuels mis en avant.", 8, "block", "navigation"),
+  ("predictive_search", "Recherche prédictive", "Produits, collections, pages et suggestions dès la deuxième lettre, navigables au clavier.", 15, "setting", "navigation"),
+  ("quick_view", "Aperçu rapide", "Choisir une variante et ajouter au panier sans quitter la collection.", 8, "setting", "navigation"),
+  ("wishlist", "Liste d'envies", "Un cœur sur chaque produit, un compteur dans l'en-tête et une page dédiée, sans compte client.", 10, "setting", "navigation"),
+  ("recently_viewed", "Récemment consultés", "Les derniers produits vus reviennent sur la fiche produit, la collection et le panier.", 5, "section", "navigation"),
+  ("filters", "Filtres et pastilles", "Filtres en colonne ou en tiroir, pastilles de couleur, prix, disponibilité et filtres actifs supprimables.", 10, "setting", "navigation"),
+  ("load_more", "Voir plus et défilement infini", "Remplacez la pagination par un bouton « Voir plus » ou un chargement continu.", 5, "setting", "navigation"),
+  ("mobile_nav", "Barre d'onglets mobile", "Accueil, recherche, boutique, envies et panier toujours accessibles, comme dans une application.", 7, "setting", "navigation"),
+  ("reviews", "Avis clients", "Note moyenne et répartition calculées, filtre par étoiles, photos et badge « achat vérifié ».", 15, "section", "trust"),
+  ("size_chart", "Guide des tailles", "Un tableau de tailles en fenêtre, depuis une page ou un texte, sans quitter la fiche.", 6, "block", "trust"),
+  ("badges", "Badges et pastilles automatiques", "Promo en %, nouveauté, épuisé et badges personnalisés par tag ; pastilles de couleur sur les cartes.", 8, "setting", "conversion"),
+  ("zoom", "Zoom plein écran", "Toutes les images du produit en grand, en un toucher.", 5, "setting", "trust"),
+  ("lookbook", "Shop the look", "Une photo d'ambiance avec des points cliquables qui ouvrent les produits.", 10, "section", "content"),
+  ("ugc", "Galerie sociale achetable", "Vos photos Instagram ou clients, chacune reliée à un produit achetable en aperçu rapide.", 15, "section", "content"),
+  ("before_after", "Avant / après", "Un curseur à faire glisser pour comparer deux images.", 5, "section", "content"),
+  ("comparison", "Tableau comparatif", "Votre produit face aux alternatives, ligne par ligne, lisible sur mobile.", 5, "section", "trust"),
+  ("store_locator", "Points de vente", "Vos boutiques et revendeurs avec recherche, horaires et itinéraire.", 10, "section", "trust"),
+  ("age_gate", "Vérification de l'âge", "Pour l'alcool, le CBD ou le vapotage : confirmation demandée avant l'accès, mémorisée ensuite.", 5, "section", "trust"),
+  ("styles", "10 styles de boutique", "Minimaliste, luxe, nature, audacieux, doux, tech, ludique, gourmand, sport : couleurs, polices et formes en un clic.", 0, "setting", "design"),
+  ("palettes", "Palettes par section", "Huit palettes et cinq espacements sur chaque section pour rythmer vos pages.", 0, "setting", "design"),
+  ("header", "Trois en-têtes", "Logo à gauche, centré, ou centré avec le menu dessous ; fixe ou réapparition en remontant.", 0, "setting", "design"),
+  ("gallery", "Quatre galeries produit", "Vignettes dessous ou à gauche, grille, images empilées ; carrousel sur mobile.", 0, "setting", "design"),
+  ("sections", "26 sections universelles", "Diaporama, mosaïque, vidéo, onglets, frise, chiffres clés, newsletter… pour construire n'importe quelle page.", 0, "section", "design"),
+  ("editor", "100 % éditable sans code", "Tout se règle dans l'éditeur Shopify : textes, couleurs, ordre des blocs et des sections.", 0, "setting", "design"),
+]
+write('page.features.json', template([
+  ("features", section("features-catalog", {"color_scheme": "theme", "padding": "l"},
+    [B("feature", preview=k, title=t, text=d, savings=v, kind=kd, category=c) for k, t, d, v, kd, c in FEATURES])),
+]))
 print(sorted(os.listdir(T)))

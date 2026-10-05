@@ -1,0 +1,66 @@
+{%- comment -%}
+  Cadeau offert à partir d'un montant de panier (Paramètres du thème › Panier › Cadeau).
+  Le cadeau est un produit de la boutique ; pour qu'il soit gratuit, créez une réduction automatique
+  « Achetez X, obtenez Y » ou « Montant sur un produit » dans Shopify › Réductions.
+  - sous le seuil : progression ;
+  - seuil atteint : choix de la variante + ajout (automatique si une seule variante et l'option activée) ;
+  - panier repassé sous le seuil : le cadeau est retiré automatiquement (assets/features.js).
+{%- endcomment -%}
+{%- assign gift = settings.gift_product -%}
+{%- if gift != blank and settings.gift_threshold > 0 and cart.item_count > 0 -%}
+  {%- liquid
+    assign threshold = settings.gift_threshold | times: 100
+    assign gift_line = null
+    assign gift_total = 0
+    for item in cart.items
+      if item.product_id == gift.id
+        assign gift_line = item
+        assign gift_total = gift_total | plus: item.final_line_price
+      endif
+    endfor
+    assign total = cart.total_price | minus: gift_total
+    assign gv = gift.selected_or_first_available_variant
+    assign threshold_money = threshold | money
+  -%}
+  <div class="cart-gift{% if total >= threshold %} is-unlocked{% endif %}">
+    <span class="cart-gift__img">
+      {%- if gift.featured_media -%}{{ gift.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{% render 'icon', name: 'gift', size: 22 %}{%- endif -%}
+    </span>
+    <div class="cart-gift__body">
+      {%- if gift_line and total < threshold -%}
+        <span hidden data-gift-remove="{{ gift_line.key }}"></span>
+        <p class="cart-gift__title">{{ 'cart.gift.removed' | t: amount: threshold_money }}</p>
+      {%- elsif gift_line -%}
+        <p class="cart-gift__title">{% render 'icon', name: 'check', size: 16 %} {{ 'cart.gift.added' | t: title: gift.title }}</p>
+      {%- elsif total >= threshold -%}
+        <p class="cart-gift__title">{{ settings.gift_heading }}</p>
+        <p class="small muted">{{ 'cart.gift.from' | t: amount: threshold_money }} · {{ gift.title }}</p>
+        {%- assign auto = false -%}
+        {%- if settings.gift_auto and gift.has_only_default_variant and gv.available -%}{%- assign auto = true -%}{%- endif -%}
+        {%- if auto -%}
+          {%- form 'product', gift, class: 'cart-gift__form', data-gift-auto: '' -%}
+            <input type="hidden" name="id" value="{{ gv.id }}">
+            <input type="hidden" name="properties[_gift]" value="1">
+            <button type="submit" class="btn btn--primary btn--sm">{{ 'cart.gift.add' | t }}</button>
+          {%- endform -%}
+        {%- elsif gift.available -%}
+          {%- form 'product', gift, class: 'cart-gift__form', data-cart-form: '' -%}
+            <input type="hidden" name="properties[_gift]" value="1">
+            {%- if gift.has_only_default_variant -%}
+              <input type="hidden" name="id" value="{{ gv.id }}">
+            {%- else -%}
+              <label class="visually-hidden" for="GiftVariant">{{ 'cart.gift.choose' | t }}</label>
+              <select id="GiftVariant" name="id" class="select select--sm">
+                {%- for v in gift.variants -%}<option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}{% if v.id == gv.id %} selected{% endif %}>{{ v.title }}</option>{%- endfor -%}
+              </select>
+            {%- endif -%}
+            <button type="submit" class="btn btn--primary btn--sm">{{ 'cart.gift.add' | t }}</button>
+          {%- endform -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- assign remaining = threshold | minus: total | money -%}
+        <p class="cart-gift__title">{{ 'cart.gift.remaining_html' | t: amount: remaining, title: gift.title }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

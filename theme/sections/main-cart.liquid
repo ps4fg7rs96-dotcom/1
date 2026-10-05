@@ -5,6 +5,7 @@
       <form action="{{ routes.cart_url }}" method="post" class="cart-page" id="CartForm">
         <div>
           {% render 'free-shipping-bar' %}
+          {% render 'cart-gift' %}
           <ul class="cart-lines" role="list">
             {%- for item in cart.items -%}
               <li class="cart-line">

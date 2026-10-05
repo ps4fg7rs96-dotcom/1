@@ -464,7 +464,16 @@
     "apply_discount": "Appliquer",
     "delivery_date": "Date de livraison souhaitée",
     "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}",
-    "reward_done": "Bravo, vous avez débloqué {{ reward }} !"
+    "reward_done": "Bravo, vous avez débloqué {{ reward }} !",
+    "gift": {
+      "add": "Ajouter mon cadeau",
+      "added": "{{ title }} offert, ajouté à votre panier",
+      "badge": "Offert",
+      "choose": "Choisir la variante du cadeau",
+      "from": "Cadeau à partir de {{ amount }}",
+      "remaining_html": "Plus que <strong>{{ amount }}</strong> pour recevoir {{ title }} en cadeau",
+      "removed": "Le cadeau est réservé aux paniers de {{ amount }} et plus"
+    }
   },
   "collections": {
     "label": "Collection",
@@ -576,6 +585,77 @@
       "and": "et le",
       "order_within": "Commandez dans les",
       "ships_today": "pour une expédition aujourd'hui"
+    },
+    "subscription": {
+      "once": "Achat unique",
+      "subscribe": "S'abonner",
+      "frequency": "Fréquence de livraison",
+      "setup": "Bloc abonnement : créez un plan d'abonnement pour ce produit (application gratuite Shopify Subscriptions) pour l'afficher."
+    },
+    "catalog": {
+      "all": "Toutes",
+      "count": "fonctionnalités intégrées",
+      "per_month": "d'applications évitées par mois",
+      "no_app": "application à installer",
+      "filter": "Filtrer par catégorie",
+      "search": "Rechercher une fonctionnalité",
+      "empty": "Aucune fonctionnalité ne correspond.",
+      "save": "Économisez {{ amount }} €/mois",
+      "included": "Inclus",
+      "see": "Voir en action",
+      "kind": {
+        "block": "Bloc",
+        "section": "Section",
+        "setting": "Réglage"
+      },
+      "cat": {
+        "conversion": "Conversion",
+        "cart": "Panier",
+        "navigation": "Navigation",
+        "trust": "Confiance",
+        "content": "Contenu",
+        "design": "Design"
+      },
+      "mock": {
+        "qty_title": "Plus vous en prenez…",
+        "popular": "Le plus choisi",
+        "bundle_title": "Souvent achetés ensemble",
+        "add_all": "Ajouter les 3 au panier",
+        "gift_title": "Vous avez débloqué un cadeau !",
+        "gift_sub": "Choisissez les options du produit offert.",
+        "gift_from": "Cadeau dès 80 €",
+        "sub_choose": "Choisissez votre option :",
+        "sub_freq": "Chaque mois, −10 %",
+        "sub_pause": "Pause ou annulation à tout moment",
+        "cd_title": "L'offre se termine dans",
+        "stock": "Plus que 4 en stock",
+        "delivery": "Livré entre jeudi 8 et lundi 12",
+        "cutoff": "Commandez dans les 2 h 15 pour un envoi aujourd'hui",
+        "upsell": "Vous aimerez aussi",
+        "rewards": "Plus que 12 € pour votre cadeau",
+        "free_ship": "Livraison offerte",
+        "gift": "Cadeau",
+        "terms": "J'accepte les CGV",
+        "applied": "appliqué",
+        "get_code": "Recevoir mon code",
+        "bis": "Prévenez-moi du retour",
+        "preorder_note": "Expédition prévue sous 3 semaines",
+        "engrave": "Texte à graver",
+        "recent": "Vous avez regardé",
+        "color": "Couleur",
+        "price": "Prix",
+        "brand": "Marque",
+        "size_guide": "Guide des tailles",
+        "chest": "Poitrine",
+        "waist": "Taille",
+        "before": "Avant",
+        "after": "Après",
+        "us": "Nous",
+        "others": "Autres",
+        "age": "Avez-vous 18 ans ?",
+        "limited": "Édition limitée",
+        "save": "Enregistrer"
+      }
     }
   }
 }

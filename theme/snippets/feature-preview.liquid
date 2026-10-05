@@ -1,0 +1,243 @@
+{%- comment -%}
+  Aperçu illustré d'une fonctionnalité (page « Fonctionnalités »). Paramètre : key.
+  Mini-interfaces en HTML/CSS (aucune image), aux couleurs du thème. Décoratif : aria-hidden.
+{%- endcomment -%}
+<div class="fx fx--{{ key }}" aria-hidden="true">
+  {%- case key -%}
+    {%- when 'qty_breaks' -%}
+      <div class="fx-win">
+        <p class="fx-t">{{ 'features.catalog.mock.qty_title' | t }}</p>
+        <div class="fx-opt"><i class="fx-radio"></i><b>1 ×</b><span class="fx-sp"></span><b>29,90 €</b></div>
+        <div class="fx-opt is-on"><i class="fx-radio"></i><b>2 ×</b><small class="fx-ok">−10 %</small><span class="fx-sp"></span><b>53,82 €</b><span class="fx-flag">{{ 'features.catalog.mock.popular' | t }}</span></div>
+        <div class="fx-opt"><i class="fx-radio"></i><b>3 ×</b><small class="fx-ok">−15 %</small><span class="fx-sp"></span><b>76,25 €</b></div>
+      </div>
+    {%- when 'bundle' -%}
+      <div class="fx-win">
+        <p class="fx-t">{{ 'features.catalog.mock.bundle_title' | t }}</p>
+        <div class="fx-row fx-row--center"><span class="fx-art" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><b class="fx-plus">+</b><span class="fx-art" style="--art:#0369A1">{% render 'product-art', art: 'candle' %}</span><b class="fx-plus">+</b><span class="fx-art" style="--art:#7C3AED">{% render 'product-art', art: 'bag' %}</span></div>
+        <div class="fx-row"><i class="fx-check is-on"></i><span class="fx-l" style="--w:60%"></span><b>29,90 €</b></div>
+        <div class="fx-row"><i class="fx-check is-on"></i><span class="fx-l" style="--w:48%"></span><b>16,00 €</b></div>
+        <span class="fx-btn">{{ 'features.catalog.mock.add_all' | t }}</span>
+      </div>
+    {%- when 'gift' -%}
+      <div class="fx-win fx-win--modal">
+        <span class="fx-x">✕</span>
+        <p class="fx-t">{{ 'features.catalog.mock.gift_title' | t }}</p>
+        <p class="fx-s">{{ 'features.catalog.mock.gift_sub' | t }}</p>
+        <div class="fx-opt is-on"><span class="fx-art fx-art--sm" style="--art:#EC7454">{% render 'product-art', art: 'candle' %}</span><span><b>{{ 'features.catalog.mock.gift_from' | t }}</b><span class="fx-select">Orange ⌄</span></span><span class="fx-sp"></span><i class="fx-check is-on"></i></div>
+        <span class="fx-btn fx-btn--dark">{{ 'products.product.add_to_cart' | t }}</span>
+      </div>
+    {%- when 'subscription' -%}
+      <div class="fx-win">
+        <p class="fx-s">{{ 'features.catalog.mock.sub_choose' | t }}</p>
+        <div class="fx-opt"><i class="fx-radio"></i><b>{{ 'features.subscription.once' | t }}</b><span class="fx-sp"></span><span>60,80 € <s>64 €</s></span></div>
+        <div class="fx-opt is-on fx-opt--col">
+          <div class="fx-row"><i class="fx-radio"></i><b>{{ 'features.subscription.subscribe' | t }}</b><span class="fx-sp"></span><span>54,72 € <s>64 €</s></span><span class="fx-pill">10 %</span></div>
+          <span class="fx-select fx-select--full">{{ 'features.catalog.mock.sub_freq' | t }} ⌄</span>
+          <small class="fx-muted">✓ {{ 'features.catalog.mock.sub_pause' | t }}</small>
+        </div>
+      </div>
+    {%- when 'countdown' -%}
+      <div class="fx-win">
+        <p class="fx-t">{% render 'icon', name: 'clock', size: 14 %} {{ 'features.catalog.mock.cd_title' | t }}</p>
+        <div class="fx-cd"><span><b>02</b><small>j</small></span><span><b>14</b><small>h</small></span><span><b>37</b><small>min</small></span><span><b>09</b><small>s</small></span></div>
+      </div>
+    {%- when 'stock' -%}
+      <div class="fx-win">
+        <p class="fx-stock"><i></i>{{ 'features.catalog.mock.stock' | t }}</p>
+        <span class="fx-bar fx-bar--warn"><i style="width:22%"></i></span>
+        <div class="fx-row"><span class="fx-btn">{{ 'products.product.add_to_cart' | t }}</span></div>
+      </div>
+    {%- when 'delivery' -%}
+      <div class="fx-win">
+        <div class="fx-note">{% render 'icon', name: 'truck', size: 14 %} {{ 'features.catalog.mock.delivery' | t }}</div>
+        <p class="fx-s">{% render 'icon', name: 'clock', size: 14 %} {{ 'features.catalog.mock.cutoff' | t }}</p>
+      </div>
+    {%- when 'sticky_atc' -%}
+      <div class="fx-phone">
+        <span class="fx-l" style="--w:70%"></span><span class="fx-l" style="--w:50%"></span><span class="fx-l" style="--w:80%"></span>
+        <div class="fx-sticky"><span class="fx-art fx-art--sm" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><span><b>Gourde Crête</b><br><small>29,90 €</small></span><span class="fx-btn fx-btn--sm">{{ 'features.add' | t }}</span></div>
+      </div>
+    {%- when 'upsell' -%}
+      <div class="fx-win">
+        <p class="fx-t">{{ 'features.catalog.mock.upsell' | t }}</p>
+        <div class="fx-mini"><span class="fx-art fx-art--sm" style="--art:#0369A1">{% render 'product-art', art: 'candle' %}</span><span><b>Tasse 250 ml</b><br><small>16,00 €</small></span><span class="fx-icon">+</span></div>
+        <div class="fx-mini"><span class="fx-art fx-art--sm" style="--art:#7C3AED">{% render 'product-art', art: 'bag' %}</span><span><b>Trousse voyage</b><br><small>12,00 €</small></span><span class="fx-icon">+</span></div>
+      </div>
+    {%- when 'rewards' -%}
+      <div class="fx-win">
+        <p class="fx-s"><b>{{ 'features.catalog.mock.rewards' | t }}</b></p>
+        <div class="fx-tiers"><span class="fx-bar"><i style="width:68%"></i></span><span class="fx-dot is-on" style="left:55%">{% render 'icon', name: 'truck', size: 14 %}</span><span class="fx-dot" style="left:96%">{% render 'icon', name: 'gift', size: 14 %}</span></div>
+        <div class="fx-row fx-muted"><small>{{ 'features.catalog.mock.free_ship' | t }}</small><span class="fx-sp"></span><small>{{ 'features.catalog.mock.gift' | t }}</small></div>
+      </div>
+    {%- when 'gift_wrap' -%}
+      <div class="fx-win">
+        <div class="fx-row"><i class="fx-check is-on"></i>{% render 'icon', name: 'gift', size: 14 %} <b>{{ settings.gift_wrap_label | default: 'Emballage cadeau' }}</b><span class="fx-sp"></span><small>+3,00 €</small></div>
+        <div class="fx-row"><i class="fx-check"></i>{% render 'icon', name: 'calendar', size: 14 %} {{ 'cart.delivery_date' | t }}</div>
+        <div class="fx-row"><i class="fx-check is-on"></i><small>{{ 'features.catalog.mock.terms' | t }}</small></div>
+      </div>
+    {%- when 'discount' -%}
+      <div class="fx-win">
+        <p class="fx-s">{% render 'icon', name: 'tag', size: 14 %} {{ 'cart.discount' | t }}</p>
+        <div class="fx-row"><span class="fx-input">KINETIC10</span><span class="fx-btn fx-btn--ghost">{{ 'cart.apply_discount' | t }}</span></div>
+        <div class="fx-row fx-ok"><small>✓ −10 % {{ 'features.catalog.mock.applied' | t }}</small></div>
+      </div>
+    {%- when 'popup' -%}
+      <div class="fx-win fx-win--modal fx-center">
+        <span class="fx-x">✕</span>
+        <p class="fx-eyebrow">Newsletter</p>
+        <p class="fx-h">−10 %</p>
+        <span class="fx-input fx-input--full">{{ 'general.email' | t }}</span>
+        <span class="fx-btn">{{ 'features.catalog.mock.get_code' | t }}</span>
+      </div>
+    {%- when 'back_in_stock' -%}
+      <div class="fx-win">
+        <div class="fx-row"><span class="fx-pill fx-pill--muted">{{ 'products.product.sold_out' | t }}</span></div>
+        <p class="fx-t">{% render 'icon', name: 'bell', size: 14 %} {{ 'features.catalog.mock.bis' | t }}</p>
+        <div class="fx-row"><span class="fx-input">{{ 'general.email' | t }}</span><span class="fx-btn fx-btn--ghost">OK</span></div>
+      </div>
+    {%- when 'preorder' -%}
+      <div class="fx-win">
+        <p class="fx-s">{{ 'features.catalog.mock.preorder_note' | t }}</p>
+        <span class="fx-btn">{{ 'products.product.preorder' | t }}</span>
+      </div>
+    {%- when 'engraving' -%}
+      <div class="fx-win">
+        <p class="fx-s"><b>{{ 'features.catalog.mock.engrave' | t }}</b></p>
+        <span class="fx-input fx-input--full fx-hand">Pour Léa ♡</span>
+        <span class="fx-btn">{{ 'products.product.add_to_cart' | t }}</span>
+      </div>
+    {%- when 'mega_menu' -%}
+      <div class="fx-win fx-win--wide">
+        <div class="fx-row fx-nav"><b>Boutique ⌄</b><span>Collections</span><span>Journal</span></div>
+        <div class="fx-mega">
+          <div><b>Soin</b><span class="fx-l" style="--w:70%"></span><span class="fx-l" style="--w:55%"></span><span class="fx-l" style="--w:62%"></span></div>
+          <div><b>Maison</b><span class="fx-l" style="--w:60%"></span><span class="fx-l" style="--w:72%"></span></div>
+          <div class="fx-promo"><span class="fx-art" style="--art:#C99A1E">{% render 'product-art', art: 'candle' %}</span><small><b>Nouveautés →</b></small></div>
+        </div>
+      </div>
+    {%- when 'predictive_search' -%}
+      <div class="fx-win">
+        <span class="fx-input fx-input--full">{% render 'icon', name: 'search', size: 14 %} gou|</span>
+        <div class="fx-mini"><span class="fx-art fx-art--sm" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><span><b><u>Gou</u>rde Crête</b><br><small>29,90 €</small></span></div>
+        <div class="fx-mini"><span class="fx-art fx-art--sm" style="--art:#3F6E5B">{% render 'product-art', art: 'flask' %}</span><span><b><u>Gou</u>rde Sauge</b><br><small>29,90 €</small></span></div>
+      </div>
+    {%- when 'quick_view' -%}
+      <div class="fx-win fx-win--modal fx-split">
+        <span class="fx-art fx-art--lg" style="--art:#3F6E5B">{% render 'product-art', art: 'bottle' %}</span>
+        <div><p class="fx-t">Sérum éclat</p><p class="fx-s">34,00 €</p><div class="fx-row"><i class="fx-sw" style="background:#3F6E5B"></i><i class="fx-sw" style="background:#B5536B"></i></div><span class="fx-btn fx-btn--sm">{{ 'features.add' | t }}</span></div>
+      </div>
+    {%- when 'wishlist' -%}
+      <div class="fx-cards">
+        <div class="fx-card"><span class="fx-art" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><span class="fx-heart is-on">♥</span></div>
+        <div class="fx-card"><span class="fx-art" style="--art:#8A4B2A">{% render 'product-art', art: 'bag' %}</span><span class="fx-heart">♡</span></div>
+        <div class="fx-card"><span class="fx-art" style="--art:#C99A1E">{% render 'product-art', art: 'candle' %}</span><span class="fx-heart is-on">♥</span></div>
+      </div>
+    {%- when 'recently_viewed' -%}
+      <div class="fx-win fx-win--wide">
+        <p class="fx-t">{{ 'features.catalog.mock.recent' | t }}</p>
+        <div class="fx-cards fx-cards--4">
+          <div class="fx-card"><span class="fx-art" style="--art:#3F6E5B">{% render 'product-art', art: 'bottle' %}</span></div>
+          <div class="fx-card"><span class="fx-art" style="--art:#B5536B">{% render 'product-art', art: 'flask' %}</span></div>
+          <div class="fx-card"><span class="fx-art" style="--art:#8A4B2A">{% render 'product-art', art: 'bag' %}</span></div>
+          <div class="fx-card"><span class="fx-art" style="--art:#0369A1">{% render 'product-art', art: 'candle' %}</span></div>
+        </div>
+      </div>
+    {%- when 'filters' -%}
+      <div class="fx-win fx-split fx-split--filters">
+        <div class="fx-filters"><b>{{ 'features.catalog.mock.color' | t }}</b><div class="fx-row"><i class="fx-sw" style="background:#D9622B"></i><i class="fx-sw is-on" style="background:#3F6E5B"></i><i class="fx-sw" style="background:#1F2A44"></i></div><b>{{ 'features.catalog.mock.price' | t }}</b><span class="fx-bar"><i style="width:60%"></i></span><b>{{ 'features.catalog.mock.brand' | t }}</b><div class="fx-row"><i class="fx-check is-on"></i><span class="fx-l" style="--w:50%"></span></div></div>
+        <div class="fx-cards fx-cards--2"><div class="fx-card"><span class="fx-art" style="--art:#3F6E5B">{% render 'product-art', art: 'flask' %}</span></div><div class="fx-card"><span class="fx-art" style="--art:#3F6E5B">{% render 'product-art', art: 'bottle' %}</span></div></div>
+      </div>
+    {%- when 'load_more' -%}
+      <div class="fx-win fx-center">
+        <div class="fx-cards fx-cards--3"><div class="fx-card"></div><div class="fx-card"></div><div class="fx-card"></div></div>
+        <small class="fx-muted">12 / 48</small>
+        <span class="fx-btn fx-btn--ghost">{{ 'collections.load_more' | t }}</span>
+      </div>
+    {%- when 'mobile_nav' -%}
+      <div class="fx-phone">
+        <span class="fx-l" style="--w:70%"></span><span class="fx-l" style="--w:55%"></span>
+        <div class="fx-tabbar"><span>{% render 'icon', name: 'store', size: 14 %}</span><span>{% render 'icon', name: 'search', size: 14 %}</span><span>{% render 'icon', name: 'grid', size: 14 %}</span><span class="is-on">{% render 'icon', name: 'heart', size: 14 %}</span><span>{% render 'icon', name: 'cart', size: 14 %}</span></div>
+      </div>
+    {%- when 'reviews' -%}
+      <div class="fx-win fx-split">
+        <div class="fx-center"><p class="fx-h">4,8</p><span class="fx-stars">★★★★★</span><small class="fx-muted">126</small></div>
+        <div class="fx-rbars">{%- for i in (1..5) reversed -%}<div class="fx-row"><small>{{ i }}★</small><span class="fx-bar"><i style="width:{% case i %}{% when 5 %}82{% when 4 %}12{% when 3 %}4{% else %}1{% endcase %}%"></i></span></div>{%- endfor -%}</div>
+      </div>
+    {%- when 'size_chart' -%}
+      <div class="fx-win fx-win--modal">
+        <p class="fx-t">{% render 'icon', name: 'ruler', size: 14 %} {{ 'features.catalog.mock.size_guide' | t }}</p>
+        <table class="fx-table"><tr><th></th><th>S</th><th>M</th><th>L</th></tr><tr><td>{{ 'features.catalog.mock.chest' | t }}</td><td>88</td><td>96</td><td>104</td></tr><tr><td>{{ 'features.catalog.mock.waist' | t }}</td><td>72</td><td>80</td><td>88</td></tr></table>
+      </div>
+    {%- when 'lookbook' -%}
+      <div class="fx-scene" style="--c1:#B5536B;--c2:#FBEDEA">
+        <span class="fx-art fx-art--lg" style="--art:#3A2A2E">{% render 'product-art', art: 'bottle' %}</span>
+        <span class="fx-hot" style="left:30%;top:35%">1</span><span class="fx-hot" style="left:58%;top:62%">2</span>
+        <div class="fx-hotcard"><b>Sérum éclat</b><small>34,00 €</small></div>
+      </div>
+    {%- when 'ugc' -%}
+      <div class="fx-cards fx-cards--3 fx-cards--tall">
+        <div class="fx-card fx-card--scene" style="--c1:#1F3A30;--c2:#3F6E5B"><small class="fx-tag">@lea</small><span class="fx-shop">{% render 'icon', name: 'cart', size: 14 %}</span></div>
+        <div class="fx-card fx-card--scene" style="--c1:#2B37DE;--c2:#EC7454"><small class="fx-tag">@tom</small><span class="fx-shop">{% render 'icon', name: 'cart', size: 14 %}</span></div>
+        <div class="fx-card fx-card--scene" style="--c1:#C99A1E;--c2:#F6E7B8"><small class="fx-tag">@ines</small><span class="fx-shop">{% render 'icon', name: 'cart', size: 14 %}</span></div>
+      </div>
+    {%- when 'before_after' -%}
+      <div class="fx-ba"><span class="fx-ba__b"><small>{{ 'features.catalog.mock.before' | t }}</small></span><span class="fx-ba__a"><small>{{ 'features.catalog.mock.after' | t }}</small></span><i>⟷</i></div>
+    {%- when 'comparison' -%}
+      <div class="fx-win">
+        <table class="fx-table fx-table--cmp"><tr><th></th><th class="is-us">{{ 'features.catalog.mock.us' | t }}</th><th>{{ 'features.catalog.mock.others' | t }}</th></tr><tr><td><span class="fx-l" style="--w:80%"></span></td><td class="is-us">✓</td><td class="fx-no">✕</td></tr><tr><td><span class="fx-l" style="--w:60%"></span></td><td class="is-us">✓</td><td>✓</td></tr><tr><td><span class="fx-l" style="--w:70%"></span></td><td class="is-us">2 ans</td><td>6 mois</td></tr></table>
+      </div>
+    {%- when 'store_locator' -%}
+      <div class="fx-win">
+        <span class="fx-input fx-input--full">{% render 'icon', name: 'search', size: 14 %} Lyon</span>
+        <div class="fx-mini"><span class="fx-icon">{% render 'icon', name: 'map-pin', size: 14 %}</span><span><b>Boutique Lyon</b><br><small>10 h – 19 h · {{ 'sections.store_locator.directions' | t }}</small></span></div>
+      </div>
+    {%- when 'age_gate' -%}
+      <div class="fx-win fx-win--modal fx-center fx-win--dark">
+        <p class="fx-t">{{ 'features.catalog.mock.age' | t }}</p>
+        <div class="fx-row fx-row--center"><span class="fx-btn fx-btn--sm">{{ 'general.yes' | t }}</span><span class="fx-btn fx-btn--sm fx-btn--ghost">{{ 'general.no' | t }}</span></div>
+      </div>
+    {%- when 'badges' -%}
+      <div class="fx-cards fx-cards--3">
+        <div class="fx-card"><span class="fx-art" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><span class="fx-badge fx-badge--sale">−14 %</span><div class="fx-sws"><i class="fx-sw" style="background:#D9622B"></i><i class="fx-sw" style="background:#3F6E5B"></i><i class="fx-sw" style="background:#1F2A44"></i></div></div>
+        <div class="fx-card"><span class="fx-art" style="--art:#B5536B">{% render 'product-art', art: 'bottle' %}</span><span class="fx-badge fx-badge--new">{{ 'products.product.new' | t }}</span></div>
+        <div class="fx-card"><span class="fx-art" style="--art:#7C3AED">{% render 'product-art', art: 'bag' %}</span><span class="fx-badge fx-badge--accent">{{ 'features.catalog.mock.limited' | t }}</span></div>
+      </div>
+    {%- when 'zoom' -%}
+      <div class="fx-win fx-center"><span class="fx-art fx-art--lg" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><span class="fx-zoom">{% render 'icon', name: 'zoom', size: 14 %}</span></div>
+    {%- when 'styles' -%}
+      <div class="fx-styles">
+        {%- assign sty = '#2B37DE:#EC7454:Aa,#111111:#C8102E:Aa,#1C1A17:#B08D57:Aa,#3F6E5B:#D9A441:Aa,#0A0A0A:#E4FF3A:AA,#B5536B:#E8B4B8:Aa,#2563EB:#06B6D4:Aa,#7C3AED:#FFB703:Aa' | split: ',' -%}
+        {%- for st in sty -%}{%- assign c = st | split: ':' -%}<span class="fx-style" style="--a:{{ c[0] }};--b:{{ c[1] }}"><b>{{ c[2] }}</b><i></i></span>{%- endfor -%}
+      </div>
+    {%- when 'palettes' -%}
+      <div class="fx-stack">
+        <span class="fx-band" style="background:var(--c-bg)"></span>
+        <span class="fx-band" style="background:var(--c-surface-alt)"></span>
+        <span class="fx-band" style="background:#121214"></span>
+        <span class="fx-band" style="background:var(--c-primary)"></span>
+        <span class="fx-band" style="background:var(--c-accent)"></span>
+      </div>
+    {%- when 'header' -%}
+      <div class="fx-stack fx-stack--gap">
+        <div class="fx-hdr"><b>◼ LOGO</b><span class="fx-l" style="--w:30%"></span><span>{% render 'icon', name: 'heart', size: 14 %}{% render 'icon', name: 'cart', size: 14 %}</span></div>
+        <div class="fx-hdr fx-hdr--center"><span class="fx-l" style="--w:25%"></span><b>◼ LOGO</b><span>{% render 'icon', name: 'heart', size: 14 %}{% render 'icon', name: 'cart', size: 14 %}</span></div>
+        <div class="fx-hdr fx-hdr--stack"><b>◼ LOGO</b><span class="fx-l" style="--w:45%"></span></div>
+      </div>
+    {%- when 'gallery' -%}
+      <div class="fx-win fx-gal"><span class="fx-art fx-art--lg" style="--art:#D9622B">{% render 'product-art', art: 'flask' %}</span><div class="fx-thumbs"><i class="is-on"></i><i></i><i></i><i></i></div></div>
+    {%- when 'sections' -%}
+      <div class="fx-stack fx-stack--gap">
+        <span class="fx-sec fx-sec--hero"></span>
+        <div class="fx-row"><span class="fx-sec"></span><span class="fx-sec"></span><span class="fx-sec"></span></div>
+        <span class="fx-sec fx-sec--band"></span>
+      </div>
+    {%- when 'editor' -%}
+      <div class="fx-win">
+        <div class="fx-row"><span class="fx-pill fx-pill--muted">↶ ↷</span><span class="fx-sp"></span><span class="fx-btn fx-btn--sm fx-btn--dark">{{ 'features.catalog.mock.save' | t }}</span></div>
+        <div class="fx-sel"><small class="fx-sel__tag">Titre</small><b>Votre produit ici</b></div>
+      </div>
+    {%- else -%}
+      <div class="fx-win fx-center"><span class="fx-icon fx-icon--lg">✦</span></div>
+  {%- endcase -%}
+</div>
