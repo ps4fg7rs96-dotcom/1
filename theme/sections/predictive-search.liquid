@@ -1,0 +1,43 @@
+{%- comment -%}
+  Résultats de la recherche prédictive (appelée par assets/features.js via
+  /search/suggest?q=…&section_id=predictive-search). Non ajoutable dans l'éditeur.
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- assign res = predictive_search.resources -%}
+  {%- if res.queries.size > 0 -%}
+    <div class="predictive__group">
+      <p>{{ 'sections.header.suggestions' | t }}</p>
+      <div class="chips">
+        {%- for q in res.queries -%}<a class="chip" href="{{ q.url }}">{{ q.styled_text }}</a>{%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+  {%- if res.products.size > 0 -%}
+    <div class="predictive__group" role="listbox" aria-label="{{ 'collections.products' | t }}">
+      <p>{{ 'collections.products' | t }}</p>
+      {%- for product in res.products limit: 6 -%}
+        <a class="predictive__item" role="option" href="{{ product.url }}">
+          {%- if product.featured_media -%}
+            {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: product.title }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+          <span><span class="predictive__title">{{ product.title }}</span><br>{% render 'price', product: product %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  {%- if res.collections.size > 0 or res.pages.size > 0 or res.articles.size > 0 -%}
+    <div class="predictive__group">
+      <p>{{ 'sections.header.pages' | t }}</p>
+      {%- for c in res.collections limit: 3 -%}<a class="predictive__item" href="{{ c.url }}">{% render 'icon', name: 'grid', size: 18 %}{{ c.title }}</a>{%- endfor -%}
+      {%- for pg in res.pages limit: 3 -%}<a class="predictive__item" href="{{ pg.url }}">{% render 'icon', name: 'info', size: 18 %}{{ pg.title }}</a>{%- endfor -%}
+      {%- for a in res.articles limit: 3 -%}<a class="predictive__item" href="{{ a.url }}">{% render 'icon', name: 'chat', size: 18 %}{{ a.title }}</a>{%- endfor -%}
+    </div>
+  {%- endif -%}
+  {%- if res.products.size == 0 and res.collections.size == 0 and res.pages.size == 0 and res.articles.size == 0 and res.queries.size == 0 -%}
+    <p class="predictive__group muted">{{ 'search.no_results' | t: terms: predictive_search.terms }}</p>
+  {%- else -%}
+    <a class="predictive__all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}">{{ 'sections.header.see_all' | t: terms: predictive_search.terms }}</a>
+  {%- endif -%}
+{%- endif -%}

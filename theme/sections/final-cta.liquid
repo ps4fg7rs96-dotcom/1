@@ -1,4 +1,4 @@
-<section class="section" aria-labelledby="Cta-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" aria-labelledby="Cta-{{ section.id }}">
   <div class="page-width">
     <div class="final-cta" data-reveal>
       <div class="final-cta__lines" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -32,7 +32,10 @@
     { "type": "url", "id": "cta_link", "label": "Lien principal" },
     { "type": "text", "id": "cta2_label", "label": "Bouton secondaire", "default": "Parler à l'équipe" },
     { "type": "url", "id": "cta2_link", "label": "Lien secondaire" },
-    { "type": "text", "id": "reassurance", "label": "Réassurance (séparée par |)", "default": "Essai gratuit 21 jours | Sans carte bancaire | Résiliable en 1 clic" }
+    { "type": "text", "id": "reassurance", "label": "Réassurance (séparée par |)", "default": "Essai gratuit 21 jours | Sans carte bancaire | Résiliable en 1 clic" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
   ],
   "presets": [{ "name": "Appel à l'action final" }]
 }

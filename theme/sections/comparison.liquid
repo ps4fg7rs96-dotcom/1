@@ -1,5 +1,5 @@
 {%- assign apps = section.blocks | where: 'type', 'app' -%}
-<section class="section section--alt" aria-labelledby="Compare-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" aria-labelledby="Compare-{{ section.id }}">
   <div class="page-width">
     {%- assign hid = 'Compare-' | append: section.id -%}
     {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
@@ -59,7 +59,10 @@
     { "type": "text", "id": "per_month", "label": "Suffixe mensuel", "default": "/mois" },
     { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Démarrer l'essai gratuit" },
     { "type": "url", "id": "cta_link", "label": "Lien du bouton" },
-    { "type": "text", "id": "note", "label": "Note", "default": "[Montants indicatifs à remplacer par vos estimations]" }
+    { "type": "text", "id": "note", "label": "Note", "default": "[Montants indicatifs à remplacer par vos estimations]" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "alt"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
   ],
   "blocks": [
     {

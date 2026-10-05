@@ -206,6 +206,15 @@ en = {
    "enter": "Enter", "powered": "Store powered by"},
 }
 
+import sys
+sys.path.insert(0, os.path.dirname(__file__))
+from locales_more import fr_more, en_more
+def merge(a, b):
+    for k, v in b.items():
+        if isinstance(v, dict) and isinstance(a.get(k), dict): merge(a[k], v)
+        else: a[k] = v
+merge(fr, fr_more); merge(en, en_more)
+
 def keys(d, p=''):
     out = set()
     for k, v in d.items():

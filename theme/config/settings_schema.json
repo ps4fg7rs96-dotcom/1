@@ -35,32 +35,278 @@
     ]
   },
   {
+    "name": "Style de la boutique",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Choisissez un style complet (couleurs, polices, arrondis, boutons) adapté à votre univers. « Mes réglages » utilise les couleurs et polices définies dans les groupes suivants."
+      },
+      {
+        "type": "select",
+        "id": "style_preset",
+        "label": "Style",
+        "options": [
+          {
+            "value": "custom",
+            "label": "Mes réglages (Kinetic par défaut)"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimaliste — noir & blanc"
+          },
+          {
+            "value": "luxe",
+            "label": "Luxe — crème, noir & or"
+          },
+          {
+            "value": "nature",
+            "label": "Nature & bio — sauge & beige"
+          },
+          {
+            "value": "bold",
+            "label": "Audacieux — streetwear, majuscules"
+          },
+          {
+            "value": "soft",
+            "label": "Doux — beauté, rose poudré"
+          },
+          {
+            "value": "tech",
+            "label": "Tech — électronique, bleu"
+          },
+          {
+            "value": "playful",
+            "label": "Ludique — enfants, couleurs vives"
+          },
+          {
+            "value": "gourmet",
+            "label": "Gourmand — épicerie, restauration"
+          },
+          {
+            "value": "sport",
+            "label": "Sport & outdoor — bleu & orange"
+          }
+        ],
+        "default": "custom"
+      }
+    ]
+  },
+  {
     "name": "Couleurs",
     "settings": [
-      { "type": "header", "content": "Marque" },
-      { "type": "color", "id": "color_primary", "label": "Primaire (boutons, liens)", "default": "#2B37DE" },
-      { "type": "color", "id": "color_primary_hover", "label": "Primaire au survol", "default": "#2129B8" },
-      { "type": "color", "id": "color_accent", "label": "Accent (détails, badges)", "default": "#EC7454" },
-      { "type": "color", "id": "color_accent_text", "label": "Accent pour texte sur fond clair", "default": "#A53619" },
-      { "type": "header", "content": "Thème clair" },
-      { "type": "color", "id": "color_bg", "label": "Fond", "default": "#FBFAF7" },
-      { "type": "color", "id": "color_surface", "label": "Cartes", "default": "#FFFFFF" },
-      { "type": "color", "id": "color_surface_alt", "label": "Fond alterné", "default": "#F1EFEA" },
-      { "type": "color", "id": "color_text", "label": "Texte", "default": "#121214" },
-      { "type": "color", "id": "color_muted", "label": "Texte secondaire", "default": "#52525A" },
-      { "type": "color", "id": "color_border", "label": "Bordures", "default": "#E6E5E0" },
-      { "type": "header", "content": "Thème sombre" },
-      { "type": "color", "id": "color_dark_bg", "label": "Fond", "default": "#121214" },
-      { "type": "color", "id": "color_dark_surface", "label": "Cartes", "default": "#18181C" },
-      { "type": "color", "id": "color_dark_surface_alt", "label": "Fond alterné", "default": "#24242A" },
-      { "type": "color", "id": "color_dark_text", "label": "Texte", "default": "#F1EFEA" },
-      { "type": "color", "id": "color_dark_muted", "label": "Texte secondaire", "default": "#A3A3A9" },
-      { "type": "color", "id": "color_dark_border", "label": "Bordures", "default": "#2C2C33" },
-      { "type": "color", "id": "color_dark_link", "label": "Liens", "default": "#9DA4FF" },
-      { "type": "header", "content": "États" },
-      { "type": "color", "id": "color_success", "label": "Succès / hausse", "default": "#15803D" },
-      { "type": "color", "id": "color_danger", "label": "Erreur / prix barré", "default": "#B91C1C" },
-      { "type": "color", "id": "color_sale", "label": "Badge promo", "default": "#EC7454" }
+      {
+        "type": "header",
+        "content": "Marque"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primaire (boutons, liens)",
+        "default": "#2B37DE"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_hover",
+        "label": "Primaire au survol",
+        "default": "#2129B8"
+      },
+      {
+        "type": "color",
+        "id": "color_on_primary",
+        "label": "Texte des boutons primaires",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (détails, badges)",
+        "default": "#EC7454"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_text",
+        "label": "Accent pour texte sur fond clair",
+        "default": "#A53619"
+      },
+      {
+        "type": "header",
+        "content": "Thème clair"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Fond",
+        "default": "#FBFAF7"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Cartes",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface_alt",
+        "label": "Fond alterné",
+        "default": "#F1EFEA"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte",
+        "default": "#121214"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Texte secondaire",
+        "default": "#52525A"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordures",
+        "default": "#E6E5E0"
+      },
+      {
+        "type": "header",
+        "content": "Thème sombre"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_bg",
+        "label": "Fond",
+        "default": "#121214"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_surface",
+        "label": "Cartes",
+        "default": "#18181C"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_surface_alt",
+        "label": "Fond alterné",
+        "default": "#24242A"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Texte",
+        "default": "#F1EFEA"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_muted",
+        "label": "Texte secondaire",
+        "default": "#A3A3A9"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_border",
+        "label": "Bordures",
+        "default": "#2C2C33"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_link",
+        "label": "Liens",
+        "default": "#9DA4FF"
+      },
+      {
+        "type": "header",
+        "content": "États"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Succès / hausse",
+        "default": "#15803D"
+      },
+      {
+        "type": "color",
+        "id": "color_danger",
+        "label": "Erreur / prix barré",
+        "default": "#B91C1C"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Badge promo",
+        "default": "#EC7454"
+      },
+      {
+        "type": "color",
+        "id": "color_sale_text",
+        "label": "Texte du badge promo",
+        "default": "#121214"
+      }
+    ]
+  },
+  {
+    "name": "Palettes de sections",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Chaque section propose une palette : Thème, Alternée, Sombre, Primaire, Accent, Teintée, ou l'une des deux palettes personnalisées ci-dessous."
+      },
+      {
+        "type": "header",
+        "content": "Personnalisée 1"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_1_bg",
+        "label": "Fond",
+        "default": "#1F3A30"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_1_text",
+        "label": "Texte",
+        "default": "#F4F1EA"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_1_button",
+        "label": "Bouton",
+        "default": "#F6E27A"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_1_on_button",
+        "label": "Texte du bouton",
+        "default": "#1F3A30"
+      },
+      {
+        "type": "header",
+        "content": "Personnalisée 2"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_2_bg",
+        "label": "Fond",
+        "default": "#FBF3DF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_2_text",
+        "label": "Texte",
+        "default": "#2B1D14"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_2_button",
+        "label": "Bouton",
+        "default": "#C2410C"
+      },
+      {
+        "type": "color",
+        "id": "scheme_custom_2_on_button",
+        "label": "Texte du bouton",
+        "default": "#FFFFFF"
+      }
     ]
   },
   {
@@ -71,9 +317,18 @@
         "id": "color_mode",
         "label": "Thème par défaut",
         "options": [
-          { "value": "auto", "label": "Suivre l'appareil du visiteur" },
-          { "value": "light", "label": "Toujours clair" },
-          { "value": "dark", "label": "Toujours sombre" }
+          {
+            "value": "auto",
+            "label": "Suivre l'appareil du visiteur"
+          },
+          {
+            "value": "light",
+            "label": "Toujours clair"
+          },
+          {
+            "value": "dark",
+            "label": "Toujours sombre"
+          }
         ],
         "default": "auto"
       },
@@ -95,8 +350,18 @@
         "info": "Archivo étendue (titres) et Inter (texte), auto-hébergées. Décochez pour choisir dans la bibliothèque Shopify.",
         "default": true
       },
-      { "type": "font_picker", "id": "type_heading_font", "label": "Police des titres", "default": "assistant_n4" },
-      { "type": "font_picker", "id": "type_body_font", "label": "Police du texte", "default": "assistant_n4" },
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Police des titres",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Police du texte",
+        "default": "assistant_n4"
+      },
       {
         "type": "range",
         "id": "type_heading_scale",
@@ -116,6 +381,42 @@
         "unit": "px",
         "label": "Taille du texte",
         "default": 16
+      },
+      {
+        "type": "select",
+        "id": "type_heading_case",
+        "label": "Casse des titres",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Selon le style"
+          },
+          {
+            "value": "none",
+            "label": "Normale"
+          },
+          {
+            "value": "uppercase",
+            "label": "Majuscules"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "select",
+        "id": "type_button_case",
+        "label": "Casse des boutons",
+        "options": [
+          {
+            "value": "none",
+            "label": "Normale"
+          },
+          {
+            "value": "uppercase",
+            "label": "Majuscules"
+          }
+        ],
+        "default": "none"
       }
     ]
   },
@@ -147,14 +448,54 @@
         "id": "button_shape",
         "label": "Forme des boutons",
         "options": [
-          { "value": "pill", "label": "Pilule" },
-          { "value": "rounded", "label": "Arrondie" },
-          { "value": "square", "label": "Carrée" }
+          {
+            "value": "pill",
+            "label": "Pilule"
+          },
+          {
+            "value": "rounded",
+            "label": "Arrondie"
+          },
+          {
+            "value": "square",
+            "label": "Carrée"
+          }
         ],
         "default": "pill"
       },
-      { "type": "checkbox", "id": "shadows", "label": "Ombres douces sur les cartes", "default": true },
-      { "type": "checkbox", "id": "animations", "label": "Animations au défilement", "info": "Toujours désactivées si le visiteur a demandé moins d'animations.", "default": true }
+      {
+        "type": "select",
+        "id": "card_style",
+        "label": "Style des cartes",
+        "options": [
+          {
+            "value": "elevated",
+            "label": "Ombrées"
+          },
+          {
+            "value": "bordered",
+            "label": "Bordure fine"
+          },
+          {
+            "value": "flat",
+            "label": "À plat (fond teinté)"
+          }
+        ],
+        "default": "elevated"
+      },
+      {
+        "type": "checkbox",
+        "id": "shadows",
+        "label": "Ombres douces sur les cartes",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "animations",
+        "label": "Animations au défilement",
+        "info": "Toujours désactivées si le visiteur a demandé moins d'animations.",
+        "default": true
+      }
     ]
   },
   {
@@ -165,16 +506,108 @@
         "id": "card_image_ratio",
         "label": "Format des images produit",
         "options": [
-          { "value": "square", "label": "Carré" },
-          { "value": "portrait", "label": "Portrait" },
-          { "value": "landscape", "label": "Paysage" }
+          {
+            "value": "square",
+            "label": "Carré"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait"
+          },
+          {
+            "value": "landscape",
+            "label": "Paysage"
+          }
         ],
         "default": "square"
       },
-      { "type": "checkbox", "id": "card_show_secondary_image", "label": "Afficher la 2e image au survol", "default": true },
-      { "type": "checkbox", "id": "card_show_vendor", "label": "Afficher la marque", "default": false },
-      { "type": "checkbox", "id": "card_show_rating", "label": "Afficher la note", "info": "Nécessite une application d'avis qui remplit le métachamp reviews.rating.", "default": true },
-      { "type": "checkbox", "id": "card_quick_add", "label": "Ajout rapide au panier", "default": true }
+      {
+        "type": "checkbox",
+        "id": "card_show_secondary_image",
+        "label": "Afficher la 2e image au survol",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Afficher la marque",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_rating",
+        "label": "Afficher la note",
+        "info": "Nécessite une application d'avis qui remplit le métachamp reviews.rating.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick_add",
+        "label": "Ajout rapide au panier",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_card_style",
+        "label": "Style des cartes produit",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal (sans fond)"
+          },
+          {
+            "value": "boxed",
+            "label": "Encadré"
+          }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "select",
+        "id": "card_text_align",
+        "label": "Alignement du texte",
+        "options": [
+          {
+            "value": "left",
+            "label": "Gauche"
+          },
+          {
+            "value": "center",
+            "label": "Centré"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_swatches",
+        "label": "Pastilles de couleur",
+        "info": "Utilise l'option nommée Couleur / Color ; l'image change au survol.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_sale_percent",
+        "label": "Afficher le pourcentage de réduction",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick_view",
+        "label": "Aperçu rapide",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "card_new_days",
+        "label": "Badge « Nouveau » pendant (jours)",
+        "info": "0 pour désactiver. Ajoutez aussi un tag « badge:Texte » à un produit pour un badge personnalisé.",
+        "default": 30
+      }
     ]
   },
   {
@@ -185,12 +618,23 @@
         "id": "cart_type",
         "label": "Type de panier",
         "options": [
-          { "value": "drawer", "label": "Tiroir latéral" },
-          { "value": "page", "label": "Page panier" }
+          {
+            "value": "drawer",
+            "label": "Tiroir latéral"
+          },
+          {
+            "value": "page",
+            "label": "Page panier"
+          }
         ],
         "default": "drawer"
       },
-      { "type": "checkbox", "id": "show_free_shipping", "label": "Afficher la jauge de livraison offerte", "default": true },
+      {
+        "type": "checkbox",
+        "id": "show_free_shipping",
+        "label": "Afficher la jauge de livraison offerte",
+        "default": true
+      },
       {
         "type": "number",
         "id": "free_shipping_threshold",
@@ -198,26 +642,184 @@
         "info": "Montant dans la devise principale de la boutique (ex. 60).",
         "default": 60
       },
-      { "type": "checkbox", "id": "cart_show_note", "label": "Autoriser une note de commande", "default": true },
-      { "type": "text", "id": "cart_reassurance", "label": "Message de réassurance", "default": "Paiement sécurisé · Retours gratuits 30 jours" }
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Autoriser une note de commande",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_reassurance",
+        "label": "Message de réassurance",
+        "default": "Paiement sécurisé · Retours gratuits 30 jours"
+      },
+      {
+        "type": "header",
+        "content": "Paliers de récompense"
+      },
+      {
+        "type": "number",
+        "id": "reward_2_threshold",
+        "label": "Second palier (montant)",
+        "info": "Ex. 100 : un cadeau ou une remise débloqués au-delà. Laissez vide pour un seul palier (livraison offerte).",
+        "default": 100
+      },
+      {
+        "type": "text",
+        "id": "reward_2_label",
+        "label": "Récompense du second palier",
+        "default": "un cadeau surprise"
+      },
+      {
+        "type": "header",
+        "content": "Ventes additionnelles dans le panier"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_upsell",
+        "label": "Suggestions de produits",
+        "info": "Produits complémentaires de Shopify Search & Discovery, sinon la collection ci-dessous.",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "cart_upsell_collection",
+        "label": "Collection de secours"
+      },
+      {
+        "type": "text",
+        "id": "cart_upsell_heading",
+        "label": "Titre",
+        "default": "Vous aimerez aussi"
+      },
+      {
+        "type": "header",
+        "content": "Emballage cadeau"
+      },
+      {
+        "type": "product",
+        "id": "gift_wrap_product",
+        "label": "Produit « emballage cadeau »",
+        "info": "Créez un produit (ex. 3 €) masqué des collections : une case l'ajoute au panier."
+      },
+      {
+        "type": "text",
+        "id": "gift_wrap_label",
+        "label": "Libellé",
+        "default": "Ajouter un emballage cadeau"
+      },
+      {
+        "type": "header",
+        "content": "Validation"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_terms",
+        "label": "Case « J'accepte les CGV » obligatoire",
+        "default": false
+      },
+      {
+        "type": "inline_richtext",
+        "id": "cart_terms_text",
+        "label": "Texte de la case",
+        "default": "J'accepte les <a href=\"/policies/terms-of-service\">conditions générales de vente</a>"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_delivery_date",
+        "label": "Choix de la date de livraison",
+        "info": "Enregistrée comme attribut de commande.",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Fonctionnalités",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Fonctions souvent vendues sous forme d'applications payantes, intégrées au thème et activables ici."
+      },
+      {
+        "type": "header",
+        "content": "Liste d'envies"
+      },
+      {
+        "type": "checkbox",
+        "id": "wishlist_enable",
+        "label": "Activer la liste d'envies",
+        "info": "Enregistrée dans le navigateur du client, sans compte ni application.",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "wishlist_url",
+        "label": "Page « Liste d'envies »",
+        "info": "Créez une page avec le modèle « wishlist » et choisissez-la ici."
+      },
+      {
+        "type": "header",
+        "content": "Navigation"
+      },
+      {
+        "type": "checkbox",
+        "id": "back_to_top",
+        "label": "Bouton « Retour en haut »",
+        "default": true
+      }
     ]
   },
   {
     "name": "Réseaux sociaux",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram", "info": "https://instagram.com/…" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok" },
-      { "type": "text", "id": "social_facebook", "label": "Facebook" },
-      { "type": "text", "id": "social_youtube", "label": "YouTube" },
-      { "type": "text", "id": "social_pinterest", "label": "Pinterest" },
-      { "type": "text", "id": "social_linkedin", "label": "LinkedIn" }
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "info": "https://instagram.com/…"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
+      }
     ]
   },
   {
     "name": "Référencement",
     "settings": [
-      { "type": "image_picker", "id": "share_image", "label": "Image de partage par défaut", "info": "1200 × 630 px." },
-      { "type": "text", "id": "organization_email", "label": "E-mail de contact (données structurées)" }
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image de partage par défaut",
+        "info": "1200 × 630 px."
+      },
+      {
+        "type": "text",
+        "id": "organization_email",
+        "label": "E-mail de contact (données structurées)"
+      }
     ]
   }
 ]

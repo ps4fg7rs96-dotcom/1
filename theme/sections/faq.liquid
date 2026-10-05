@@ -1,4 +1,4 @@
-<section class="section section--alt" id="faq" aria-labelledby="Faq-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" id="faq" aria-labelledby="Faq-{{ section.id }}">
   <div class="page-width faq">
     <div class="faq__aside">
       {%- assign hid = 'Faq-' | append: section.id -%}
@@ -40,7 +40,10 @@
     { "type": "textarea", "id": "lead", "label": "Introduction" },
     { "type": "text", "id": "link_label", "label": "Lien de contact" },
     { "type": "url", "id": "link", "label": "URL du lien" },
-    { "type": "checkbox", "id": "open_first", "label": "Ouvrir la première question", "default": false }
+    { "type": "checkbox", "id": "open_first", "label": "Ouvrir la première question", "default": false },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "alt"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
   ],
   "blocks": [
     {

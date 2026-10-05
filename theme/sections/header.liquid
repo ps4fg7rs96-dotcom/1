@@ -1,19 +1,32 @@
+{%- comment -%}
+  EN-TÊTE — 3 dispositions (logo à gauche / logo centré / logo centré + menu dessous),
+  méga-menu (blocs « Méga-menu » ou menus à 3 niveaux), recherche prédictive, liste d'envies.
+{%- endcomment -%}
 {%- liquid
   assign menu = section.settings.menu
+  assign layout = section.settings.layout
 -%}
-<div class="header-wrap" data-header>
-  <header class="page-width header">
+<div class="header-wrap scheme-{{ section.settings.color_scheme }} header-wrap--{{ section.settings.sticky }}" data-header data-sticky="{{ section.settings.sticky }}">
+  <header class="page-width header header--{{ layout }}">
     <details class="menu-drawer" data-dismissable>
       <summary class="icon-btn" aria-label="{{ 'sections.header.menu' | t }}">
         {% render 'icon', name: 'menu', size: 22 %}{% render 'icon', name: 'close', size: 22 %}
       </summary>
       <nav class="menu-drawer__panel" aria-label="{{ 'sections.header.menu' | t }}">
         {%- for link in menu.links -%}
-          <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }} {% render 'icon', name: 'arrow-right' %}</a>
           {%- if link.links != blank -%}
-            <div class="menu-drawer__sub">
-              {%- for child in link.links -%}<a href="{{ child.url }}">{{ child.title }}</a>{%- endfor -%}
-            </div>
+            <details class="menu-drawer__group">
+              <summary>{{ link.title }} {% render 'icon', name: 'chevron-down', size: 18 %}</summary>
+              <div class="menu-drawer__sub">
+                <a href="{{ link.url }}">{{ 'sections.header.view_all' | t }}</a>
+                {%- for child in link.links -%}
+                  <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a>
+                  {%- for grand in child.links -%}<a class="menu-drawer__grand" href="{{ grand.url }}">{{ grand.title }}</a>{%- endfor -%}
+                {%- endfor -%}
+              </div>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }} {% render 'icon', name: 'arrow-right' %}</a>
           {%- endif -%}
         {%- endfor -%}
         {%- if section.settings.cta_label != blank -%}
@@ -30,13 +43,67 @@
     <nav class="header__nav" aria-label="{{ 'sections.header.menu' | t }}">
       <ul role="list">
         {%- for link in menu.links -%}
-          <li>
+          {%- liquid
+            assign mega = null
+            for block in section.blocks
+              assign t1 = block.settings.menu_item | strip | downcase
+              assign t2 = link.title | strip | downcase
+              if t1 == t2
+                assign mega = block
+              endif
+            endfor
+            assign has_grand = false
+            for child in link.links
+              if child.links != blank
+                assign has_grand = true
+              endif
+            endfor
+          -%}
+          <li{% if mega or has_grand %} class="has-mega"{% endif %}>
             {%- if link.links != blank -%}
-              <details data-dismissable>
-                <summary class="header__link">{{ link.title }} {% render 'icon', name: 'chevron-down', size: 14 %}</summary>
-                <div class="header__dropdown">
-                  {%- for child in link.links -%}<a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a>{%- endfor -%}
-                </div>
+              <details data-dismissable data-hover-open>
+                <summary class="header__link"{% if link.child_active %} aria-current="page"{% endif %}>{{ link.title }} {% render 'icon', name: 'chevron-down', size: 14 %}</summary>
+                {%- if mega or has_grand -%}
+                  <div class="mega" {{ mega.shopify_attributes }}>
+                    <div class="page-width mega__inner">
+                      <div class="mega__cols">
+                        {%- for child in link.links -%}
+                          <div class="mega__col">
+                            <a class="mega__title" href="{{ child.url }}">{{ child.title }}</a>
+                            {%- for grand in child.links -%}<a href="{{ grand.url }}"{% if grand.current %} aria-current="page"{% endif %}>{{ grand.title }}</a>{%- endfor -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                      {%- if mega -%}
+                        {%- for i in (1..2) -%}
+                          {%- liquid
+                            assign img_key = 'image_' | append: i
+                            assign title_key = 'title_' | append: i
+                            assign link_key = 'link_' | append: i
+                            assign img = mega.settings[img_key]
+                            assign ttl = mega.settings[title_key]
+                          -%}
+                          {%- if img != blank or ttl != blank -%}
+                            <a class="mega__promo" href="{{ mega.settings[link_key] | default: link.url }}">
+                              <span class="mega__promo-media">
+                                {%- if img != blank -%}
+                                  {{ img | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '280px', alt: ttl }}
+                                {%- else -%}
+                                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                {%- endif -%}
+                              </span>
+                              {%- if ttl != blank -%}<span class="mega__promo-title">{{ ttl }} {% render 'icon', name: 'arrow-right', size: 16 %}</span>{%- endif -%}
+                            </a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <div class="header__dropdown">
+                    {%- for child in link.links -%}<a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a>{%- endfor -%}
+                  </div>
+                {%- endif -%}
               </details>
             {%- else -%}
               <a href="{{ link.url }}" class="header__link"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
@@ -55,8 +122,14 @@
       {%- if section.settings.show_search -%}
         <a href="{{ routes.search_url }}" class="icon-btn" data-search-open aria-label="{{ 'sections.header.search' | t }}">{% render 'icon', name: 'search' %}</a>
       {%- endif -%}
+      {%- if settings.wishlist_enable -%}
+        <a href="{{ settings.wishlist_url | default: routes.root_url }}" class="icon-btn header__wishlist" data-wishlist-link aria-label="{{ 'features.wishlist.title' | t }}">
+          {% render 'icon', name: 'heart' %}
+          <span class="cart-count" data-wishlist-count data-count="0"></span>
+        </a>
+      {%- endif -%}
       {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
-        <a href="{{ routes.account_url }}" class="icon-btn" aria-label="{{ 'sections.header.account' | t }}">{% render 'icon', name: 'account' %}</a>
+        <a href="{{ routes.account_url }}" class="icon-btn header__account" aria-label="{{ 'sections.header.account' | t }}">{% render 'icon', name: 'account' %}</a>
       {%- endif -%}
       <a href="{{ routes.cart_url }}" class="icon-btn" data-cart-open aria-label="{{ 'sections.header.cart' | t: count: cart.item_count }}">
         {% render 'icon', name: 'cart' %}
@@ -72,12 +145,23 @@
 {%- if section.settings.show_search -%}
   <div class="search-modal" data-search-modal hidden>
     <div class="search-modal__box" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.search' | t }}">
-      <form action="{{ routes.search_url }}" method="get" role="search" class="inline-form">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="inline-form" data-predictive-search>
         <label for="HeaderSearch" class="visually-hidden">{{ 'sections.header.search' | t }}</label>
-        <input id="HeaderSearch" class="input" type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}" autocomplete="off">
+        <input id="HeaderSearch" class="input" type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="PredictiveResults" aria-autocomplete="list">
+        <input type="hidden" name="options[prefix]" value="last">
         <button type="submit" class="btn btn--primary">{% render 'icon', name: 'search', size: 18 %}<span class="visually-hidden">{{ 'sections.header.search' | t }}</span></button>
         <button type="button" class="icon-btn" data-search-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
       </form>
+      <div id="PredictiveResults" class="predictive" data-predictive-results aria-live="polite"></div>
+      {%- if section.settings.search_suggestions != blank -%}
+        <div class="predictive__popular">
+          <p class="small muted">{{ 'sections.header.popular' | t }}</p>
+          <div class="chips">
+            {%- assign terms = section.settings.search_suggestions | split: ',' -%}
+            {%- for term in terms -%}<a class="chip" href="{{ routes.search_url }}?q={{ term | strip | url_encode }}">{{ term | strip }}</a>{%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
@@ -87,11 +171,66 @@
   "name": "En-tête",
   "class": "section-header",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Un menu à 3 niveaux s'affiche automatiquement en méga-menu." },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Disposition",
+      "options": [
+        { "value": "left", "label": "Logo à gauche, menu au centre" },
+        { "value": "center", "label": "Menu à gauche, logo au centre" },
+        { "value": "stacked", "label": "Logo centré, menu en dessous" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "En-tête fixe",
+      "options": [
+        { "value": "always", "label": "Toujours visible" },
+        { "value": "scroll-up", "label": "Réapparaît en remontant" },
+        { "value": "none", "label": "Non fixe" }
+      ],
+      "default": "always"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        { "value": "theme", "label": "Thème" },
+        { "value": "alt", "label": "Alternée" },
+        { "value": "tint", "label": "Teintée" },
+        { "value": "dark", "label": "Sombre" },
+        { "value": "primary", "label": "Couleur primaire" },
+        { "value": "custom-1", "label": "Personnalisée 1" },
+        { "value": "custom-2", "label": "Personnalisée 2" }
+      ],
+      "default": "theme"
+    },
     { "type": "text", "id": "cta_label", "label": "Bouton d'action", "default": "Essai gratuit" },
     { "type": "url", "id": "cta_link", "label": "Lien du bouton" },
     { "type": "checkbox", "id": "show_search", "label": "Afficher la recherche", "default": true },
+    { "type": "text", "id": "search_suggestions", "label": "Recherches populaires", "info": "Séparées par des virgules, affichées sous le champ de recherche.", "default": "Nouveautés, Meilleures ventes, Cadeaux" },
     { "type": "checkbox", "id": "show_account", "label": "Afficher le compte client", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Méga-menu",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Élément du menu", "info": "Titre exact de l'élément de premier niveau (ex. « Boutique »)." },
+        { "type": "header", "content": "Visuel 1" },
+        { "type": "image_picker", "id": "image_1", "label": "Image" },
+        { "type": "text", "id": "title_1", "label": "Titre", "default": "Nouvelle collection" },
+        { "type": "url", "id": "link_1", "label": "Lien" },
+        { "type": "header", "content": "Visuel 2" },
+        { "type": "image_picker", "id": "image_2", "label": "Image" },
+        { "type": "text", "id": "title_2", "label": "Titre" },
+        { "type": "url", "id": "link_2", "label": "Lien" }
+      ]
+    }
   ],
   "enabled_on": { "groups": ["header"] }
 }

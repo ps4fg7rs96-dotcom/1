@@ -140,6 +140,7 @@
       const cur = $('[data-cart-drawer-inner]', d);
       if (next && cur) cur.replaceWith(next);
     }
+    document.dispatchEvent(new CustomEvent('kinetic:cart-updated', { detail: cart }));
     return cart;
   }
 
@@ -155,6 +156,7 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.description || data.message);
       await refreshCart();
+      document.dispatchEvent(new CustomEvent('kinetic:added'));
       openDrawer();
     } catch (err) {
       K.toast(err.message || K.strings.error);
@@ -196,29 +198,52 @@
   });
 
   /* ---------- Fiche produit : variantes, médias, ATC collant ---------- */
-  const productForms = () => {
-    $$('[data-product]').forEach((root) => {
+  const initProduct = (root) => {
+    if (!root || root.dataset.kProduct) return;
+    root.dataset.kProduct = '1';
+    {
       const data = JSON.parse($('[data-product-json]', root)?.textContent || '{}');
       const variants = data.variants || [];
       const idInput = $('input[name="id"]', root);
       const priceEl = $('[data-price-target]', root);
       const addBtn = $('[data-add-btn]', root);
-      const stickyPrice = $('[data-sticky-price]');
-      const stickyBtn = $('[data-sticky-btn]');
+      const inModal = !!root.closest('dialog');
+      const stickyPrice = inModal ? null : $('[data-sticky-price]');
+      const stickyBtn = inModal ? null : $('[data-sticky-btn]');
 
-      const selected = () => $$('fieldset[data-option] input:checked', root).map((i) => i.value);
+      const groups = () => $$('[data-option]', root);
+      const selected = () => groups().map((g) => { const sel = $('select', g); return sel ? sel.value : ($('input:checked', g) || {}).value; });
       const update = () => {
         const opts = selected();
         const v = variants.find((x) => x.options.every((o, i) => o === opts[i]));
-        $$('fieldset[data-option]', root).forEach((fs, idx) => { const m = $('legend .muted', fs); if (m) m.textContent = opts[idx] || ''; });
-        // Disponibilité des valeurs
-        $$('fieldset[data-option]', root).forEach((fs, idx) => {
-          $$('input', fs).forEach((inp) => {
+        groups().forEach((fs, idx) => { const m = $('legend .muted', fs); if (m) m.textContent = opts[idx] || ''; });
+        // Disponibilité des valeurs (boutons barrés, options de liste annotées)
+        groups().forEach((fs, idx) => {
+          $$('input, option', fs).forEach((inp) => {
             const test = opts.slice(); test[idx] = inp.value;
             const ok = variants.some((x) => x.available && x.options.every((o, i) => o === test[i]));
             inp.classList.toggle('is-unavailable', !ok);
+            if (inp.tagName === 'OPTION') inp.textContent = ok ? inp.value : `${inp.value} — ${K.strings.soldOut}`;
           });
         });
+        const sku = $('[data-sku]', root);
+        if (sku && v) { sku.textContent = v.sku || ''; sku.parentElement.hidden = !v.sku; }
+        const stock = $('[data-stock]', root);
+        if (stock && v) {
+          const low = Number(stock.dataset.threshold) || 5;
+          const q = v.inventory;
+          const state = !v.available ? 'out' : q === null ? 'in' : q <= low ? 'low' : 'in';
+          stock.dataset.state = state;
+          const label = $(`[data-stock-label="${state}"]`, stock);
+          $$('[data-stock-label]', stock).forEach((l) => { l.hidden = l !== label; });
+          const n = $('[data-stock-count]', label || stock);
+          if (n && q !== null) n.textContent = q;
+          const bar = $('[data-stock-bar]', stock);
+          if (bar && q !== null) bar.style.setProperty('--level', `${Math.min(100, Math.max(6, (q / (low * 4)) * 100))}%`);
+        }
+        $$('[data-variant-only]', root).forEach((el) => { el.hidden = !v || (el.dataset.variantOnly === 'sold-out' ? v.available : !v.available); });
+        $$('input[name="variant_id"][data-variant-input]', root).forEach((i) => { if (v) i.value = v.id; });
+        root.dispatchEvent(new CustomEvent('kinetic:variant-change', { bubbles: true, detail: v }));
         if (!v) {
           if (addBtn) { addBtn.disabled = true; addBtn.querySelector('span').textContent = K.strings.unavailable; }
           return;
@@ -235,12 +260,12 @@
         url.searchParams.set('variant', v.id);
         window.history.replaceState({}, '', url);
       };
-      root.addEventListener('change', (e) => { if (e.target.closest('fieldset[data-option]')) update(); });
+      root.addEventListener('change', (e) => { if (e.target.closest('[data-option]')) update(); });
 
       $$('[data-thumb]', root).forEach((t) => t.addEventListener('click', () => showMedia(root, t.dataset.thumb)));
 
       // Barre d'achat collante (mobile)
-      const sticky = $('[data-sticky-atc]');
+      const sticky = inModal ? null : $('[data-sticky-atc]');
       if (sticky && addBtn && 'IntersectionObserver' in window) {
         new IntersectionObserver(([en]) => {
           const show = !en.isIntersecting && en.boundingClientRect.top < 0;
@@ -250,14 +275,32 @@
         }).observe(addBtn);
         stickyBtn?.addEventListener('click', () => addBtn.click());
       }
-    });
+    }
   };
+  const productForms = () => $$('[data-product]').forEach(initProduct);
   function showMedia(root, id) {
     const target = $(`[data-media-id="${id}"]`, root);
     if (!target) return;
     $$('[data-media-id]', root).forEach((m) => m.classList.toggle('is-active', m === target));
     $$('[data-thumb]', root).forEach((t) => t.setAttribute('aria-current', String(t.dataset.thumb === id)));
+    const track = target.parentElement;
+    if (track && track.scrollWidth > track.clientWidth + 4) track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+    else if (target.closest('.product__gallery--grid, .product__gallery--stack') && window.innerWidth >= 990) target.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
   }
+  // Carrousel mobile : synchronise les vignettes avec le défilement
+  document.addEventListener('scroll', (e) => {
+    const track = e.target;
+    if (!track.matches || !track.matches('[data-gallery-track]')) return;
+    clearTimeout(track._t);
+    track._t = setTimeout(() => {
+      const items = $$('[data-media-id]', track);
+      const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      const it = items[i];
+      if (!it) return;
+      const g = track.closest('.product__gallery');
+      $$('[data-thumb]', g).forEach((t) => t.setAttribute('aria-current', String(t.dataset.thumb === it.dataset.mediaId)));
+    }, 80);
+  }, true);
 
   /* ---------- Carrousels (scroll-snap) ---------- */
   const carousels = () => {
@@ -292,8 +335,10 @@
   /* ---------- Init ---------- */
   const init = () => { reveal(); header(); announcements(); productForms(); carousels(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-  document.addEventListener('shopify:section:load', () => { reveal(); carousels(); announcements(); });
+  document.addEventListener('shopify:section:load', () => { reveal(); carousels(); announcements(); productForms(); });
+  document.addEventListener('kinetic:content-added', reveal);
   K.openDrawer = openDrawer;
+  K.initProduct = initProduct;
   K.refreshCart = refreshCart;
   window.Kinetic = K;
 })();

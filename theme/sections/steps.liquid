@@ -1,4 +1,4 @@
-<section class="section" aria-labelledby="Steps-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" aria-labelledby="Steps-{{ section.id }}">
   <div class="page-width">
     {%- assign hid = 'Steps-' | append: section.id -%}
     {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
@@ -20,7 +20,10 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Mise en route" },
     { "type": "text", "id": "heading", "label": "Titre", "default": "En ligne en trois étapes" },
-    { "type": "textarea", "id": "lead", "label": "Introduction" }
+    { "type": "textarea", "id": "lead", "label": "Introduction" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
   ],
   "blocks": [
     {

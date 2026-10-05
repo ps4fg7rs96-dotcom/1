@@ -11,7 +11,8 @@
       "previous": "Previous page",
       "next": "Next page",
       "page": "Page {{ number }}"
-    }
+    },
+    "email": "Email address"
   },
   "accessibility": {
     "skip_to_text": "Skip to content"
@@ -29,7 +30,12 @@
         "one": "Cart ({{ count }} item)",
         "other": "Cart ({{ count }} items)"
       },
-      "mode_toggle": "Toggle light / dark theme"
+      "mode_toggle": "Toggle light / dark theme",
+      "view_all": "View all",
+      "popular": "Popular searches",
+      "suggestions": "Suggestions",
+      "pages": "Collections and pages",
+      "see_all": "See all results for “{{ terms }}”"
     },
     "testimonials": {
       "previous": "Previous review",
@@ -365,7 +371,23 @@
         "one": "Only one left in stock",
         "other": "Only {{ count }} left in stock"
       },
-      "rating_label": "Rated {{ rating }} out of {{ max }}"
+      "rating_label": "Rated {{ rating }} out of {{ max }}",
+      "sku": "SKU",
+      "tax_included": "Tax included.",
+      "zoom": "Zoom image",
+      "new": "New",
+      "on_sale": "Sale",
+      "choose_options": "Choose options for {{ title }}",
+      "description": "Description",
+      "preorder": "Pre-order",
+      "low_stock_count": "Only",
+      "save_percent": "Save {{ percent }}%",
+      "gift_recipient": "I want to send this as a gift (emailed to the recipient)",
+      "recipient_email": "Recipient email",
+      "recipient_name": "Recipient name",
+      "recipient_message": "Message (optional)",
+      "pickup_available": "Pickup available at {{ location }}",
+      "back_in_stock_body": "Back in stock alert: {{ title }}"
     }
   },
   "cart": {
@@ -436,5 +458,39 @@
     "password": "Password",
     "enter": "Enter",
     "powered": "Store powered by"
+  },
+  "features": {
+    "add": "Add",
+    "choose": "Choose",
+    "share": "Share",
+    "copied": "Code copied!",
+    "link_copied": "Link copied",
+    "back_to_top": "Back to top",
+    "quick_view": "Quick view",
+    "quick_view_of": "Quick view of {{ title }}",
+    "view_details": "View full details",
+    "wishlist": {
+      "title": "Wishlist",
+      "toggle": "Add {{ title }} to wishlist",
+      "added": "Added to your wishlist",
+      "removed": "Removed from your wishlist"
+    },
+    "bundle": {
+      "this_item": "This item:",
+      "total": "Total",
+      "discount_note": "{{ percent }}% off applied in cart for the full bundle."
+    },
+    "countdown": {
+      "days": "days",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "delivery": {
+      "between": "Estimated delivery between",
+      "and": "and",
+      "order_within": "Order within",
+      "ships_today": "to ship today"
+    }
   }
 }

@@ -1,9 +1,236 @@
 {%- comment -%}
   Variables CSS générées depuis les réglages du thème (Personnaliser > Paramètres du thème).
   Toutes les couleurs, rayons et polices de base.css passent par ces variables.
+
+  « Style de la boutique » (settings.style_preset) : un style prêt à l'emploi remplace en un clic
+  couleurs, polices, arrondis et forme des boutons. « Mes réglages » utilise les valeurs saisies.
 {%- endcomment -%}
 {%- liquid
-  case settings.button_shape
+  assign f_sans = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+  assign f_display = '"Kinetic Display", "Arial Black", Arial, sans-serif'
+  assign f_text = '"Kinetic Text", system-ui, -apple-system, "Segoe UI", Arial, sans-serif'
+  assign f_serif = '"Cormorant Garamond", "Playfair Display", Didot, "Bodoni 72", "Bodoni MT", "Times New Roman", Georgia, serif'
+  assign f_book = '"Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif'
+  assign f_round = 'ui-rounded, "SF Pro Rounded", Nunito, "Varela Round", "Arial Rounded MT Bold", system-ui, sans-serif'
+
+  assign c_primary = settings.color_primary
+  assign c_primary_hover = settings.color_primary_hover
+  assign c_on_primary = settings.color_on_primary
+  assign c_accent = settings.color_accent
+  assign c_accent_text = settings.color_accent_text
+  assign c_bg = settings.color_bg
+  assign c_surface = settings.color_surface
+  assign c_surface_alt = settings.color_surface_alt
+  assign c_text = settings.color_text
+  assign c_muted = settings.color_muted
+  assign c_border = settings.color_border
+  assign c_dark_link = settings.color_dark_link
+  assign radius = settings.radius
+  assign button_shape = settings.button_shape
+  assign heading_case = 'none'
+  assign heading_tracking = '-0.02em'
+  assign preset_fonts = false
+
+  case settings.style_preset
+    when 'minimal'
+      assign c_primary = '#111111'
+      assign c_primary_hover = '#333333'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#C8102E'
+      assign c_accent_text = '#A10D25'
+      assign c_bg = '#FFFFFF'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#F5F5F5'
+      assign c_text = '#111111'
+      assign c_muted = '#5E5E5E'
+      assign c_border = '#E5E5E5'
+      assign radius = 0
+      assign button_shape = 'square'
+      assign preset_fonts = true
+      assign heading_family = f_sans
+      assign body_family = f_sans
+      assign heading_weight = 600
+      assign heading_tracking = '-0.01em'
+    when 'luxe'
+      assign c_primary = '#1C1A17'
+      assign c_primary_hover = '#000000'
+      assign c_on_primary = '#FAF7F2'
+      assign c_accent = '#B08D57'
+      assign c_accent_text = '#7A5C2E'
+      assign c_bg = '#FAF7F2'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#F1EBE1'
+      assign c_text = '#1C1A17'
+      assign c_muted = '#6B645A'
+      assign c_border = '#E4DCCF'
+      assign radius = 0
+      assign button_shape = 'square'
+      assign preset_fonts = true
+      assign heading_family = f_serif
+      assign body_family = f_sans
+      assign heading_weight = 500
+      assign heading_tracking = '0'
+    when 'nature'
+      assign c_primary = '#3F6E5B'
+      assign c_primary_hover = '#2F5546'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#D9A441'
+      assign c_accent_text = '#8A6116'
+      assign c_bg = '#F7F5EF'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#ECE8DC'
+      assign c_text = '#1F2A24'
+      assign c_muted = '#56635B'
+      assign c_border = '#DDD8CA'
+      assign radius = 16
+      assign button_shape = 'rounded'
+      assign preset_fonts = true
+      assign heading_family = f_book
+      assign body_family = f_sans
+      assign heading_weight = 600
+      assign heading_tracking = '-0.01em'
+    when 'bold'
+      assign c_primary = '#0A0A0A'
+      assign c_primary_hover = '#2A2A2A'
+      assign c_on_primary = '#E4FF3A'
+      assign c_accent = '#E4FF3A'
+      assign c_accent_text = '#4F5A00'
+      assign c_bg = '#FFFFFF'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#F2F2F2'
+      assign c_text = '#0A0A0A'
+      assign c_muted = '#4A4A4A'
+      assign c_border = '#D9D9D9'
+      assign radius = 0
+      assign button_shape = 'square'
+      assign preset_fonts = true
+      assign heading_family = f_display
+      assign body_family = f_text
+      assign heading_weight = 800
+      assign heading_case = 'uppercase'
+      assign heading_tracking = '0'
+    when 'soft'
+      assign c_primary = '#B5536B'
+      assign c_primary_hover = '#9A4058'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#E8B4B8'
+      assign c_accent_text = '#8E3A50'
+      assign c_bg = '#FFF8F6'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#FBEDEA'
+      assign c_text = '#3A2A2E'
+      assign c_muted = '#7A6266'
+      assign c_border = '#F0DDD9'
+      assign radius = 24
+      assign button_shape = 'pill'
+      assign preset_fonts = true
+      assign heading_family = f_serif
+      assign body_family = f_sans
+      assign heading_weight = 500
+      assign heading_tracking = '0'
+    when 'tech'
+      assign c_primary = '#2563EB'
+      assign c_primary_hover = '#1D4ED8'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#06B6D4'
+      assign c_accent_text = '#0E7490'
+      assign c_bg = '#F8FAFC'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#EEF2F7'
+      assign c_text = '#0F172A'
+      assign c_muted = '#475569'
+      assign c_border = '#E2E8F0'
+      assign radius = 12
+      assign button_shape = 'rounded'
+      assign preset_fonts = true
+      assign heading_family = f_display
+      assign body_family = f_text
+      assign heading_weight = 800
+    when 'playful'
+      assign c_primary = '#7C3AED'
+      assign c_primary_hover = '#6D28D9'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#FFB703'
+      assign c_accent_text = '#8A5A00'
+      assign c_bg = '#FFFDF7'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#FFF3D6'
+      assign c_text = '#1E1B2E'
+      assign c_muted = '#5B5670'
+      assign c_border = '#EFE7D2'
+      assign radius = 28
+      assign button_shape = 'pill'
+      assign preset_fonts = true
+      assign heading_family = f_round
+      assign body_family = f_round
+      assign heading_weight = 800
+      assign heading_tracking = '-0.01em'
+    when 'gourmet'
+      assign c_primary = '#C2410C'
+      assign c_primary_hover = '#9A3412'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#65A30D'
+      assign c_accent_text = '#3F6212'
+      assign c_bg = '#FFFBF5'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#FCEFE1'
+      assign c_text = '#2B1D14'
+      assign c_muted = '#6E5A4C'
+      assign c_border = '#F0E2D2'
+      assign radius = 14
+      assign button_shape = 'rounded'
+      assign preset_fonts = true
+      assign heading_family = f_book
+      assign body_family = f_sans
+      assign heading_weight = 700
+      assign heading_tracking = '-0.01em'
+    when 'sport'
+      assign c_primary = '#0369A1'
+      assign c_primary_hover = '#075985'
+      assign c_on_primary = '#FFFFFF'
+      assign c_accent = '#F97316'
+      assign c_accent_text = '#C2410C'
+      assign c_bg = '#F6FAFC'
+      assign c_surface = '#FFFFFF'
+      assign c_surface_alt = '#E6F1F7'
+      assign c_text = '#0B1F2A'
+      assign c_muted = '#4B6170'
+      assign c_border = '#D8E6EE'
+      assign radius = 10
+      assign button_shape = 'rounded'
+      assign preset_fonts = true
+      assign heading_family = f_display
+      assign body_family = f_text
+      assign heading_weight = 800
+      assign heading_case = 'uppercase'
+      assign heading_tracking = '0'
+  endcase
+
+  if settings.style_preset != 'custom'
+    assign c_dark_link = 'color-mix(in srgb, ' | append: c_primary | append: ' 55%, #fff)'
+  endif
+
+  unless preset_fonts
+    if settings.use_brand_fonts
+      assign heading_family = f_display
+      assign body_family = f_text
+      assign heading_weight = 800
+    else
+      assign heading_family = settings.type_heading_font.family | append: ', ' | append: settings.type_heading_font.fallback_families
+      assign body_family = settings.type_body_font.family | append: ', ' | append: settings.type_body_font.fallback_families
+      assign heading_weight = settings.type_heading_font.weight
+    endif
+  endunless
+  if settings.use_brand_fonts or preset_fonts
+    assign body_weight = 400
+  else
+    assign body_weight = settings.type_body_font.weight
+  endif
+  if settings.type_heading_case != 'auto'
+    assign heading_case = settings.type_heading_case
+  endif
+
+  case button_shape
     when 'pill'
       assign btn_radius = '999px'
     when 'rounded'
@@ -11,53 +238,53 @@
     else
       assign btn_radius = '0px'
   endcase
-  if settings.use_brand_fonts
-    assign heading_family = '"Kinetic Display", "Arial Black", Arial, sans-serif'
-    assign body_family = '"Kinetic Text", system-ui, -apple-system, "Segoe UI", Arial, sans-serif'
-    assign heading_weight = 800
-    assign body_weight = 400
-  else
-    assign heading_family = settings.type_heading_font.family | append: ', ' | append: settings.type_heading_font.fallback_families
-    assign body_family = settings.type_body_font.family | append: ', ' | append: settings.type_body_font.fallback_families
-    assign heading_weight = settings.type_heading_font.weight
-    assign body_weight = settings.type_body_font.weight
-  endif
 -%}
 <style>
-  {%- if settings.use_brand_fonts -%}
-    @font-face { font-family: "Kinetic Display"; src: url({{ 'kinetic-archivo-wide.woff2' | asset_url }}) format("woff2"); font-weight: 700 800; font-display: swap; }
-    @font-face { font-family: "Kinetic Text"; src: url({{ 'kinetic-inter.woff2' | asset_url }}) format("woff2"); font-weight: 400 700; font-display: swap; }
-  {%- else -%}
+  @font-face { font-family: "Kinetic Display"; src: url({{ 'kinetic-archivo-wide.woff2' | asset_url }}) format("woff2"); font-weight: 700 800; font-display: swap; }
+  @font-face { font-family: "Kinetic Text"; src: url({{ 'kinetic-inter.woff2' | asset_url }}) format("woff2"); font-weight: 400 700; font-display: swap; }
+  @font-face { font-family: "Kinetic Hand"; src: url({{ 'kinetic-caveat.woff2' | asset_url }}) format("woff2"); font-weight: 600; font-display: swap; }
+  {%- unless settings.use_brand_fonts or preset_fonts -%}
     {{ settings.type_heading_font | font_face: font_display: 'swap' }}
     {{ settings.type_body_font | font_face: font_display: 'swap' }}
     {%- assign body_bold = settings.type_body_font | font_modify: 'weight', 'bold' -%}
     {{ body_bold | font_face: font_display: 'swap' }}
-  {%- endif -%}
-  @font-face { font-family: "Kinetic Hand"; src: url({{ 'kinetic-caveat.woff2' | asset_url }}) format("woff2"); font-weight: 600; font-display: swap; }
+  {%- endunless -%}
 
   :root {
-    --c-primary: {{ settings.color_primary }};
-    --c-primary-hover: {{ settings.color_primary_hover }};
-    --c-on-primary: #ffffff;
-    --c-accent: {{ settings.color_accent }};
-    --c-accent-text: {{ settings.color_accent_text }};
-    --c-bg: {{ settings.color_bg }};
-    --c-surface: {{ settings.color_surface }};
-    --c-surface-alt: {{ settings.color_surface_alt }};
-    --c-text: {{ settings.color_text }};
-    --c-muted: {{ settings.color_muted }};
-    --c-border: {{ settings.color_border }};
-    --c-link: {{ settings.color_primary }};
+    --brand-primary: {{ c_primary }};
+    --brand-on-primary: {{ c_on_primary }};
+    --brand-accent: {{ c_accent }};
+    --c-primary: {{ c_primary }};
+    --c-primary-hover: {{ c_primary_hover }};
+    --c-on-primary: {{ c_on_primary }};
+    --c-accent: {{ c_accent }};
+    --c-accent-text: {{ c_accent_text }};
+    --c-bg: {{ c_bg }};
+    --c-surface: {{ c_surface }};
+    --c-surface-alt: {{ c_surface_alt }};
+    --c-text: {{ c_text }};
+    --c-muted: {{ c_muted }};
+    --c-border: {{ c_border }};
+    --c-link: {{ c_primary }};
     --c-success: {{ settings.color_success }};
     --c-danger: {{ settings.color_danger }};
     --c-sale: {{ settings.color_sale }};
+    --c-sale-text: {{ settings.color_sale_text }};
     --c-dark-bg: {{ settings.color_dark_bg }};
     --c-dark-surface: {{ settings.color_dark_surface }};
     --c-dark-surface-alt: {{ settings.color_dark_surface_alt }};
     --c-dark-text: {{ settings.color_dark_text }};
     --c-dark-muted: {{ settings.color_dark_muted }};
     --c-dark-border: {{ settings.color_dark_border }};
-    --c-dark-link: {{ settings.color_dark_link }};
+    --c-dark-link: {{ c_dark_link }};
+    --c-custom-1-bg: {{ settings.scheme_custom_1_bg }};
+    --c-custom-1-text: {{ settings.scheme_custom_1_text }};
+    --c-custom-1-button: {{ settings.scheme_custom_1_button }};
+    --c-custom-1-on-button: {{ settings.scheme_custom_1_on_button }};
+    --c-custom-2-bg: {{ settings.scheme_custom_2_bg }};
+    --c-custom-2-text: {{ settings.scheme_custom_2_text }};
+    --c-custom-2-button: {{ settings.scheme_custom_2_button }};
+    --c-custom-2-on-button: {{ settings.scheme_custom_2_on_button }};
 
     --font-heading: {{ heading_family }};
     --font-body: {{ body_family }};
@@ -66,11 +293,16 @@
     --fw-body: {{ body_weight }};
     --fs-base: {{ settings.type_body_size }}px;
     --h-scale: {{ settings.type_heading_scale | divided_by: 100.0 }};
+    --h-case: {{ heading_case }};
+    --h-tracking: {{ heading_tracking }};
+    --btn-case: {{ settings.type_button_case }};
+    --btn-tracking: {% if settings.type_button_case == 'uppercase' %}.06em{% else %}0{% endif %};
 
     --page-width: {{ settings.page_width }}px;
-    --radius: {{ settings.radius }}px;
-    --radius-sm: {{ settings.radius | divided_by: 2 }}px;
+    --radius: {{ radius }}px;
+    --radius-sm: {{ radius | divided_by: 2 }}px;
     --btn-radius: {{ btn_radius }};
+    --input-radius: {% if button_shape == 'pill' %}999px{% else %}{{ radius | divided_by: 2 | plus: 2 }}px{% endif %};
     {%- if settings.shadows %}
       --shadow-sm: 0 1px 2px rgb(18 18 20 / .06), 0 2px 6px rgb(18 18 20 / .04);
       --shadow-md: 0 2px 4px rgb(18 18 20 / .04), 0 10px 28px rgb(18 18 20 / .09);
@@ -78,5 +310,8 @@
     {%- else %}
       --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
     {%- endif %}
+    --card-border: {% if settings.card_style == 'flat' %}0px{% else %}1px{% endif %};
+    --card-shadow: {% if settings.card_style == 'elevated' %}var(--shadow-sm){% else %}none{% endif %};
+    --card-bg: {% if settings.card_style == 'flat' %}var(--c-surface-alt){% else %}var(--c-surface){% endif %};
   }
 </style>

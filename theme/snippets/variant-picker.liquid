@@ -1,0 +1,40 @@
+{%- comment -%}
+  Sélecteur de variantes. Paramètres : product, form_id, uid (identifiant unique), style ('buttons' | 'dropdown' | 'swatches')
+  En style « swatches », l'option Couleur s'affiche en pastilles (couleurs des métaobjets Shopify),
+  les autres options en boutons.
+{%- endcomment -%}
+{%- unless product.has_only_default_variant -%}
+  <div class="product__variants variant-picker--{{ style | default: 'buttons' }}">
+    {%- for option in product.options_with_values -%}
+      {%- assign oname = option.name | downcase -%}
+      {%- assign is_color = false -%}
+      {%- if oname == 'couleur' or oname == 'color' or oname == 'colour' or oname == 'coloris' or oname == 'farbe' or oname == 'colore' -%}{%- assign is_color = true -%}{%- endif -%}
+      {%- if style == 'dropdown' -%}
+        <div class="variant-group field" data-option="{{ forloop.index0 }}">
+          <label for="Opt-{{ uid }}-{{ forloop.index0 }}">{{ option.name }}</label>
+          <select id="Opt-{{ uid }}-{{ forloop.index0 }}" class="select" form="{{ form_id }}">
+            {%- for value in option.values -%}<option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>{%- endfor -%}
+          </select>
+        </div>
+      {%- else -%}
+        <fieldset class="variant-group" data-option="{{ forloop.index0 }}">
+          <legend>{{ option.name }} : <span class="muted">{{ option.selected_value }}</span></legend>
+          <div class="variant-group__options">
+            {%- for value in option.values -%}
+              {%- assign sw_color = value.swatch.color | default: '' -%}
+              {%- assign sw_image = value.swatch.image -%}
+              <label class="variant-pill{% if style == 'swatches' and is_color %} variant-pill--swatch{% endif %}"{% if style == 'swatches' and is_color %} title="{{ value | escape }}"{% endif %}>
+                <input type="radio" name="{{ option.name | handle }}-{{ uid }}" value="{{ value | escape }}" form="{{ form_id }}"{% if option.selected_value == value %} checked{% endif %}>
+                {%- if style == 'swatches' and is_color -%}
+                  <span class="variant-pill__swatch"{% if sw_image %} style="background-image: url({{ sw_image | image_url: width: 80 }})"{% elsif sw_color != blank %} style="background: {{ sw_color }}"{% endif %}><span class="visually-hidden">{{ value }}</span>{% if sw_image == blank and sw_color == blank %}{{ value | slice: 0, 2 }}{% endif %}</span>
+                {%- else -%}
+                  <span>{{ value }}</span>
+                {%- endif -%}
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endunless -%}

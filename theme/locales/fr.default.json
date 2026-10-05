@@ -11,7 +11,8 @@
       "previous": "Page précédente",
       "next": "Page suivante",
       "page": "Page {{ number }}"
-    }
+    },
+    "email": "Adresse e-mail"
   },
   "accessibility": {
     "skip_to_text": "Aller au contenu"
@@ -29,7 +30,12 @@
         "one": "Panier ({{ count }} article)",
         "other": "Panier ({{ count }} articles)"
       },
-      "mode_toggle": "Basculer le thème clair / sombre"
+      "mode_toggle": "Basculer le thème clair / sombre",
+      "view_all": "Tout voir",
+      "popular": "Recherches populaires",
+      "suggestions": "Suggestions",
+      "pages": "Collections et pages",
+      "see_all": "Voir tous les résultats pour « {{ terms }} »"
     },
     "testimonials": {
       "previous": "Avis précédent",
@@ -365,7 +371,23 @@
         "one": "Plus qu'un seul en stock",
         "other": "Plus que {{ count }} en stock"
       },
-      "rating_label": "Noté {{ rating }} sur {{ max }}"
+      "rating_label": "Noté {{ rating }} sur {{ max }}",
+      "sku": "Réf.",
+      "tax_included": "Taxes incluses.",
+      "zoom": "Agrandir l'image",
+      "new": "Nouveau",
+      "on_sale": "Promo",
+      "choose_options": "Choisir les options de {{ title }}",
+      "description": "Description",
+      "preorder": "Précommander",
+      "low_stock_count": "Plus que",
+      "save_percent": "Économisez {{ percent }} %",
+      "gift_recipient": "Je souhaite l'offrir (envoi par e-mail au destinataire)",
+      "recipient_email": "E-mail du destinataire",
+      "recipient_name": "Nom du destinataire",
+      "recipient_message": "Message (facultatif)",
+      "pickup_available": "Retrait disponible à {{ location }}",
+      "back_in_stock_body": "Alerte retour en stock : {{ title }}"
     }
   },
   "cart": {
@@ -436,5 +458,39 @@
     "password": "Mot de passe",
     "enter": "Entrer",
     "powered": "Boutique propulsée par"
+  },
+  "features": {
+    "add": "Ajouter",
+    "choose": "Choisir",
+    "share": "Partager",
+    "copied": "Code copié !",
+    "link_copied": "Lien copié",
+    "back_to_top": "Retour en haut de page",
+    "quick_view": "Aperçu rapide",
+    "quick_view_of": "Aperçu rapide de {{ title }}",
+    "view_details": "Voir la fiche complète",
+    "wishlist": {
+      "title": "Liste d'envies",
+      "toggle": "Ajouter {{ title }} à la liste d'envies",
+      "added": "Ajouté à votre liste d'envies",
+      "removed": "Retiré de votre liste d'envies"
+    },
+    "bundle": {
+      "this_item": "Cet article :",
+      "total": "Total",
+      "discount_note": "Remise de {{ percent }} % appliquée au panier pour le lot complet."
+    },
+    "countdown": {
+      "days": "jours",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "delivery": {
+      "between": "Livraison estimée entre le",
+      "and": "et le",
+      "order_within": "Commandez dans les",
+      "ships_today": "pour une expédition aujourd'hui"
+    }
   }
 }

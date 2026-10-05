@@ -1,0 +1,68 @@
+{%- comment -%}
+  Galerie produit. Paramètres : product, uid, featured (média mis en avant),
+  style ('thumbs' | 'thumbs-left' | 'grid' | 'stack'), zoom (bool), ratio ('square' | 'portrait' | 'natural'), eager (bool)
+  Sur mobile, tous les styles deviennent un carrousel à balayer avec vignettes.
+{%- endcomment -%}
+{%- liquid
+  assign style = style | default: 'thumbs'
+  case ratio
+    when 'portrait'
+      assign ar = '4 / 5'
+    when 'natural'
+      assign ar = 'auto'
+    else
+      assign ar = '1 / 1'
+  endcase
+-%}
+<div class="product__gallery product__gallery--{{ style }}" style="--media-ratio: {{ ar }}">
+  <div class="product__main-media" data-gallery-track>
+    {%- for media in product.media -%}
+      <div class="product__media-item{% if media.id == featured.id %} is-active{% endif %}" data-media-id="{{ media.id }}">
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            {%- if forloop.first and eager -%}
+              {{ media | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 990px) 55vw, 100vw', alt: media.alt | default: product.title }}
+            {%- else -%}
+              {{ media | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 990px) 55vw, 100vw', alt: media.alt | default: product.title }}
+            {%- endif -%}
+            {%- if zoom -%}
+              <button type="button" class="product__zoom" data-dialog-open="Lightbox-{{ uid }}" data-lightbox-index="{{ forloop.index0 }}" aria-label="{{ 'products.product.zoom' | t }}">{% render 'icon', name: 'zoom', size: 18 %}</button>
+            {%- endif -%}
+          {%- when 'video' -%}
+            {{ media | video_tag: controls: true, playsinline: true, image_size: '1200x' }}
+          {%- when 'external_video' -%}
+            {{ media | external_video_tag }}
+          {%- else -%}
+            {{ media | media_tag }}
+        {%- endcase -%}
+      </div>
+    {%- else -%}
+      <div class="product__media-item is-active">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    {%- endfor -%}
+  </div>
+  {%- if product.media.size > 1 -%}
+    <div class="product__thumbs" role="list" aria-label="{{ 'products.product.gallery' | t }}">
+      {%- for media in product.media -%}
+        <button type="button" class="product__thumb" role="listitem" data-thumb="{{ media.id }}" aria-current="{% if media.id == featured.id %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.show_media' | t: n: forloop.index }}">
+          {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', width: 72, height: 72, alt: '' }}
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}<span class="product__thumb-play">{% render 'icon', name: 'play', size: 14 %}</span>{%- endif -%}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{%- if zoom and product.media.size > 0 -%}
+  <dialog id="Lightbox-{{ uid }}" class="modal modal--full lightbox" aria-label="{{ 'products.product.gallery' | t }}">
+    <button type="button" class="icon-btn modal__close" data-dialog-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+    <div class="lightbox__track">
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          <figure class="lightbox__item" data-lightbox-item="{{ forloop.index0 }}">
+            {{ media | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '1000, 1600, 2400', sizes: '100vw', alt: media.alt | default: product.title }}
+          </figure>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </dialog>
+{%- endif -%}

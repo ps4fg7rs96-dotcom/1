@@ -61,6 +61,9 @@
     {%- endif -%}
 
     <div class="toast" role="status" aria-live="polite" data-toast></div>
+    {%- if settings.back_to_top -%}
+      <button type="button" class="back-to-top" data-back-to-top aria-label="{{ 'features.back_to_top' | t }}">{% render 'icon', name: 'chevron-down', size: 20, class: 'rot-180' %}</button>
+    {%- endif -%}
 
     <script>
       window.Kinetic = {
@@ -71,7 +74,14 @@
           cartChange: {{ routes.cart_change_url | json }}
         },
         cartType: {{ settings.cart_type | json }},
+        moneyFormat: {{ shop.money_format | json }},
         strings: {
+          wishlistAdded: {{ 'features.wishlist.added' | t | json }},
+          wishlistRemoved: {{ 'features.wishlist.removed' | t | json }},
+          quickView: {{ 'features.quick_view' | t | json }},
+          close: {{ 'general.close' | t | json }},
+          copied: {{ 'features.copied' | t | json }},
+          linkCopied: {{ 'features.link_copied' | t | json }},
           addToCart: {{ 'products.product.add_to_cart' | t | json }},
           soldOut: {{ 'products.product.sold_out' | t | json }},
           unavailable: {{ 'products.product.unavailable' | t | json }},
@@ -81,5 +91,6 @@
       };
     </script>
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'features.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>

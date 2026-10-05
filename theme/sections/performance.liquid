@@ -3,7 +3,7 @@
   assign scores = section.blocks | where: 'type', 'score'
   assign bars = section.blocks | where: 'type', 'bar'
 -%}
-<section class="section scheme-dark perf" aria-labelledby="Perf-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }} perf" aria-labelledby="Perf-{{ section.id }}">
   <div class="page-width perf__grid">
     <div>
       {%- assign hid = 'Perf-' | append: section.id -%}
@@ -57,7 +57,10 @@
     { "type": "textarea", "id": "lead", "label": "Introduction" },
     { "type": "text", "id": "scores_title", "label": "Titre des scores", "default": "Scores Lighthouse mobile" },
     { "type": "text", "id": "bars_title", "label": "Titre de la comparaison", "default": "Affichage du contenu principal" },
-    { "type": "text", "id": "note", "label": "Note de bas de bloc", "default": "[Scores d'exemple — à remplacer par vos mesures]" }
+    { "type": "text", "id": "note", "label": "Note de bas de bloc", "default": "[Scores d'exemple — à remplacer par vos mesures]" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "dark"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
   ],
   "blocks": [
     {
