@@ -1,0 +1,62 @@
+{%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+<ol class="tb vis-{{ block.settings.visibility }} tb-timeline tb-timeline--{{ block.settings.direction }}" role="list" {{ block.shopify_attributes }}>
+  {%- for it in items -%}
+    {%- assign parts = it | strip | split: '|' -%}
+    {%- if parts.size > 0 -%}<li><span class="tb-timeline__dot" aria-hidden="true"></span><p class="timeline__date">{{ parts[0] | strip }}</p><p class="tb-timeline__title">{{ parts[1] | strip }}</p>{%- if parts[2] -%}<p class="muted small">{{ parts[2] | strip }}</p>{%- endif -%}</li>{%- endif -%}
+  {%- endfor -%}
+</ol>
+
+{% schema %}
+{
+  "name": "Chronologie",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Étapes (une par ligne : date | titre | texte)",
+      "default": "2020 | Le début | Une idée dans un atelier.\n2022 | La première boutique | Nos clients nous rejoignent.\nAujourd'hui | Et demain ? | La suite s'écrit avec vous."
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Orientation",
+      "options": [
+        {
+          "value": "vertical",
+          "label": "Verticale"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontale"
+        }
+      ],
+      "default": "vertical"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chronologie"
+    }
+  ]
+}
+{% endschema %}

@@ -325,3 +325,51 @@
 .review__img { width: 6rem; aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; }
 .review__img img { width: 100%; height: 100%; object-fit: cover; }
 .review__product { color: var(--c-muted); }
+
+/* ---------- Blocs de thème ---------- */
+.tb-icon { display: inline-flex; }
+.tb-icon .icon-chip { width: calc(var(--size) * 1.8); height: calc(var(--size) * 1.8); color: inherit; }
+.tb-icon-text { display: flex; gap: .8rem; align-items: flex-start; }
+.tb-icon-text--stacked { flex-direction: column; align-items: center; text-align: center; }
+.tb-icon-text__title { font-weight: 700; }
+.tb-card { position: relative; display: grid; min-height: var(--min-h, 0); padding: var(--pad, 28px); border-radius: var(--radius); overflow: hidden; isolation: isolate; background: var(--c-bg); color: var(--c-text); }
+.tb-card--surface { background: var(--card-bg, var(--c-surface)); border: var(--card-border, 1px) solid var(--c-border); box-shadow: var(--card-shadow); }
+.tb-card--outline { border: 1.5px solid var(--c-border); background: transparent; }
+.tb-card--plain { background: transparent; padding-inline: 0; }
+.tb-card--image { color: #fff; border: 0; }
+.tb-card__bg { position: absolute; inset: 0; z-index: -1; }
+.tb-card__bg img { width: 100%; height: 100%; object-fit: cover; }
+.tb-card__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / calc(var(--overlay) + .25)), rgb(0 0 0 / calc(var(--overlay) * .3))); }
+.tb-card__content { display: grid; gap: .9rem; align-content: start; }
+.tb-card__content--center { align-content: center; } .tb-card__content--end { align-content: end; }
+.tb-card[style*="center"] .tb-card__content { justify-items: center; }
+.tb-card__link { position: absolute; inset: 0; z-index: 1; }
+.tb-email { width: 100%; max-width: 30rem; }
+.tb-email__form { display: grid; gap: .5rem; }
+.tb-menu ul { display: grid; gap: .45rem; }
+.tb-menu--row ul, .tb-menu--pills ul { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
+.tb-menu--pills a { display: inline-flex; padding: .45rem .9rem; border-radius: 999px; border: 1.5px solid var(--c-border); font-weight: 600; font-size: .9rem; }
+.tb-menu a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tb-menu__title { margin-bottom: .6rem; font-weight: 700; }
+.tb-mini { display: flex; align-items: center; gap: .8rem; padding: .55rem; border-radius: var(--radius-sm); border: 1px solid var(--c-border); background: var(--c-surface); }
+.tb-mini .mini-product__img { width: 3.6rem; aspect-ratio: 1; flex: none; overflow: hidden; border-radius: calc(var(--radius-sm) * .8); background: var(--c-surface-alt); }
+.tb-mini .mini-product__img img, .tb-mini .mini-product__img svg { width: 100%; height: 100%; object-fit: cover; }
+.tb-mini .mini-product__info { flex: 1; min-width: 0; display: grid; font-weight: 600; font-size: .92rem; }
+.tb-tabs__panel { padding-top: .25rem; }
+.tb-info { display: grid; min-height: 2.6rem; align-items: center; padding: .55rem 1rem; border-radius: var(--radius-sm); background: var(--c-surface-alt); }
+.tb-info .announcement__slide { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: .45rem; opacity: 0; transition: opacity .4s; font-weight: 600; }
+.tb-info .announcement__slide.is-active { opacity: 1; }
+.tb-info .icon { color: var(--c-link); }
+.tb-timeline { position: relative; display: grid; gap: 1.2rem; padding-left: 1.6rem; }
+.tb-timeline::before { content: ""; position: absolute; left: .4rem; top: .3rem; bottom: .3rem; width: 2px; background: var(--c-border); }
+.tb-timeline li { position: relative; display: grid; gap: .2rem; }
+.tb-timeline__dot { position: absolute; left: -1.6rem; top: .25rem; width: .9rem; height: .9rem; border-radius: 50%; background: var(--c-primary); box-shadow: 0 0 0 4px var(--c-bg); }
+.tb-timeline__title { font-weight: 700; }
+@media (min-width: 750px) {
+  .tb-timeline--horizontal { grid-auto-flow: column; grid-auto-columns: 1fr; padding: 1.6rem 0 0; }
+  .tb-timeline--horizontal::before { left: 0; right: 0; top: .4rem; bottom: auto; width: auto; height: 2px; }
+  .tb-timeline--horizontal .tb-timeline__dot { left: 0; top: -1.6rem; }
+}
+.tb-video { width: 100%; }
+.tb-spacer { display: grid; align-items: center; }
+.tb-spacer hr { width: 100%; border: 0; border-top: 1px solid var(--c-border); }

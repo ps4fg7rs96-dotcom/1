@@ -1,0 +1,100 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-video video-box" style="--ratio: {{ block.settings.ratio }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.video != blank -%}
+    {%- if block.settings.autoplay -%}{{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'video-box__media', image_size: '1200x' }}{%- else -%}{{ block.settings.video | video_tag: controls: true, playsinline: true, preload: 'none', class: 'video-box__media', image_size: '1200x' }}{%- endif -%}
+  {%- elsif block.settings.video_url != blank -%}
+    <button type="button" class="video-box__facade" data-video-facade data-provider="{{ block.settings.video_url.type }}" data-video-id="{{ block.settings.video_url.id }}" aria-label="{{ 'sections.video.play' | t: title: block.settings.label | escape }}">
+      {%- if block.settings.cover != blank -%}{{ block.settings.cover | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 800, 1400', sizes: '(min-width: 990px) 50vw, 100vw', class: 'video-box__media', alt: '' }}{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg video-box__media' }}{%- endif -%}
+      <span class="video-box__play">{% render 'icon', name: 'play', size: 24 %}</span>
+    </button>
+  {%- else -%}
+    <div class="video-box__facade">{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg video-box__media' }}<span class="video-box__play">{% render 'icon', name: 'play', size: 24 %}</span></div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Vidéo",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vidéo Shopify"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Lecture auto, muette, en boucle",
+      "default": true
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ],
+      "label": "Ou YouTube / Vimeo"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover",
+      "label": "Couverture"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Nom accessible",
+      "default": "Vidéo"
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Format",
+      "options": [
+        {
+          "value": "16 / 9",
+          "label": "16:9"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Carré"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "9 / 16",
+          "label": "Vertical"
+        }
+      ],
+      "default": "16 / 9"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vidéo"
+    }
+  ]
+}
+{% endschema %}

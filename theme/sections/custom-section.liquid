@@ -1,7 +1,8 @@
+{{ 'sections.css' | asset_url | stylesheet_tag }}
 {%- comment -%} Section libre : composez-la avec les blocs de thème (titre, texte, bouton, image, groupe imbriqué). {%- endcomment -%}
-<section class="section{% if section.settings.alt %} section--alt{% endif %}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}{% if section.settings.alt %} section--alt{% endif %} vis-{{ section.settings.visibility }}">
   <div class="page-width{% if section.settings.narrow %} page-width--narrow{% endif %}">
-    <div class="custom-section" style="display: grid; gap: {{ section.settings.gap }}px; {% if section.settings.columns == 2 %}grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: center;{% endif %}">
+    <div class="custom-section" style="display: grid; gap: {{ section.settings.gap }}px; {% if section.settings.columns != '1' %}grid-template-columns: repeat(auto-fit, minmax(min(100%, {% if section.settings.columns == '2' %}22{% elsif section.settings.columns == '3' %}16{% else %}12{% endif %}rem), 1fr)); align-items: {{ section.settings.valign | default: 'center' }};{% endif %}">
       {% content_for 'blocks' %}
     </div>
   </div>
@@ -10,20 +11,164 @@
 {% schema %}
 {
   "name": "Section libre",
-  "blocks": [{ "type": "@theme" }],
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
   "settings": [
-    { "type": "select", "id": "columns", "label": "Colonnes", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }], "default": "1" },
-    { "type": "range", "id": "gap", "min": 8, "max": 64, "step": 4, "unit": "px", "label": "Espacement", "default": 24 },
-    { "type": "checkbox", "id": "narrow", "label": "Largeur réduite", "default": false },
-    { "type": "checkbox", "id": "alt", "label": "Fond alterné", "default": false }
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Colonnes",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 8,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement",
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "narrow",
+      "label": "Largeur réduite",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "alt",
+      "label": "Fond alterné",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Mise en forme de la section"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Thème"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "tint",
+          "label": "Teintée"
+        },
+        {
+          "value": "dark",
+          "label": "Sombre"
+        },
+        {
+          "value": "primary",
+          "label": "Couleur primaire"
+        },
+        {
+          "value": "accent",
+          "label": "Couleur d'accent"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Espacement vertical",
+      "options": [
+        {
+          "value": "none",
+          "label": "Aucun"
+        },
+        {
+          "value": "s",
+          "label": "Petit"
+        },
+        {
+          "value": "m",
+          "label": "Moyen"
+        },
+        {
+          "value": "l",
+          "label": "Grand"
+        },
+        {
+          "value": "xl",
+          "label": "Très grand"
+        }
+      ],
+      "default": "l"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
   ],
   "presets": [
     {
       "name": "Section libre",
       "blocks": [
-        { "type": "heading" },
-        { "type": "text" },
-        { "type": "button" }
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
       ]
     }
   ]

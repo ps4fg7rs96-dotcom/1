@@ -1,0 +1,684 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-info" data-slides="{{ block.settings.speed | times: 1000 }}" {{ block.shopify_attributes }}>
+  {%- assign first = true -%}
+  {%- for i in (1..4) -%}
+    {%- liquid
+      assign tk = 'text_' | append: i
+      assign ik = 'icon_' | append: i
+    -%}
+    {%- if block.settings[tk] != blank -%}<p class="announcement__slide tb-info__item{% if first %} is-active{% endif %}">{% render 'icon', name: block.settings[ik], size: 18 %} {{ block.settings[tk] }}</p>{%- assign first = false -%}{%- endif -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Slider d'informations",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Défilement",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "icon_1",
+      "label": "Icône 1",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "truck"
+    },
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Message 1",
+      "default": "Livraison offerte dès 60 €"
+    },
+    {
+      "type": "select",
+      "id": "icon_2",
+      "label": "Icône 2",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "refresh"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Message 2",
+      "default": "Retours gratuits 30 jours"
+    },
+    {
+      "type": "select",
+      "id": "icon_3",
+      "label": "Icône 3",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "lock"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Message 3",
+      "default": "Paiement sécurisé"
+    },
+    {
+      "type": "select",
+      "id": "icon_4",
+      "label": "Icône 4",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "gift"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Message 4"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slider d'informations"
+    }
+  ]
+}
+{% endschema %}

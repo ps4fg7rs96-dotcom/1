@@ -979,3 +979,18 @@ textarea.input, .textarea { border-radius: min(var(--input-radius, 12px), 16px);
 .cart-gift__title { display: flex; align-items: center; gap: .35rem; font-weight: 600; }
 .cart-gift__form { display: flex; flex-wrap: wrap; gap: .5rem; }
 .cart-gift__form .select { flex: 1 1 8rem; width: auto; }
+
+/* Afficher sur mobile / ordinateur (blocs et sections) */
+@media (min-width: 750px) { .vis-mobile { display: none !important; } }
+@media (max-width: 749px) { .vis-desktop { display: none !important; } }
+
+/* Badge de note */
+.rbadge { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .45rem; padding: .5rem .85rem; border-radius: 999px; background: var(--c-surface); border: 1px solid var(--c-border); font-size: .88rem; width: fit-content; }
+a.rbadge:hover { border-color: var(--c-text); }
+.rbadge--google { border-radius: var(--radius-sm); }
+.rbadge__src { font-weight: 700; letter-spacing: -.01em; }
+.rbadge__score { font-weight: 700; font-size: 1.05rem; }
+.rbadge--google .stars__star.is-on { color: #fbbc04; }
+.rbadge__boxes { display: inline-flex; gap: 2px; }
+.rbadge__boxes i { display: grid; place-items: center; width: 1.2rem; height: 1.2rem; background: #dcdce6; color: #fff; }
+.rbadge__boxes i.is-on { background: #00b67a; }

@@ -1,0 +1,34 @@
+<ul class="tb vis-{{ block.settings.visibility }} tb-pay payment-icons" role="list" aria-label="{{ 'sections.footer.payment' | t }}" {{ block.shopify_attributes }}>{%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endfor -%}</ul>
+
+{% schema %}
+{
+  "name": "Icônes de paiement",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icônes de paiement"
+    }
+  ]
+}
+{% endschema %}

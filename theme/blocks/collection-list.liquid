@@ -1,0 +1,75 @@
+<ul class="tb vis-{{ block.settings.visibility }} tb-clist clist clist--{{ block.settings.shape }} clist--grid" style="--cols: {{ block.settings.columns }}" role="list" {{ block.shopify_attributes }}>
+  {%- for c in block.settings.collections -%}
+    <li class="clist__item"><a href="{{ c.url }}" class="clist__link"><span class="clist__media">{%- if c.featured_image -%}{{ c.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 350, 500', sizes: '200px', alt: '' }}{%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</span><span class="clist__title">{{ c.title }}</span></a></li>
+  {%- else -%}
+    {%- for i in (1..4) -%}<li class="clist__item"><span class="clist__link"><span class="clist__media">{{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}</span><span class="clist__title">Collection</span></span></li>{%- endfor -%}
+  {%- endfor -%}
+</ul>
+
+{% schema %}
+{
+  "name": "Liste de collections",
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "limit": 12
+    },
+    {
+      "type": "select",
+      "id": "shape",
+      "label": "Forme",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Rondes"
+        },
+        {
+          "value": "square",
+          "label": "Carrées"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        }
+      ],
+      "default": "circle"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Colonnes (ordinateur)",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liste de collections"
+    }
+  ]
+}
+{% endschema %}

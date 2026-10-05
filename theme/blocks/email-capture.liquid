@@ -1,0 +1,73 @@
+{%- assign fid = 'EmailBlock-' | append: block.id -%}
+<div class="tb vis-{{ block.settings.visibility }} tb-email" {{ block.shopify_attributes }}>
+  {%- form 'customer', id: fid, class: 'tb-email__form' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter,{{ block.settings.tag | escape }}">
+    {%- if form.posted_successfully? -%}
+      <p class="form-message form-message--success">{{ block.settings.success }}</p>
+    {%- else -%}
+      <div class="inline-form">
+        <label for="Em-{{ block.id }}" class="visually-hidden">{{ 'general.email' | t }}</label>
+        <input id="Em-{{ block.id }}" class="input" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ 'general.email' | t }}">
+        <button type="submit" class="btn btn--primary">{{ block.settings.button }}</button>
+      </div>
+      {%- if block.settings.note != blank -%}<p class="small muted">{{ block.settings.note }}</p>{%- endif -%}
+    {%- endif -%}
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Capture d'e-mail",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Bouton",
+      "default": "Je m'inscris"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Mention",
+      "default": "Désinscription en un clic."
+    },
+    {
+      "type": "text",
+      "id": "success",
+      "label": "Confirmation",
+      "default": "Merci, c'est noté !"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag client ajouté",
+      "default": "bloc"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Capture d'e-mail"
+    }
+  ]
+}
+{% endschema %}

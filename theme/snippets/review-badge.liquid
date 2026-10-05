@@ -1,0 +1,26 @@
+{%- comment -%}
+  Badge de note. Paramètres : style ('neutral' | 'google' | 'trustpilot'), rating (texte, ex. 4,8), count, label, link.
+  Inspiré du style des plateformes, sans reproduire leurs logos. N'affichez que votre vraie note.
+{%- endcomment -%}
+{%- liquid
+  assign r = rating | default: '0' | replace: ',', '.' | remove: '[' | remove: ']' | times: 1.0
+  assign tag = 'div'
+  if link != blank
+    assign tag = 'a'
+  endif
+-%}
+<{{ tag }} class="rbadge rbadge--{{ style | default: 'neutral' }}"{% if link != blank %} href="{{ link }}" target="_blank" rel="noopener"{% endif %}>
+  {%- case style -%}
+    {%- when 'trustpilot' -%}
+      <span class="rbadge__boxes" aria-hidden="true">{%- for i in (1..5) -%}{%- assign th = i | minus: 0.5 -%}<i class="{% if r >= th %}is-on{% endif %}">{% render 'icon', name: 'star', size: 12 %}</i>{%- endfor -%}</span>
+      <span class="rbadge__text"><b class="ph">{{ rating }}</b>/5 · <span class="ph">{{ count }}</span> {{ label }} <span class="muted">Trustpilot</span></span>
+    {%- when 'google' -%}
+      <span class="rbadge__src">Google</span>
+      <span class="rbadge__score ph">{{ rating }}</span>
+      {% render 'stars', rating: r %}
+      <span class="rbadge__text muted small"><span class="ph">{{ count }}</span> {{ label }}</span>
+    {%- else -%}
+      {% render 'stars', rating: r %}
+      <span class="rbadge__text"><b class="ph">{{ rating }}</b>/5 · <span class="ph">{{ count }}</span> {{ label }}</span>
+  {%- endcase -%}
+</{{ tag }}>

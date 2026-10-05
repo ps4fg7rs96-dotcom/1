@@ -1,0 +1,68 @@
+<nav class="tb vis-{{ block.settings.visibility }} tb-menu tb-menu--{{ block.settings.layout }}" aria-label="{{ block.settings.title | default: block.settings.menu.title | escape }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.title != blank -%}<p class="tb-menu__title">{{ block.settings.title }}</p>{%- endif -%}
+  <ul role="list">{%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a></li>{%- endfor -%}</ul>
+</nav>
+
+{% schema %}
+{
+  "name": "Menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Disposition",
+      "options": [
+        {
+          "value": "column",
+          "label": "Liste verticale"
+        },
+        {
+          "value": "row",
+          "label": "En ligne"
+        },
+        {
+          "value": "pills",
+          "label": "Boutons"
+        }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Menu"
+    }
+  ]
+}
+{% endschema %}

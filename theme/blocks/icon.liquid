@@ -1,0 +1,225 @@
+<span class="tb vis-{{ block.settings.visibility }} tb-icon" style="--size: {{ block.settings.size }}px; color: {% if block.settings.color != blank %}{{ block.settings.color }}{% else %}var(--c-link){% endif %}; justify-self: {{ block.settings.align }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.chip -%}<span class="icon-chip">{% render 'icon', name: block.settings.icon, size: block.settings.size %}</span>{%- else -%}{% render 'icon', name: block.settings.icon, size: block.settings.size %}{%- endif -%}
+</span>
+
+{% schema %}
+{
+  "name": "Icône",
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icône",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "leaf"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Taille",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Couleur (vide = couleur du thème)"
+    },
+    {
+      "type": "checkbox",
+      "id": "chip",
+      "label": "Pastille de fond",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        {
+          "value": "start",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icône"
+    }
+  ]
+}
+{% endschema %}

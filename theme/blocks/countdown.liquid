@@ -1,0 +1,56 @@
+{%- assign cd_end = block.settings.end_date | append: 'T' | append: block.settings.end_time | append: ':00' -%}
+<div class="tb vis-{{ block.settings.visibility }} tb-countdown countdown" data-countdown-wrap {{ block.shopify_attributes }}>
+  {%- if block.settings.label != blank -%}<p class="countdown__label">{% render 'icon', name: 'clock', size: 18 %} {{ block.settings.label }}</p>{%- endif -%}
+  <div class="countdown__timer" data-countdown="{{ cd_end }}" data-hide-ended="true" role="timer"><span><b data-cd="d">00</b><small>{{ 'features.countdown.days' | t }}</small></span><span><b data-cd="h">00</b><small>{{ 'features.countdown.hours' | t }}</small></span><span><b data-cd="m">00</b><small>{{ 'features.countdown.minutes' | t }}</small></span><span><b data-cd="s">00</b><small>{{ 'features.countdown.seconds' | t }}</small></span></div>
+</div>
+
+{% schema %}
+{
+  "name": "Compte à rebours",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texte",
+      "default": "L'offre se termine dans"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Date de fin (AAAA-MM-JJ)",
+      "default": "2026-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "Heure de fin (HH:MM)",
+      "default": "23:59"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compte à rebours"
+    }
+  ]
+}
+{% endschema %}

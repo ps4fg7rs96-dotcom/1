@@ -1,4 +1,4 @@
-<div class="rte tb-text{% if block.settings.muted %} muted{% endif %}" style="text-align: {{ block.settings.align }}; font-size: {{ block.settings.size }}rem" {{ block.shopify_attributes }}>
+<div class="vis-{{ block.settings.visibility }} rte tb-text{% if block.settings.muted %} muted{% endif %}" style="text-align: {{ block.settings.align }}; font-size: {{ block.settings.size }}rem" {{ block.shopify_attributes }}>
   {{ block.settings.text }}
 </div>
 
@@ -6,11 +6,68 @@
 {
   "name": "Texte",
   "settings": [
-    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Racontez votre histoire, présentez une offre ou rassurez vos clients.</p>" },
-    { "type": "select", "id": "align", "label": "Alignement", "options": [{ "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" }], "default": "left" },
-    { "type": "range", "id": "size", "min": 0.8, "max": 1.4, "step": 0.1, "label": "Taille (rem)", "default": 1 },
-    { "type": "checkbox", "id": "muted", "label": "Couleur atténuée", "default": false }
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Racontez votre histoire, présentez une offre ou rassurez vos clients.</p>"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "min": 0.8,
+      "max": 1.4,
+      "step": 0.1,
+      "label": "Taille (rem)",
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Couleur atténuée",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
   ],
-  "presets": [{ "name": "Texte" }]
+  "presets": [
+    {
+      "name": "Texte"
+    }
+  ]
 }
 {% endschema %}

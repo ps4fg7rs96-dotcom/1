@@ -1,5 +1,5 @@
 {%- assign tag = block.settings.level | default: 'h2' -%}
-<{{ tag }} class="tb-heading {{ block.settings.size }}" style="text-align: {{ block.settings.align }}" {{ block.shopify_attributes }}>
+<{{ tag }} class="vis-{{ block.settings.visibility }} tb-heading {{ block.settings.size }}" style="text-align: {{ block.settings.align }}" {{ block.shopify_attributes }}>
   {%- if block.settings.eyebrow != blank -%}<span class="eyebrow" style="display:flex; justify-content: {% if block.settings.align == 'center' %}center{% else %}flex-start{% endif %}; margin-bottom: .75rem;">{{ block.settings.eyebrow }}</span>{%- endif -%}
   {{ block.settings.text }}
 </{{ tag }}>
@@ -8,12 +8,98 @@
 {
   "name": "Titre",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
-    { "type": "text", "id": "text", "label": "Texte", "default": "Un titre qui donne envie" },
-    { "type": "select", "id": "level", "label": "Niveau", "options": [{ "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "p", "label": "Paragraphe" }], "default": "h2" },
-    { "type": "select", "id": "size", "label": "Taille", "options": [{ "value": "h1", "label": "Grande" }, { "value": "h2", "label": "Moyenne" }, { "value": "h3", "label": "Petite" }], "default": "h2" },
-    { "type": "select", "id": "align", "label": "Alignement", "options": [{ "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" }], "default": "left" }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Texte",
+      "default": "Un titre qui donne envie"
+    },
+    {
+      "type": "select",
+      "id": "level",
+      "label": "Niveau",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "p",
+          "label": "Paragraphe"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Taille",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Grande"
+        },
+        {
+          "value": "h2",
+          "label": "Moyenne"
+        },
+        {
+          "value": "h3",
+          "label": "Petite"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
   ],
-  "presets": [{ "name": "Titre" }]
+  "presets": [
+    {
+      "name": "Titre"
+    }
+  ]
 }
 {% endschema %}

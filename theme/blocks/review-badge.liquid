@@ -1,0 +1,81 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-rbadge" {{ block.shopify_attributes }}>{% render 'review-badge', style: block.settings.style, rating: block.settings.rating, count: block.settings.count, label: block.settings.label, link: block.settings.link %}</div>
+
+{% schema %}
+{
+  "name": "Badge d'avis",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "neutral",
+          "label": "Neutre"
+        },
+        {
+          "value": "google",
+          "label": "Style Google"
+        },
+        {
+          "value": "trustpilot",
+          "label": "Style Trustpilot"
+        }
+      ],
+      "default": "neutral"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Note sur 5",
+      "default": "[4,8]"
+    },
+    {
+      "type": "text",
+      "id": "count",
+      "label": "Nombre d'avis",
+      "default": "[250]"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Libellé",
+      "default": "avis vérifiés"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Lien vers la page d'avis"
+    },
+    {
+      "type": "paragraph",
+      "content": "N'affichez que votre vraie note. Les logos des plateformes ne sont pas reproduits : seul le style s'en inspire."
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Badge d'avis"
+    }
+  ]
+}
+{% endschema %}

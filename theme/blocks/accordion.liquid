@@ -1,0 +1,49 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-accordion accordion" {{ block.shopify_attributes }}>
+  {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+  {%- for it in items -%}{%- assign parts = it | strip | split: '|' -%}{%- if parts.size > 0 -%}<details{% if forloop.first and block.settings.open %} open{% endif %}><summary><h3>{{ parts[0] | strip }}</h3><span class="accordion__icon">{% render 'icon', name: 'plus', size: 18 %}</span></summary><div class="accordion__body">{{ parts[1] | strip }}</div></details>{%- endif -%}{%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Accordéon",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Questions (une par ligne : question | réponse)",
+      "default": "Quels délais de livraison ? | 48 h en France métropolitaine.\nPuis-je retourner un article ? | Oui, pendant 30 jours."
+    },
+    {
+      "type": "checkbox",
+      "id": "open",
+      "label": "Ouvrir le premier",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordéon"
+    }
+  ]
+}
+{% endschema %}

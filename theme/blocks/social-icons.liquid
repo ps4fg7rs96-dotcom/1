@@ -1,0 +1,38 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-social" {{ block.shopify_attributes }}>{% render 'social-icons' %}</div>
+
+{% schema %}
+{
+  "name": "Icônes de réseaux sociaux",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Liens définis dans Paramètres du thème › Réseaux sociaux."
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icônes de réseaux sociaux"
+    }
+  ]
+}
+{% endschema %}

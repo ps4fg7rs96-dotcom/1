@@ -1,17 +1,93 @@
-<div class="tb-group" style="display: flex; flex-direction: {{ block.settings.direction }}; flex-wrap: wrap; gap: {{ block.settings.gap }}px; align-items: {{ block.settings.align }}; {% if block.settings.card %}padding: 1.5rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-border);{% endif %}" {{ block.shopify_attributes }}>
+<div class="vis-{{ block.settings.visibility }} tb-group" style="display: flex; flex-direction: {{ block.settings.direction }}; flex-wrap: wrap; gap: {{ block.settings.gap }}px; align-items: {{ block.settings.align }}; {% if block.settings.card %}padding: 1.5rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-border);{% endif %}" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
 {% schema %}
 {
   "name": "Groupe",
-  "blocks": [{ "type": "@theme" }],
-  "settings": [
-    { "type": "select", "id": "direction", "label": "Disposition", "options": [{ "value": "column", "label": "Verticale" }, { "value": "row", "label": "Horizontale" }], "default": "column" },
-    { "type": "select", "id": "align", "label": "Alignement", "options": [{ "value": "flex-start", "label": "Début" }, { "value": "center", "label": "Centre" }, { "value": "stretch", "label": "Étiré" }], "default": "flex-start" },
-    { "type": "range", "id": "gap", "min": 0, "max": 48, "step": 4, "unit": "px", "label": "Espacement", "default": 16 },
-    { "type": "checkbox", "id": "card", "label": "Style carte", "default": false }
+  "blocks": [
+    {
+      "type": "@theme"
+    }
   ],
-  "presets": [{ "name": "Groupe" }]
+  "settings": [
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Disposition",
+      "options": [
+        {
+          "value": "column",
+          "label": "Verticale"
+        },
+        {
+          "value": "row",
+          "label": "Horizontale"
+        }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Début"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "stretch",
+          "label": "Étiré"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Espacement",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "card",
+      "label": "Style carte",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Groupe"
+    }
+  ]
 }
 {% endschema %}

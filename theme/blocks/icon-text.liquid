@@ -1,0 +1,217 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-icon-text tb-icon-text--{{ block.settings.layout }}" {{ block.shopify_attributes }}>
+  <span class="icon-chip">{% render 'icon', name: block.settings.icon, size: 22 %}</span>
+  <div>{%- if block.settings.title != blank -%}<p class="tb-icon-text__title">{{ block.settings.title }}</p>{%- endif -%}{%- if block.settings.text != blank -%}<div class="rte muted small">{{ block.settings.text }}</div>{%- endif -%}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Icône avec texte",
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icône",
+      "options": [
+        {
+          "value": "truck",
+          "label": "Livraison"
+        },
+        {
+          "value": "refresh",
+          "label": "Retour"
+        },
+        {
+          "value": "shield",
+          "label": "Bouclier"
+        },
+        {
+          "value": "lock",
+          "label": "Cadenas"
+        },
+        {
+          "value": "leaf",
+          "label": "Feuille"
+        },
+        {
+          "value": "heart",
+          "label": "Cœur"
+        },
+        {
+          "value": "gift",
+          "label": "Cadeau"
+        },
+        {
+          "value": "award",
+          "label": "Médaille"
+        },
+        {
+          "value": "star",
+          "label": "Étoile"
+        },
+        {
+          "value": "chat",
+          "label": "Discussion"
+        },
+        {
+          "value": "headset",
+          "label": "Support"
+        },
+        {
+          "value": "droplet",
+          "label": "Goutte"
+        },
+        {
+          "value": "recycle",
+          "label": "Recyclage"
+        },
+        {
+          "value": "package",
+          "label": "Colis"
+        },
+        {
+          "value": "credit-card",
+          "label": "Carte bancaire"
+        },
+        {
+          "value": "clock",
+          "label": "Horloge"
+        },
+        {
+          "value": "flag",
+          "label": "Drapeau"
+        },
+        {
+          "value": "bolt",
+          "label": "Éclair"
+        },
+        {
+          "value": "sparkle",
+          "label": "Étincelle"
+        },
+        {
+          "value": "paw",
+          "label": "Patte"
+        },
+        {
+          "value": "coffee",
+          "label": "Tasse"
+        },
+        {
+          "value": "shirt",
+          "label": "Vêtement"
+        },
+        {
+          "value": "scale",
+          "label": "Balance"
+        },
+        {
+          "value": "store",
+          "label": "Boutique"
+        },
+        {
+          "value": "check",
+          "label": "Coche"
+        },
+        {
+          "value": "map-pin",
+          "label": "Adresse"
+        },
+        {
+          "value": "phone",
+          "label": "Téléphone"
+        },
+        {
+          "value": "mail",
+          "label": "E-mail"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendrier"
+        },
+        {
+          "value": "percent",
+          "label": "Pourcentage"
+        },
+        {
+          "value": "user-check",
+          "label": "Client vérifié"
+        },
+        {
+          "value": "fire",
+          "label": "Flamme"
+        },
+        {
+          "value": "ruler",
+          "label": "Règle"
+        },
+        {
+          "value": "bell",
+          "label": "Cloche"
+        },
+        {
+          "value": "tag",
+          "label": "Étiquette"
+        },
+        {
+          "value": "globe",
+          "label": "Globe"
+        }
+      ],
+      "default": "truck"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Livraison offerte"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Dès 60 € d'achat.</p>"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Disposition",
+      "options": [
+        {
+          "value": "row",
+          "label": "Icône à gauche"
+        },
+        {
+          "value": "stacked",
+          "label": "Icône au-dessus"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icône avec texte"
+    }
+  ]
+}
+{% endschema %}

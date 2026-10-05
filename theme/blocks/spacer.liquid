@@ -1,0 +1,50 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-spacer" style="height: {{ block.settings.height }}px" aria-hidden="true" {{ block.shopify_attributes }}>{%- if block.settings.line -%}<hr>{%- endif -%}</div>
+
+{% schema %}
+{
+  "name": "Espace / séparateur",
+  "settings": [
+    {
+      "type": "range",
+      "id": "height",
+      "min": 4,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Hauteur",
+      "default": 32
+    },
+    {
+      "type": "checkbox",
+      "id": "line",
+      "label": "Ligne de séparation",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Espace / séparateur"
+    }
+  ]
+}
+{% endschema %}

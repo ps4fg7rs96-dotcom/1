@@ -1,0 +1,54 @@
+{%- assign p = block.settings.product -%}
+<div class="tb vis-{{ block.settings.visibility }} tb-mini mini-product" {{ block.shopify_attributes }}>
+  {%- if p != blank -%}
+    <a href="{{ p.url }}" class="mini-product__img">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}</a>
+    <div class="mini-product__info"><a href="{{ p.url }}">{{ p.title }}</a>{% render 'price', product: p %}</div>
+    {%- if block.settings.show_button -%}<button type="button" class="btn btn--secondary btn--sm" data-quick-view="{{ p.url }}">{{ 'features.shop_now' | t }}</button>{%- endif -%}
+  {%- else -%}
+    <span class="mini-product__img">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</span><div class="mini-product__info"><span>{{ 'products.product.example_title' | t }}</span></div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Mini carte produit",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produit"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Bouton « Acheter » (aperçu rapide)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mini carte produit"
+    }
+  ]
+}
+{% endschema %}

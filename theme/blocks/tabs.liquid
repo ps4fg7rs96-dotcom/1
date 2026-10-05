@@ -1,0 +1,129 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-tabs" data-tabs {{ block.shopify_attributes }}>
+  <div class="tabs-bar" role="tablist">
+    {%- for i in (1..4) -%}{%- assign tk = 'title_' | append: i -%}{%- if block.settings[tk] != blank -%}<button type="button" role="tab" class="chip" id="T-{{ block.id }}-{{ i }}" aria-controls="P-{{ block.id }}-{{ i }}" aria-selected="{% if i == 1 %}true{% else %}false{% endif %}" tabindex="{% if i == 1 %}0{% else %}-1{% endif %}">{{ block.settings[tk] }}</button>{%- endif -%}{%- endfor -%}
+  </div>
+  {%- for i in (1..4) -%}
+    {%- liquid
+      assign tk = 'title_' | append: i
+      assign ck = 'content_' | append: i
+      assign pk = 'page_' | append: i
+    -%}
+    {%- if block.settings[tk] != blank -%}<div role="tabpanel" id="P-{{ block.id }}-{{ i }}" aria-labelledby="T-{{ block.id }}-{{ i }}" class="rte tb-tabs__panel"{% unless i == 1 %} hidden{% endunless %}>{{ block.settings[ck] }}{%- if block.settings[pk] != blank -%}{{ block.settings[pk].content }}{%- endif -%}</div>{%- endif -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Onglets",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Onglet 1"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Titre",
+      "default": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "content_1",
+      "label": "Contenu",
+      "default": "<p>Contenu de l'onglet.</p>"
+    },
+    {
+      "type": "page",
+      "id": "page_1",
+      "label": "Ou contenu d'une page"
+    },
+    {
+      "type": "header",
+      "content": "Onglet 2"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Titre",
+      "default": "Utilisation"
+    },
+    {
+      "type": "richtext",
+      "id": "content_2",
+      "label": "Contenu",
+      "default": "<p>Contenu de l'onglet.</p>"
+    },
+    {
+      "type": "page",
+      "id": "page_2",
+      "label": "Ou contenu d'une page"
+    },
+    {
+      "type": "header",
+      "content": "Onglet 3"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Titre",
+      "default": "Livraison"
+    },
+    {
+      "type": "richtext",
+      "id": "content_3",
+      "label": "Contenu",
+      "default": "<p>Contenu de l'onglet.</p>"
+    },
+    {
+      "type": "page",
+      "id": "page_3",
+      "label": "Ou contenu d'une page"
+    },
+    {
+      "type": "header",
+      "content": "Onglet 4"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "Titre",
+      "default": ""
+    },
+    {
+      "type": "richtext",
+      "id": "content_4",
+      "label": "Contenu"
+    },
+    {
+      "type": "page",
+      "id": "page_4",
+      "label": "Ou contenu d'une page"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Onglets"
+    }
+  ]
+}
+{% endschema %}

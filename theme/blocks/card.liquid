@@ -1,0 +1,219 @@
+<div class="tb vis-{{ block.settings.visibility }} tb-card tb-card--{{ block.settings.style }} scheme-{{ block.settings.color_scheme }}{% if block.settings.image != blank %} tb-card--image{% endif %}" style="--pad: {{ block.settings.padding }}px; --min-h: {{ block.settings.min_height }}px; --overlay: {{ block.settings.overlay | divided_by: 100.0 }}; text-align: {{ block.settings.align }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.image != blank -%}<div class="tb-card__bg">{{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 800, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: '' }}</div>{%- endif -%}
+  <div class="tb-card__content tb-card__content--{{ block.settings.valign }}">{% content_for 'blocks' %}</div>
+  {%- if block.settings.link != blank -%}<a class="tb-card__link" href="{{ block.settings.link }}" aria-label="{{ block.settings.link_label | escape }}"></a>{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Carte",
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image de fond"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Assombrissement de l'image",
+      "default": 35
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "surface",
+          "label": "Carte"
+        },
+        {
+          "value": "outline",
+          "label": "Contour"
+        },
+        {
+          "value": "plain",
+          "label": "Sans fond"
+        }
+      ],
+      "default": "surface"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Thème"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "tint",
+          "label": "Teintée"
+        },
+        {
+          "value": "dark",
+          "label": "Sombre"
+        },
+        {
+          "value": "primary",
+          "label": "Couleur primaire"
+        },
+        {
+          "value": "accent",
+          "label": "Couleur d'accent"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 8,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge intérieure",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 0,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Hauteur minimale",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "valign",
+      "label": "Contenu",
+      "options": [
+        {
+          "value": "start",
+          "label": "En haut"
+        },
+        {
+          "value": "center",
+          "label": "Au centre"
+        },
+        {
+          "value": "end",
+          "label": "En bas"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Lien de toute la carte"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Nom accessible du lien",
+      "default": "En savoir plus"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Afficher sur",
+      "options": [
+        {
+          "value": "all",
+          "label": "Tous les écrans"
+        },
+        {
+          "value": "mobile",
+          "label": "Mobile uniquement"
+        },
+        {
+          "value": "desktop",
+          "label": "Ordinateur uniquement"
+        }
+      ],
+      "default": "all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carte",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "text": "Un titre de carte",
+            "level": "h3",
+            "size": "h3"
+          }
+        },
+        {
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Carte avec image de fond",
+      "settings": {
+        "color_scheme": "dark",
+        "min_height": 360,
+        "valign": "end"
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "text": "Nouvelle collection",
+            "level": "h3",
+            "size": "h2"
+          }
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
