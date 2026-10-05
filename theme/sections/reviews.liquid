@@ -1,0 +1,154 @@
+{%- comment -%}
+  AVIS CLIENTS — note moyenne et répartition calculées à partir des avis saisis (blocs),
+  filtre par étoiles, photos, badge « achat vérifié ». Pour des avis collectés automatiquement,
+  ajoutez plutôt le bloc de votre application d'avis (Judge.me, Shopify Product Reviews…).
+  Ne publiez que de vrais avis : les textes par défaut sont des espaces réservés.
+{%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign reviews = section.blocks | where: 'type', 'review'
+  assign total = 0
+  assign sum = 0
+  assign c5 = 0
+  assign c4 = 0
+  assign c3 = 0
+  assign c2 = 0
+  assign c1 = 0
+  for r in reviews
+    assign total = total | plus: 1
+    assign sum = sum | plus: r.settings.rating
+    case r.settings.rating
+      when 5
+        assign c5 = c5 | plus: 1
+      when 4
+        assign c4 = c4 | plus: 1
+      when 3
+        assign c3 = c3 | plus: 1
+      when 2
+        assign c2 = c2 | plus: 1
+      else
+        assign c1 = c1 | plus: 1
+    endcase
+  endfor
+  assign avg = 0
+  if total > 0
+    assign avg = sum | times: 1.0 | divided_by: total | round: 1
+  endif
+-%}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" id="reviews" data-reviews data-step="{{ section.settings.per_page }}">
+  <div class="page-width">
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, align: 'left' %}
+    <div class="reviews">
+      <aside class="reviews__summary card">
+        <p class="reviews__avg">{{ avg | replace: '.', ',' }}<small>/5</small></p>
+        {% render 'stars', rating: avg %}
+        <p class="small muted">{{ 'sections.reviews.based_on' | t: count: total }}</p>
+        <ul class="reviews__bars" role="list">
+          {%- for star in (1..5) reversed -%}
+            {%- liquid
+              case star
+                when 5
+                  assign n = c5
+                when 4
+                  assign n = c4
+                when 3
+                  assign n = c3
+                when 2
+                  assign n = c2
+                else
+                  assign n = c1
+              endcase
+              assign pct = 0
+              if total > 0
+                assign pct = n | times: 100 | divided_by: total
+              endif
+            -%}
+            <li>
+              <button type="button" class="reviews__bar" data-review-filter="{{ star }}" aria-pressed="false"{% if n == 0 %} disabled{% endif %}>
+                <span>{{ star }} ★</span><span class="reviews__track"><i style="width: {{ pct }}%"></i></span><span class="muted">{{ n }}</span>
+              </button>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <button type="button" class="link small" data-review-filter="all" hidden>{{ 'sections.reviews.show_all' | t }}</button>
+        {%- if section.settings.button_label != blank -%}<a href="{{ section.settings.button_link | default: routes.root_url }}" class="btn btn--secondary btn--block">{{ section.settings.button_label }}</a>{%- endif -%}
+      </aside>
+      <div>
+        <ul class="reviews__list reviews__list--{{ section.settings.layout }}" role="list">
+          {%- for r in reviews -%}
+            <li class="review card" data-rating="{{ r.settings.rating }}"{% if forloop.index > section.settings.per_page %} hidden data-overflow{% endif %} {{ r.shopify_attributes }}>
+              <div class="review__head">
+                <span class="review__avatar" aria-hidden="true">{{ r.settings.author | remove: '[' | slice: 0, 1 }}</span>
+                <div>
+                  <p class="review__author">{{ r.settings.author }}{% if r.settings.verified %} <span class="review__verified">{% render 'icon', name: 'user-check', size: 14 %} {{ 'sections.reviews.verified' | t }}</span>{% endif %}</p>
+                  {% render 'stars', rating: r.settings.rating %}
+                </div>
+                {%- if r.settings.date != blank -%}<span class="small muted review__date">{{ r.settings.date }}</span>{%- endif -%}
+              </div>
+              {%- if r.settings.title != blank -%}<p class="review__title">{{ r.settings.title }}</p>{%- endif -%}
+              <div class="rte review__text">{{ r.settings.text }}</div>
+              {%- if r.settings.image != blank -%}<div class="review__img">{{ r.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '200, 400, 600', sizes: '200px', alt: r.settings.title }}</div>{%- endif -%}
+              {%- if r.settings.product != blank -%}<a href="{{ r.settings.product.url }}" class="review__product small">{{ 'sections.reviews.about' | t }} <b>{{ r.settings.product.title }}</b></a>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- if total > section.settings.per_page -%}
+          <div class="btn-row btn-row--center section-foot"><button type="button" class="btn btn--secondary" data-review-more>{{ 'sections.reviews.more' | t }}</button></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var root = document.currentScript.closest('[data-reviews]');
+      var items = Array.prototype.slice.call(root.querySelectorAll('.review'));
+      var step = Number(root.dataset.step) || 6, shown = step, filter = 'all';
+      var more = root.querySelector('[data-review-more]'), all = root.querySelector('[data-review-filter="all"]');
+      function apply() {
+        var visible = 0;
+        items.forEach(function (it) {
+          var ok = filter === 'all' || it.dataset.rating === filter;
+          if (ok) visible++;
+          it.hidden = !ok || visible > shown;
+        });
+        if (more) more.hidden = visible <= shown;
+        if (all) all.hidden = filter === 'all';
+        root.querySelectorAll('[data-review-filter]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.reviewFilter === filter)); });
+      }
+      root.addEventListener('click', function (e) {
+        var f = e.target.closest('[data-review-filter]');
+        if (f) { filter = filter === f.dataset.reviewFilter ? 'all' : f.dataset.reviewFilter; shown = step; apply(); }
+        if (e.target.closest('[data-review-more]')) { shown += step; apply(); }
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Avis" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Ce que nos clients en disent" },
+    { "type": "select", "id": "layout", "label": "Disposition", "options": [{ "value": "grid", "label": "Grille" }, { "value": "list", "label": "Liste" }], "default": "grid" },
+    { "type": "range", "id": "per_page", "min": 2, "max": 12, "step": 1, "label": "Avis affichés avant « Voir plus »", "default": 6 },
+    { "type": "text", "id": "button_label", "label": "Bouton sous la note", "default": "Laisser un avis" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    { "type": "paragraph", "content": "La note moyenne et la répartition sont calculées à partir des avis ajoutés ci-dessous. Ne publiez que de vrais avis." },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [{ "type": "review", "name": "Avis", "settings": [
+    { "type": "text", "id": "author", "label": "Auteur", "default": "[Prénom N.]" },
+    { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Note", "default": 5 },
+    { "type": "text", "id": "title", "label": "Titre", "default": "[Titre de l'avis]" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>[Avis à remplacer par un vrai témoignage client.]</p>" },
+    { "type": "image_picker", "id": "image", "label": "Photo du client" },
+    { "type": "product", "id": "product", "label": "Produit concerné" },
+    { "type": "text", "id": "date", "label": "Date", "default": "[Mois Année]" },
+    { "type": "checkbox", "id": "verified", "label": "Achat vérifié", "default": true }
+  ] }],
+  "presets": [{ "name": "Avis clients", "blocks": [{ "type": "review" }, { "type": "review", "settings": { "rating": 4 } }, { "type": "review" }] }]
+}
+{% endschema %}

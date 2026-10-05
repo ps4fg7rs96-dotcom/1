@@ -5,7 +5,7 @@ Ce dépôt contient trois livrables autour de la marque **Kinetic** :
 | Livrable | Où | Quoi |
 |---|---|---|
 | **Thème Shopify** (Online Store 2.0) | [`theme/`](theme) → **[`theme.zip`](theme.zip)** | Thème complet, importable tel quel, éditable sans code |
-| **Démo autonome** | **[`demo/demo.html`](demo/demo.html)** | Page d'accueil du thème en un seul fichier HTML, avec l'éditeur en direct interactif |
+| **Démos autonomes** | **[`demo/`](demo)** | 4 pages HTML autonomes générées depuis le thème : accueil (éditeur en direct), sections universelles, fiche produit, collection — avec un sélecteur des 10 styles |
 | Site vitrine (Next.js) | `app/`, `components/`… | Site marketing de la marque (livré précédemment) |
 
 | Documents | |
@@ -28,7 +28,12 @@ Ce dépôt contient trois livrables autour de la marque **Kinetic** :
 
 > Le zip contient directement `layout/`, `templates/`, `sections/`, `snippets/`, `blocks/`, `assets/`, `config/` et `locales/` à sa racine (pas de sous-dossier), comme Shopify l'exige.
 
-**À faire après l'import (2 minutes)** : créer les menus `main-menu` et `footer` dans *Contenu › Menus* si votre boutique ne les a pas, et choisir une collection dans la section « Collection en vedette » du panier.
+**À faire après l'import (5 minutes)** :
+1. *Contenu › Menus* : créer `main-menu` et `footer` si besoin (un menu à 3 niveaux s'affiche automatiquement en méga-menu).
+2. *Paramètres du thème › Style de la boutique* : choisir l'un des 10 styles (ou garder « Mes réglages »).
+3. *Pages* : créer une page « Liste d'envies » avec le modèle **wishlist**, puis la choisir dans *Paramètres du thème › Fonctionnalités*. Idem si besoin pour les modèles **contact** et **stores** (points de vente).
+4. *Paramètres du thème › Panier* : seuils de récompense, produit « emballage cadeau », collection de secours pour les suggestions.
+5. Pour les produits complémentaires et les filtres : installer l'application **gratuite** Shopify *Search & Discovery*.
 
 ### Prévisualiser / développer avec Shopify CLI
 ```bash
@@ -43,50 +48,93 @@ shopify theme push --path theme --unpublished                          # envoyer
 npm install                       # installe liquidjs (rendu de la démo)
 npm run theme:check               # shopify theme check
 npm run theme:zip                 # → theme.zip (vérifié automatiquement)
-npm run demo:build                # → demo/demo.html
+npm run demo:build                # → demo/*.html (4 pages)
 python3 scripts/gen-templates.py  # régénère les templates JSON (contenu FR par défaut)
 python3 scripts/gen-locales.py    # régénère locales/fr.default.json et en.json (clés vérifiées identiques)
+python3 scripts/section-style.py <section>  # ajoute « Palette » + « Espacement » à une nouvelle section
 ```
 
 ### Contenu du thème
 ```
 theme/
-  layout/      theme.liquid (SEO, mode sombre sans flash, tiroir panier), password.liquid
-  templates/   index · product · collection · cart · page · page.landing · blog · article · search · 404 · password (JSON)
-  sections/    hero-editor ★, announcement-bar, header, logo-marquee, benefits, feature-rows, performance,
-               demo-stores, comparison, steps, testimonials, faq, final-cta, footer, featured-collection,
-               custom-section (blocs de thème), hero-banner, main-* (produit, collection, panier, page, blog,
-               article, recherche, 404, mot de passe), product-recommendations, cart-drawer
-               + groupes header-group.json / footer-group.json
+  layout/      theme.liquid (SEO, mode sombre sans flash, tiroir panier, barre mobile), password.liquid
+  templates/   index · product · collection · list-collections · cart · page · page.landing · page.contact ·
+               page.stores · page.wishlist · blog · article · search · 404 · password (JSON) + gift_card.liquid
+  sections/    59 fichiers (dont 26 nouvelles sections universelles) — voir le tableau ci-dessous + groupes header-group.json / footer-group.json
   blocks/      heading, text, button, image, group (blocs de thème imbriquables)
-  snippets/    icon (59 icônes maison), logo, product-card, price, stars, cart-drawer, free-shipping-bar,
-               mockup (visuels CSS), product-art (illustrations SVG), meta-tags, structured-data…
-  assets/      base.css, theme.js (vanilla, ~11 Ko), hero-editor.css/js (chargés par la section seulement),
-               polices woff2 auto-hébergées, kinetic-mark.svg
-  config/      settings_schema.json (logo, couleurs clair/sombre, typo, mise en page, produits, panier, réseaux, SEO)
-               settings_data.json (valeurs de la marque Kinetic par défaut)
-  locales/     fr.default.json, en.json (370 clés chacune)
+  snippets/    product-card, product-gallery, variant-picker, product-json, cart-drawer, cart-upsell,
+               cart-options, free-shipping-bar (paliers), icon (92 icônes), theme-styles (10 styles)…
+  assets/      base.css · theme.js (panier, variantes) · features.js (fonctions « applis », ~34 Ko)
+               sections.css · component-product.css · component-collection.css (chargés à la demande)
+               hero-editor.css/js · polices woff2 auto-hébergées
+  config/      settings_schema.json : style, couleurs, palettes de sections, typo, mise en page, produits,
+               panier, fonctionnalités, réseaux, SEO — settings_data.json : 10 styles prédéfinis
+  locales/     fr.default.json, en.json (473 clés chacune, identiques)
 ```
 
-### Section phare : « Hero éditeur en direct »
-Une reproduction fidèle de **l'éditeur de thème Shopify (version mobile)**, dans une seule carte, entièrement interactive :
-- **barre d'outils** : calques, sélection, annuler / rétablir (Ctrl/Cmd+Z), menu « … » (réinitialiser la démo), bouton « Enregistrer ▾ » grisé tant que rien n'a changé ;
-- **3 boutiques démo** (Sève — cosmétique, Ruelle — café, Altitude — outdoor) : chacune a son bandeau d'annonce, son logo, ses couleurs, sa fiche produit et ses produits associés ;
-- **aperçu défilant** : clic sur un bloc → cadre bleu + étiquette, mini-barre (dupliquer, masquer, supprimer) et « + » rond pour insérer un bloc juste après ;
-- **panneau du bas à 3 vues**, comme dans Shopify :
-  - *arborescence* « Produit par défaut » (En-tête / Modèle › Produit › blocs imbriqués), « ⊕ Ajouter un bloc » dans chaque conteneur, œil pour masquer, repli des groupes, glisser-déposer (ou Alt + flèches) ;
-  - *réglages du bloc* générés depuis son schéma : texte riche (IA, style, gras, italique, lien, listes) mis à jour **en temps réel**, listes déroulantes, curseurs, interrupteurs, couleurs, palettes, choix de produit, marges, classes CSS, « Supprimer le bloc » ;
-  - *catalogue « Ajouter un bloc »* : recherche, onglets Blocs / Applis, « Générer », 30 blocs réels en 6 catégories (Avis, Code personnalisé, Composants de base, Mise en page, Offres, Produit), dont Cross-sell, Compte à rebours qui tourne, Estimation de livraison calculée, Onglets, Accordéons, Slider…
-- 2 cartes KPI sous l'éditeur (valeurs placeholders), note manuscrite avec flèche, fond chaud.
+### S'adapter à n'importe quelle marque : les combinaisons
+| Niveau | Réglage | Choix |
+|---|---|---|
+| Boutique entière | *Style de la boutique* | **10 styles** : Kinetic, Minimaliste, Luxe, Nature & bio, Audacieux (streetwear), Doux (beauté), Tech, Ludique (enfants), Gourmand (épicerie), Sport & outdoor — couleurs, polices, arrondis, forme des boutons et casse des titres changent ensemble |
+| Boutique entière | *Typographie / Mise en page* | polices de la bibliothèque Shopify, casse des titres et des boutons, style des cartes (ombrées, bordure, à plat), largeur, arrondis |
+| Chaque section | *Palette de couleurs* | **8 palettes** : Thème, Alternée, Teintée, Sombre, Primaire, Accent, Personnalisée 1 et 2 (définies dans *Palettes de sections*) |
+| Chaque section | *Espacement vertical* | Aucun, petit, moyen, grand, très grand |
+| En-tête | *Disposition* | logo à gauche / logo centré / logo centré + menu dessous ; fixe, réapparition en remontant ou non fixe |
+| Cartes produit | *Produits* | standard / minimal / encadré, texte à gauche ou centré, format d'image, 2e image au survol, pastilles, badges |
+| Fiche produit | *Galerie* | vignettes dessous / à gauche / grille 2 colonnes / empilée ; galerie à gauche ou à droite ; 3 largeurs ; zoom |
+| Collection | *Filtres* | colonne latérale ou tiroir ; pagination, « Voir plus » ou défilement infini ; 2 à 5 colonnes |
 
-Dans l'éditeur Shopify : **boutiques démo = blocs « Boutique démo »** (nom, style de logo, couleurs, bandeau d'annonce, produit, prix, note, badges, description, illustration ou image, produits associés, propositions IA), **KPI = blocs « Carte KPI »**, plus titre, sous-titre, boutons, note et teintes de fond.
+### Sections disponibles (Ajouter une section)
+| Catégorie | Sections |
+|---|---|
+| Mise en avant | Diaporama, Bannière (image, vidéo, image mobile), Image avec texte, Texte enrichi, Vidéo (Shopify, YouTube, Vimeo, vidéo achetable), Mosaïque, Bannière compte à rebours, Texte défilant, Hero éditeur en direct |
+| Produits | Collection en vedette (grille ou carrousel), Produits par onglets, Produit en vedette (achetable), Liste de collections, Recommandations, Récemment consultés, Lookbook / shop the look, Galerie sociale achetable |
+| Confiance | Avis clients (note moyenne et répartition, filtres), Témoignages, Barre de réassurance, Colonnes (icônes / images), Chiffres clés, Tableau comparatif, Avant / après, Logos, FAQ |
+| Marque & contact | Frise chronologique, Newsletter (code de bienvenue), Formulaire de contact, Points de vente, Étapes, CTA final, Section libre (blocs imbriqués) |
+| Pied de page | Pop-up (newsletter, code promo, annonce ; délai, défilement, intention de sortie), Vérification de l'âge (désactivées par défaut) |
+
+### Fonctions intégrées qui remplacent des applications payantes
+| Fonction | Où l'activer | Remplace typiquement |
+|---|---|---|
+| Liste d'envies (sans compte) + page dédiée | Paramètres › Fonctionnalités | appli wishlist |
+| Aperçu rapide depuis les cartes | Paramètres › Produits | appli quick view |
+| Recherche prédictive (produits, collections, pages, suggestions) | En-tête | appli de recherche |
+| Méga-menu avec visuels | En-tête › bloc Méga-menu | appli de menu |
+| Pastilles de couleur, badges auto (promo %, nouveau, `badge:Texte`) | Paramètres › Produits | appli de swatches / badges |
+| Remises par quantité (lots 1/2/3) | Fiche produit › bloc | appli « volume discount » |
+| Souvent achetés ensemble (ajout groupé) | Fiche produit › bloc | appli « bundles / FBT » |
+| Compte à rebours (date fixe ou par visiteur) | Fiche produit, bannière, bandeau | appli countdown |
+| Stock en direct + jauge (vrai stock) | Fiche produit › bloc | appli de stock |
+| Estimation de livraison (jours ouvrés, heure limite) | Fiche produit › bloc | appli « delivery date » |
+| Alerte retour en stock | Fiche produit › bloc | appli « back in stock » |
+| Guide des tailles en fenêtre | Fiche produit › bloc | appli « size chart » |
+| Personnalisation (gravure…), précommande, carte cadeau à offrir | Fiche produit › Boutons d'achat | appli de personnalisation |
+| Zoom plein écran, barre d'achat collante | Fiche produit | appli d'images / sticky cart |
+| Paliers de récompense (livraison puis cadeau) | Paramètres › Panier | appli « free shipping bar » |
+| Suggestions dans le panier, emballage cadeau, code promo, date de livraison, case CGV | Paramètres › Panier | applis d'upsell / cart |
+| Pop-ups et vérification d'âge | Pied de page | applis de pop-up / age gate |
+| Récemment consultés, lookbook, galerie sociale achetable, avant/après, points de vente, avis | Sections | applis dédiées |
+| Barre d'onglets mobile, retour en haut, « Voir plus » / défilement infini | Paramètres › Fonctionnalités, Collection | applis d'UX |
+
+Les blocs d'applications (`@app`) restent pris en charge sur la fiche produit et la collection pour les besoins spécifiques (avis automatiques, abonnements…).
+
+### Section phare : « Hero éditeur en direct »
+Une reproduction fidèle de **l'éditeur de thème Shopify (version mobile)**, dans une seule carte, entièrement interactive : barre d'outils, 3 boutiques démo, aperçu défilant avec sélection de blocs, panneau du bas à 3 vues (arborescence, réglages, catalogue de 30 blocs). Boutiques = blocs « Boutique démo », KPI = blocs « Carte KPI ».
 
 ---
 
-## 2. Démo autonome `demo/demo.html`
+## 2. Démos autonomes `demo/`
 
-Ouvrez simplement le fichier dans un navigateur (double-clic) : aucune dépendance, aucun réseau requis.
-Il est **généré à partir des vrais fichiers du thème** (`scripts/build-demo.mjs` rend `layout/theme.liquid` + `templates/index.json` avec liquidjs, puis intègre CSS, JS et polices) : ce que vous voyez est la page d'accueil du thème. Panier et paiement sont désactivés hors Shopify.
+Ouvrez simplement un fichier dans un navigateur : aucune dépendance, aucun réseau requis. Chaque page est **générée à partir des vrais fichiers du thème** (`scripts/build-demo.mjs` + liquidjs) avec des produits d'exemple illustrés en SVG (`scripts/demo-data.mjs`).
+
+| Page | Contenu |
+|---|---|
+| [`demo.html`](demo/demo.html) | Page d'accueil Kinetic avec l'éditeur en direct |
+| [`sections.html`](demo/sections.html) | Les sections universelles (diaporama, onglets, lookbook, avant/après, avis, comparatif…) |
+| [`produit.html`](demo/produit.html) | Fiche produit complète : pastilles, stock, remises par quantité, lot, livraison, guide des tailles, zoom |
+| [`collection.html`](demo/collection.html) | Collection : filtres en colonne (tiroir sur mobile), pastilles, badges, choix des colonnes |
+
+Un sélecteur **« Style »** (en bas à droite) applique en direct les 10 styles prédéfinis. Panier, paiement et aperçu rapide nécessitent Shopify et sont inactifs hors boutique.
 
 ---
 
@@ -94,13 +142,13 @@ Il est **généré à partir des vrais fichiers du thème** (`scripts/build-demo
 
 | Vérification | Résultat |
 |---|---|
-| `shopify theme check` (CLI 3.94) | **68 fichiers, 0 erreur, 0 avertissement** |
-| `theme.zip` | 76 fichiers, 229 Ko, 8 dossiers à la racine, JSON valides |
-| Éditeur en direct (Playwright, ordinateur + mobile tactile) | sélection, saisie en temps réel, annuler/rétablir, arborescence (œil, fermer), recherche et insertion de blocs (Cross-sell, Compte à rebours dans le groupe vide), suppression, changement de boutique, réinitialisation, Enregistrer : tout passe, aucune erreur JS |
-| Corrections boutique réelle | erreur Liquid en haut de page corrigée, menu mobile affiché en entier (testé à 390 px), lien « Aller au contenu » masqué hors focus |
-| Lighthouse mobile sur la démo (servie en gzip) | **95–97** / 100 / 100 / 100 |
+| `shopify theme check` (CLI 3.94) | **109 fichiers, 0 erreur, 0 avertissement** |
+| `theme.zip` | 121 fichiers, 332 Ko, 8 dossiers à la racine |
+| Fonctions v2 (Playwright, ordinateur + mobile tactile) | **25/25** : pastilles → image, stock et prix ; variante épuisée → alerte retour en stock ; remises par quantité ; total du lot ; guide des tailles et zoom ; liste d'envies (persistante) ; compte à rebours ; onglets ; lookbook ; avant/après ; diaporama ; points de vente ; tiroir de filtres mobile ; colonnes ; aucune erreur JS |
+| Éditeur en direct (non-régression) | 12/12 |
+| Lighthouse mobile (démos servies en gzip) | accueil **93** · sections **99** · produit **100** · collection **100** en performance ; **100** en accessibilité, bonnes pratiques et SEO sur les 4 pages |
 
-Limite : le thème n'a pas pu être testé dans une vraie boutique Shopify depuis cet environnement (pas d'accès à une boutique). Les gabarits commerce (produit, collection, panier…) sont validés par `theme check`, mais doivent être vérifiés avec `shopify theme dev` sur une boutique de développement.
+Limite : le thème n'a pas pu être testé dans une vraie boutique Shopify depuis cet environnement. Les fonctions qui dépendent de Shopify (panier AJAX, aperçu rapide, recherche prédictive, filtres, code promo, retrait en boutique, paiement fractionné) suivent les API documentées et sont validées par `theme check`, mais doivent être vérifiées sur la boutique après import.
 
 ---
 

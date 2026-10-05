@@ -696,6 +696,77 @@
     "b1",
     "b2"
    ]
+  },
+  "reviews": {
+   "type": "reviews",
+   "settings": {
+    "heading": "Ce que nos clients en disent",
+    "per_page": 4
+   },
+   "blocks": {
+    "r0": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "gourde-crete"
+     }
+    },
+    "r1": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "serum-eclat"
+     }
+    },
+    "r2": {
+     "type": "review",
+     "settings": {
+      "rating": 4,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "espresso-3"
+     }
+    },
+    "r3": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "bougie-lueur"
+     }
+    },
+    "r4": {
+     "type": "review",
+     "settings": {
+      "rating": 3,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "tasse-double-paroi"
+     }
+    },
+    "r5": {
+     "type": "review",
+     "settings": {
+      "rating": 5,
+      "title": "[Titre de l'avis]",
+      "author": "[Prénom N.]",
+      "product": "brume-tonique"
+     }
+    }
+   },
+   "block_order": [
+    "r0",
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5"
+   ]
   }
  },
  "order": [
@@ -713,6 +784,7 @@
   "cd",
   "stats",
   "ctable",
+  "reviews",
   "ugc",
   "timeline",
   "rich",

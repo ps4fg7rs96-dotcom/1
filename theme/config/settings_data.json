@@ -42,7 +42,8 @@
     "show_free_shipping": true,
     "free_shipping_threshold": 60,
     "cart_show_note": true,
-    "cart_reassurance": "Paiement sécurisé · Retours gratuits 30 jours"
+    "cart_reassurance": "Paiement sécurisé · Retours gratuits 30 jours",
+    "style_preset": "custom"
   },
   "presets": {
     "Kinetic": {
@@ -51,7 +52,89 @@
       "color_mode": "auto",
       "use_brand_fonts": true,
       "radius": 20,
-      "button_shape": "pill"
+      "button_shape": "pill",
+      "style_preset": "custom"
+    },
+    "Minimaliste": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "minimal"
+    },
+    "Luxe": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "luxe"
+    },
+    "Nature": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "nature"
+    },
+    "Audacieux": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "bold"
+    },
+    "Doux": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "soft"
+    },
+    "Tech": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "tech"
+    },
+    "Ludique": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "playful"
+    },
+    "Gourmand": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "gourmet"
+    },
+    "Sport": {
+      "color_primary": "#2B37DE",
+      "color_accent": "#EC7454",
+      "color_mode": "auto",
+      "use_brand_fonts": true,
+      "radius": 20,
+      "button_shape": "pill",
+      "style_preset": "sport"
     }
   }
 }

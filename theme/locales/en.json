@@ -89,6 +89,16 @@
     "comparison_table": {
       "feature": "Feature"
     },
+    "reviews": {
+      "based_on": {
+        "one": "Based on {{ count }} review",
+        "other": "Based on {{ count }} reviews"
+      },
+      "show_all": "Show all reviews",
+      "verified": "Verified purchase",
+      "about": "About",
+      "more": "Show more reviews"
+    },
     "store_locator": {
       "search": "Search a city, a postcode…",
       "directions": "Directions",
@@ -450,6 +460,8 @@
     "free_shipping_label": "Progress towards free shipping",
     "free_shipping_remaining_html": "Only <strong>{{ amount }}</strong> away from free shipping",
     "free_shipping_done": "Nice, shipping is on us!",
+    "discount": "Discount code",
+    "apply_discount": "Apply",
     "delivery_date": "Preferred delivery date",
     "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}",
     "reward_done": "Nice, you've unlocked {{ reward }}!"
@@ -527,6 +539,8 @@
     "wallet": "Add to Apple Wallet"
   },
   "features": {
+    "mobile_nav": "Quick navigation",
+    "shop": "Shop",
     "add": "Add",
     "choose": "Choose",
     "copy": "Copy",
@@ -551,6 +565,7 @@
       "discount_note": "{{ percent }}% off applied in cart for the full bundle."
     },
     "countdown": {
+      "d": "d",
       "days": "days",
       "hours": "h",
       "minutes": "min",

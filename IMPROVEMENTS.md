@@ -2,6 +2,19 @@
 
 ## Thème Shopify
 
+### Version 2 — fonctions intégrées et combinaisons
+| Amélioration | Où | Pourquoi |
+|---|---|---|
+| **10 styles de boutique en un clic** + 8 palettes par section + espacements | Paramètres du thème, toutes les sections | Le même thème convient à une marque de luxe, de sport, d'épicerie ou pour enfants. |
+| **20+ fonctions d'applis payantes intégrées** (liste d'envies, aperçu rapide, recherche prédictive, méga-menu, remises par quantité, lots, comptes à rebours, stock en direct, livraison estimée, retour en stock, guide des tailles, paliers de récompense, upsell panier, emballage cadeau, pop-ups, vérification d'âge…) | `features.js`, blocs produit, panier, sections | Économie d'abonnements, pas de scripts tiers, cohérence visuelle. |
+| **26 nouvelles sections universelles** | `sections/` | Construire n'importe quelle page sans développeur. |
+| **Fiche produit modulaire** : 4 galeries, zoom, pastilles, 25 types de blocs | `main-product.liquid` | Adapter la fiche au type de produit (mode, cosmétique, alimentaire, tech…). |
+| **Collection** : filtres en colonne / tiroir, pastilles de filtres, vignettes promo, colonnes, « Voir plus » | `main-collection.liquid` | Navigation rapide dans les grands catalogues. |
+| **Carte cadeau**, page **liste d'envies**, **contact**, **points de vente**, **toutes les collections** | `templates/` | Pages souvent oubliées, prêtes à l'emploi. |
+| **Barre d'onglets mobile** façon application | Paramètres › Fonctionnalités | Navigation au pouce. |
+| **Accessibilité 100** sur les démos (rôles, cibles tactiles, diapositives inertes) | partout | Conforme et utilisable au clavier. |
+
+### Version 1
 | Amélioration | Où | Pourquoi |
 |---|---|---|
 | **Éditeur en direct fidèle à Shopify** : arborescence, réglages générés depuis le schéma, catalogue de 30 blocs réellement rendus, glisser-déposer, annuler/rétablir, Enregistrer/Annuler les modifications, 3 boutiques complètes | `sections/hero-editor.liquid`, `assets/hero-editor.js` | Le visiteur *essaie* le produit au lieu de le regarder. |

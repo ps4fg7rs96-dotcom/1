@@ -45,7 +45,7 @@
     {% render 'structured-data-organization' %}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if settings.animations %} has-animations{% endif %}">
+  <body class="template-{{ template.name | handle }}{% if settings.animations %} has-animations{% endif %}{% if settings.mobile_nav and template.name != 'product' %} has-mobile-nav{% endif %}">
     <a class="skip-link btn btn--primary" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
 
     {% sections 'header-group' %}
@@ -61,6 +61,15 @@
     {%- endif -%}
 
     <div class="toast" role="status" aria-live="polite" data-toast></div>
+    {%- if settings.mobile_nav and template.name != 'product' -%}
+      <nav class="mobile-nav" aria-label="{{ 'features.mobile_nav' | t }}">
+        <a href="{{ routes.root_url }}"{% if template.name == 'index' %} aria-current="page"{% endif %}>{% render 'icon', name: 'store', size: 20 %}<span>{{ 'general.home' | t }}</span></a>
+        <a href="{{ routes.search_url }}" data-search-open>{% render 'icon', name: 'search', size: 20 %}<span>{{ 'sections.header.search' | t }}</span></a>
+        <a href="{{ settings.mobile_nav_collections | default: routes.collections_url }}"{% if template.name == 'collection' or template.name == 'list-collections' %} aria-current="page"{% endif %}>{% render 'icon', name: 'grid', size: 20 %}<span>{{ 'features.shop' | t }}</span></a>
+        {%- if settings.wishlist_enable -%}<a href="{{ settings.wishlist_url | default: routes.root_url }}">{% render 'icon', name: 'heart', size: 20 %}<span>{{ 'features.wishlist.title' | t }}</span><b class="cart-count" data-wishlist-count data-count="0"></b></a>{%- endif -%}
+        <a href="{{ routes.cart_url }}" data-cart-open>{% render 'icon', name: 'cart', size: 20 %}<span>{{ 'cart.title' | t }}</span><b class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</b></a>
+      </nav>
+    {%- endif -%}
     {%- if settings.back_to_top -%}
       <button type="button" class="back-to-top" data-back-to-top aria-label="{{ 'features.back_to_top' | t }}">{% render 'icon', name: 'chevron-down', size: 20, class: 'rot-180' %}</button>
     {%- endif -%}

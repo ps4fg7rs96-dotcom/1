@@ -1,7 +1,7 @@
 """Chaînes ajoutées avec les fonctionnalités v2 (fusionnées dans gen-locales.py)."""
 fr_more = {
  "general": {"breadcrumbs": "Fil d'Ariane", "email": "Adresse e-mail", "previous": "Précédent", "next": "Suivant", "yes": "Oui", "no": "Non"},
- "cart": {"delivery_date": "Date de livraison souhaitée", "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}", "reward_done": "Bravo, vous avez débloqué {{ reward }} !"},
+ "cart": {"discount": "Code promo", "apply_discount": "Appliquer", "delivery_date": "Date de livraison souhaitée", "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}", "reward_done": "Bravo, vous avez débloqué {{ reward }} !"},
  "collections": {"count": {"one": "{{ count }} produit", "other": "{{ count }} produits"}, "filters": "Filtrer", "columns": "Nombre de colonnes", "columns_n": "{{ n }} colonnes",
    "results": {"one": "{{ count }} produit", "other": "{{ count }} produits"}, "show_results": "Voir les résultats ({{ count }})", "shown": "{{ shown }} produits affichés sur {{ total }}", "load_more": "Voir plus de produits"},
  "sections": {
@@ -13,6 +13,7 @@ fr_more = {
    "lookbook": {"choose": "Choisissez un produit pour ce point."},
    "before_after": {"label": "Position du comparateur avant / après"},
    "comparison_table": {"feature": "Critère"},
+   "reviews": {"based_on": {"one": "Basée sur {{ count }} avis", "other": "Basée sur {{ count }} avis"}, "show_all": "Afficher tous les avis", "verified": "Achat vérifié", "about": "À propos de", "more": "Voir plus d'avis"},
    "store_locator": {"search": "Rechercher une ville, un code postal…", "directions": "Itinéraire", "empty": "Aucun point de vente ne correspond."},
    "header": {"view_all": "Tout voir", "popular": "Recherches populaires", "suggestions": "Suggestions", "pages": "Collections et pages", "see_all": "Voir tous les résultats pour « {{ terms }} »"}},
  "products": {"product": {
@@ -24,17 +25,17 @@ fr_more = {
    "pickup_available": "Retrait disponible à {{ location }}", "back_in_stock_body": "Alerte retour en stock : {{ title }}"}},
  "gift_card": {"title": "Votre carte cadeau", "initial": "Valeur initiale : {{ amount }}", "disabled": "Carte expirée ou désactivée", "expires": "Valable jusqu'au {{ date }}", "shop": "Commencer mes achats", "print": "Imprimer", "wallet": "Ajouter à Apple Wallet"},
  "features": {
-   "add": "Ajouter", "choose": "Choisir", "copy": "Copier", "shop_now": "Acheter", "share": "Partager", "copied": "Code copié !", "link_copied": "Lien copié",
+   "mobile_nav": "Navigation rapide", "shop": "Boutique", "add": "Ajouter", "choose": "Choisir", "copy": "Copier", "shop_now": "Acheter", "share": "Partager", "copied": "Code copié !", "link_copied": "Lien copié",
    "back_to_top": "Retour en haut de page", "quick_view": "Aperçu rapide", "quick_view_of": "Aperçu rapide de {{ title }}",
    "view_details": "Voir la fiche complète",
    "wishlist": {"empty": "Votre liste d'envies est vide. Touchez le cœur d'un produit pour l'ajouter.", "title": "Liste d'envies", "toggle": "Ajouter {{ title }} à la liste d'envies", "added": "Ajouté à votre liste d'envies", "removed": "Retiré de votre liste d'envies"},
    "bundle": {"this_item": "Cet article :", "total": "Total", "discount_note": "Remise de {{ percent }} % appliquée au panier pour le lot complet."},
-   "countdown": {"days": "jours", "hours": "h", "minutes": "min", "seconds": "s"},
+   "countdown": {"d": "j", "days": "jours", "hours": "h", "minutes": "min", "seconds": "s"},
    "delivery": {"between": "Livraison estimée entre le", "and": "et le", "order_within": "Commandez dans les", "ships_today": "pour une expédition aujourd'hui"}},
 }
 en_more = {
  "general": {"breadcrumbs": "Breadcrumbs", "email": "Email address", "previous": "Previous", "next": "Next", "yes": "Yes", "no": "No"},
- "cart": {"delivery_date": "Preferred delivery date", "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}", "reward_done": "Nice, you've unlocked {{ reward }}!"},
+ "cart": {"discount": "Discount code", "apply_discount": "Apply", "delivery_date": "Preferred delivery date", "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}", "reward_done": "Nice, you've unlocked {{ reward }}!"},
  "collections": {"count": {"one": "{{ count }} product", "other": "{{ count }} products"}, "filters": "Filter", "columns": "Number of columns", "columns_n": "{{ n }} columns",
    "results": {"one": "{{ count }} product", "other": "{{ count }} products"}, "show_results": "Show results ({{ count }})", "shown": "Showing {{ shown }} of {{ total }} products", "load_more": "Load more products"},
  "sections": {
@@ -46,6 +47,7 @@ en_more = {
    "lookbook": {"choose": "Pick a product for this hotspot."},
    "before_after": {"label": "Before / after slider position"},
    "comparison_table": {"feature": "Feature"},
+   "reviews": {"based_on": {"one": "Based on {{ count }} review", "other": "Based on {{ count }} reviews"}, "show_all": "Show all reviews", "verified": "Verified purchase", "about": "About", "more": "Show more reviews"},
    "store_locator": {"search": "Search a city, a postcode…", "directions": "Directions", "empty": "No store matches."},
    "header": {"view_all": "View all", "popular": "Popular searches", "suggestions": "Suggestions", "pages": "Collections and pages", "see_all": "See all results for “{{ terms }}”"}},
  "products": {"product": {
@@ -57,11 +59,11 @@ en_more = {
    "pickup_available": "Pickup available at {{ location }}", "back_in_stock_body": "Back in stock alert: {{ title }}"}},
  "gift_card": {"title": "Your gift card", "initial": "Initial value: {{ amount }}", "disabled": "Card expired or disabled", "expires": "Valid until {{ date }}", "shop": "Start shopping", "print": "Print", "wallet": "Add to Apple Wallet"},
  "features": {
-   "add": "Add", "choose": "Choose", "copy": "Copy", "shop_now": "Shop now", "share": "Share", "copied": "Code copied!", "link_copied": "Link copied",
+   "mobile_nav": "Quick navigation", "shop": "Shop", "add": "Add", "choose": "Choose", "copy": "Copy", "shop_now": "Shop now", "share": "Share", "copied": "Code copied!", "link_copied": "Link copied",
    "back_to_top": "Back to top", "quick_view": "Quick view", "quick_view_of": "Quick view of {{ title }}",
    "view_details": "View full details",
    "wishlist": {"empty": "Your wishlist is empty. Tap the heart on a product to save it.", "title": "Wishlist", "toggle": "Add {{ title }} to wishlist", "added": "Added to your wishlist", "removed": "Removed from your wishlist"},
    "bundle": {"this_item": "This item:", "total": "Total", "discount_note": "{{ percent }}% off applied in cart for the full bundle."},
-   "countdown": {"days": "days", "hours": "h", "minutes": "min", "seconds": "s"},
+   "countdown": {"d": "d", "days": "days", "hours": "h", "minutes": "min", "seconds": "s"},
    "delivery": {"between": "Estimated delivery between", "and": "and", "order_within": "Order within", "ships_today": "to ship today"}},
 }

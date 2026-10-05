@@ -492,6 +492,20 @@
   const termsInit = () => $$('input[data-terms]').forEach((c) => $$('[name="checkout"]', c.form || document).forEach((b) => { b.disabled = !c.checked; }));
   document.addEventListener('kinetic:cart-updated', termsInit);
 
+  /* ---------- Code promo (panier) ---------- */
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-discount-apply]');
+    if (!b) return;
+    const input = b.parentElement.querySelector('[data-discount-input]');
+    const code = input && input.value.trim();
+    if (!code) { input?.focus(); return; }
+    const back = window.location.pathname + window.location.search;
+    window.location.href = `${root()}discount/${encodeURIComponent(code)}?redirect=${encodeURIComponent(back)}`;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.matches('[data-discount-input]')) { e.preventDefault(); e.target.parentElement.querySelector('[data-discount-apply]')?.click(); }
+  });
+
   /* ---------- Onglets ---------- */
   const tabs = () => {
     $$('[data-tabs]').forEach((w) => {
@@ -574,7 +588,7 @@
         const n = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
         i = n;
         dots.forEach((d, k) => d.setAttribute('aria-current', String(k === n)));
-        slides.forEach((sl, k) => sl.setAttribute('aria-hidden', String(k !== n)));
+        slides.forEach((sl, k) => { sl.inert = k !== n; });
       };
       track.addEventListener('scroll', debounce(sync, 60), { passive: true });
       dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.slideTo))));

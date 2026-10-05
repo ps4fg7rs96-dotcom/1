@@ -8,7 +8,7 @@
         {%- if c.handle == 'frontpage' -%}{%- continue -%}{%- endif -%}
         <li class="clist__item">
           <a href="{{ c.url }}" class="clist__link">
-            <span class="clist__media">{%- if c.featured_image -%}{{ c.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200, 350, 500, 700', sizes: '(min-width: 990px) 25vw, 45vw', alt: c.title }}{%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</span>
+            <span class="clist__media">{%- if c.featured_image -%}{{ c.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200, 350, 500, 700', sizes: '(min-width: 990px) 25vw, 45vw', alt: '' }}{%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</span>
             <span class="clist__title">{{ c.title }}</span>
             <span class="small muted">{{ 'collections.count' | t: count: c.products_count }}</span>
           </a>

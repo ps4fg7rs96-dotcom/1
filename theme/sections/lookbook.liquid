@@ -13,7 +13,7 @@
         {%- for block in section.blocks -%}
           {%- assign p = block.settings.product -%}
           <div class="hotspot" style="--x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%" {{ block.shopify_attributes }}>
-            <button type="button" class="hotspot__dot" data-hotspot aria-expanded="false" aria-controls="Hs-{{ block.id }}" aria-label="{{ p.title | default: 'Produit' | escape }}"><span>{{ forloop.index }}</span></button>
+            <button type="button" class="hotspot__dot" data-hotspot aria-expanded="false" aria-controls="Hs-{{ block.id }}" aria-label="{{ forloop.index }}. {{ p.title | default: 'Produit' | escape }}"><span>{{ forloop.index }}</span></button>
             <div class="hotspot__card card" id="Hs-{{ block.id }}">
               {%- if p != blank -%}
                 <a href="{{ p.url }}" class="hotspot__img">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}</a>

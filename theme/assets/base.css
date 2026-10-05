@@ -950,3 +950,21 @@ textarea.input, .textarea { border-radius: min(var(--input-radius, 12px), 16px);
 @media (max-width: 479px) { .header__account, .header__wishlist { display: none; } }
 .menu-drawer__extra { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
 .menu-drawer__extra a { flex: 1; justify-content: center !important; gap: .5rem; padding: .8rem !important; border: 1px solid var(--c-border) !important; border-radius: var(--btn-radius); font-family: var(--font-body) !important; font-size: .95rem !important; font-weight: 600 !important; }
+.announcement--scheme { background: var(--c-bg); color: var(--c-text); }
+.announcement--scheme a { color: inherit; }
+.announcement__timer { display: inline-flex; align-items: center; gap: .5rem; margin-left: auto; white-space: nowrap; font-weight: 600; }
+.announcement__cd { font-variant-numeric: tabular-nums; }
+.announcement__cd b { display: inline-block; min-width: 1.4em; padding: 0 .15em; border-radius: 4px; background: rgb(255 255 255 / .14); text-align: center; }
+@media (max-width: 749px) { .announcement__timer span:first-child { display: none; } }
+
+/* Barre d'onglets mobile */
+.mobile-nav { display: none; }
+@media (max-width: 749px) {
+  .has-mobile-nav { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+  .mobile-nav { position: fixed; inset: auto 0 0; z-index: 35; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: .35rem .25rem calc(.35rem + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--c-surface) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--c-border); }
+  .mobile-nav a { position: relative; display: grid; justify-items: center; gap: .15rem; padding: .3rem 0; font-size: .68rem; font-weight: 600; color: var(--c-muted); }
+  .mobile-nav a[aria-current="page"] { color: var(--c-text); }
+  .mobile-nav .cart-count { top: 0; right: calc(50% - 1.3rem); }
+  .has-mobile-nav .back-to-top { bottom: 5rem; }
+}
+.product__thumbs > [role="listitem"] { flex: 0 0 4.5rem; } .product__thumbs .product__thumb { display: block; width: 100%; }

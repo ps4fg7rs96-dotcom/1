@@ -24,6 +24,14 @@ Tout se remplace **dans l'éditeur Shopify** (Personnaliser), sans toucher au co
 | Fiche produit › Réassurance, Onglet repliable | « Livraison offerte dès 60 € », « Retours gratuits sous 30 jours »… | `templates/product.json` |
 | Landing page (`page.landing`) | textes d'exemple, FAQ, avis | `templates/page.landing.json` |
 
+| Section « Chiffres clés » | valeurs et libellés `[Clients satisfaits]`… + note de source | sections ajoutées dans l'éditeur |
+| Section « Avis clients » | `[Prénom N.]`, `[Titre de l'avis]`, `[Avis à remplacer…]`, `[Mois Année]` | sections ajoutées dans l'éditeur |
+| Section « Galerie sociale achetable » | auteurs `[@client]` (avec l'accord des personnes) | sections ajoutées dans l'éditeur |
+| Sections « Points de vente » et « Formulaire de contact » | adresses `[Boutique Paris]`, e-mail `[contact@votre-boutique.fr]` | `templates/page.stores.json`, `page.contact.json` |
+| Fiche produit › Remises par quantité / Lot | pourcentages affichés : **créez les réductions correspondantes** dans Shopify › Réductions | `templates/product.json` |
+| Comptes à rebours | date de fin (2026-12-31 par défaut) | blocs et sections |
+| Pop-up | code promo (vide) et texte : section désactivée par défaut | `sections/footer-group.json` |
+
 Note produit : les étoiles des fiches et cartes produit s'affichent **uniquement** si une application d'avis remplit le métachamp `reviews.rating` — rien n'est inventé.
 
 ---

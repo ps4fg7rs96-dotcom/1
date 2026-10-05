@@ -130,6 +130,7 @@
       {%- endif -%}
 
       <div class="collection__products">
+        <h2 class="visually-hidden">{{ 'collections.products' | t }}</h2>
         {%- if collection.products.size > 0 -%}
           <ul id="{{ grid_id }}" class="product-grid" style="--cols-desktop: {{ section.settings.columns }}" role="list">
             {%- for product in collection.products -%}

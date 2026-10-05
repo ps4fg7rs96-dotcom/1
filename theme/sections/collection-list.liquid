@@ -16,7 +16,7 @@
             <span class="clist__media">
               {%- assign img = block.settings.image | default: c.featured_image -%}
               {%- if img != blank -%}
-                {{ img | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200, 350, 500, 700', sizes: '(min-width: 990px) 20vw, 45vw', alt: c.title }}
+                {{ img | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200, 350, 500, 700', sizes: '(min-width: 990px) 20vw, 45vw', alt: '' }}
               {%- else -%}
                 {%- capture ph -%}collection-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
                 {{ ph | placeholder_svg_tag: 'placeholder-svg' }}

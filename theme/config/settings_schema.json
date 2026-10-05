@@ -715,6 +715,12 @@
       },
       {
         "type": "checkbox",
+        "id": "cart_discount_field",
+        "label": "Champ « Code promo » dans le panier",
+        "default": true
+      },
+      {
+        "type": "checkbox",
         "id": "cart_terms",
         "label": "Case « J'accepte les CGV » obligatoire",
         "default": false
@@ -767,6 +773,22 @@
         "id": "back_to_top",
         "label": "Bouton « Retour en haut »",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "Barre de navigation mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_nav",
+        "label": "Barre d'onglets en bas de l'écran (mobile)",
+        "info": "Accueil, recherche, collections, liste d'envies, panier — comme une application.",
+        "default": false
+      },
+      {
+        "type": "url",
+        "id": "mobile_nav_collections",
+        "label": "Lien « Boutique »"
       }
     ]
   },

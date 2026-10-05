@@ -43,10 +43,10 @@
   {%- if product.media.size > 1 -%}
     <div class="product__thumbs" role="list" aria-label="{{ 'products.product.gallery' | t }}">
       {%- for media in product.media -%}
-        <button type="button" class="product__thumb" role="listitem" data-thumb="{{ media.id }}" aria-current="{% if media.id == featured.id %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.show_media' | t: n: forloop.index }}">
+        <span role="listitem"><button type="button" class="product__thumb" data-thumb="{{ media.id }}" aria-current="{% if media.id == featured.id %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.show_media' | t: n: forloop.index }}">
           {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', width: 72, height: 72, alt: '' }}
           {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}<span class="product__thumb-play">{% render 'icon', name: 'play', size: 14 %}</span>{%- endif -%}
-        </button>
+        </button></span>
       {%- endfor -%}
     </div>
   {%- endif -%}

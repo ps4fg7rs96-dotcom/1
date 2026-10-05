@@ -89,6 +89,16 @@
     "comparison_table": {
       "feature": "Critère"
     },
+    "reviews": {
+      "based_on": {
+        "one": "Basée sur {{ count }} avis",
+        "other": "Basée sur {{ count }} avis"
+      },
+      "show_all": "Afficher tous les avis",
+      "verified": "Achat vérifié",
+      "about": "À propos de",
+      "more": "Voir plus d'avis"
+    },
     "store_locator": {
       "search": "Rechercher une ville, un code postal…",
       "directions": "Itinéraire",
@@ -450,6 +460,8 @@
     "free_shipping_label": "Progression vers la livraison offerte",
     "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour la livraison offerte",
     "free_shipping_done": "Bravo, la livraison est offerte !",
+    "discount": "Code promo",
+    "apply_discount": "Appliquer",
     "delivery_date": "Date de livraison souhaitée",
     "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}",
     "reward_done": "Bravo, vous avez débloqué {{ reward }} !"
@@ -527,6 +539,8 @@
     "wallet": "Ajouter à Apple Wallet"
   },
   "features": {
+    "mobile_nav": "Navigation rapide",
+    "shop": "Boutique",
     "add": "Ajouter",
     "choose": "Choisir",
     "copy": "Copier",
@@ -551,6 +565,7 @@
       "discount_note": "Remise de {{ percent }} % appliquée au panier pour le lot complet."
     },
     "countdown": {
+      "d": "j",
       "days": "jours",
       "hours": "h",
       "minutes": "min",

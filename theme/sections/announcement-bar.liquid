@@ -1,6 +1,7 @@
 {%- assign msgs = section.blocks | where: 'type', 'message' -%}
-{%- if msgs.size > 0 -%}
-  <div class="announcement" role="region" aria-label="{{ 'sections.announcement.label' | t }}">
+{%- assign timers = section.blocks | where: 'type', 'countdown' -%}
+{%- if msgs.size > 0 or timers.size > 0 -%}
+  <div class="announcement{% if section.settings.color_scheme != 'default' %} announcement--scheme scheme-{{ section.settings.color_scheme }}{% endif %}" role="region" aria-label="{{ 'sections.announcement.label' | t }}">
     <div class="page-width announcement__inner">
       {%- if section.settings.badge != blank -%}<span class="announcement__badge">{{ section.settings.badge }}</span>{%- endif -%}
       <div class="announcement__slides" data-slides="{{ section.settings.speed | times: 1000 }}">
@@ -13,6 +14,13 @@
           </p>
         {%- endfor -%}
       </div>
+      {%- for block in timers limit: 1 -%}
+        {%- assign cd_end = block.settings.end_date | append: 'T' | append: block.settings.end_time | append: ':00' -%}
+        <p class="announcement__timer" data-countdown-wrap {{ block.shopify_attributes }}>
+          <span>{{ block.settings.text }}</span>
+          <span class="announcement__cd" data-countdown="{{ cd_end }}" data-hide-ended="true" role="timer"><b data-cd="d">00</b>{{ 'features.countdown.d' | t }} <b data-cd="h">00</b>:<b data-cd="m">00</b>:<b data-cd="s">00</b></span>
+        </p>
+      {%- endfor -%}
     </div>
   </div>
 {%- endif -%}
@@ -22,8 +30,54 @@
   "name": "Bandeau annonce",
   "class": "section-announcement",
   "settings": [
-    { "type": "text", "id": "badge", "label": "Badge", "default": "Nouveau" },
-    { "type": "range", "id": "speed", "min": 3, "max": 10, "step": 1, "unit": "s", "label": "Défilement des messages", "default": 5 }
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Nouveau"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Défilement des messages",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        {
+          "value": "default",
+          "label": "Sombre (par défaut)"
+        },
+        {
+          "value": "primary",
+          "label": "Couleur primaire"
+        },
+        {
+          "value": "accent",
+          "label": "Couleur d'accent"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
+      ],
+      "default": "default"
+    }
   ],
   "blocks": [
     {
@@ -31,13 +85,64 @@
       "name": "Message",
       "limit": 5,
       "settings": [
-        { "type": "text", "id": "text", "label": "Texte", "default": "Livraison offerte dès 60 € d'achat" },
-        { "type": "text", "id": "link_label", "label": "Texte du lien" },
-        { "type": "url", "id": "link", "label": "Lien" }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Livraison offerte dès 60 € d'achat"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Texte du lien"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien"
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Compte à rebours",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Soldes : fin dans"
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "Date de fin (AAAA-MM-JJ)",
+          "default": "2026-12-31"
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "Heure de fin (HH:MM)",
+          "default": "23:59"
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Bandeau annonce", "blocks": [{ "type": "message" }] }],
-  "enabled_on": { "groups": ["header"] }
+  "presets": [
+    {
+      "name": "Bandeau annonce",
+      "blocks": [
+        {
+          "type": "message"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
 }
 {% endschema %}

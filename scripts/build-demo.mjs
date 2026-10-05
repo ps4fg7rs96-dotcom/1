@@ -261,6 +261,16 @@ const PAGES = [
   { file: FR ? 'produit.html' : `product.${LOCALE}.html`, template: 'templates/product.json', name: 'product', product: 'gourde-crete', title: FR ? 'Kinetic — Fiche produit' : 'Kinetic — Product page', description: FR ? 'Fiche produit Kinetic : remises par quantité, lot, stock en direct, livraison estimée…' : 'Kinetic product page demo.' },
   { file: FR ? 'collection.html' : `collection.${LOCALE}.html`, template: 'templates/collection.json', name: 'collection', collection: 'tout', title: FR ? 'Kinetic — Collection' : 'Kinetic — Collection', description: FR ? 'Page collection Kinetic : filtres, pastilles, colonnes, vignette promo.' : 'Kinetic collection page demo.' },
 ];
+// Sélecteur de styles (démo uniquement) : variables :root de chaque style prédéfini
+const STYLE_KEYS = [['custom', 'Kinetic'], ['minimal', 'Minimaliste'], ['luxe', 'Luxe'], ['nature', 'Nature & bio'], ['bold', 'Audacieux'], ['soft', 'Doux'], ['tech', 'Tech'], ['playful', 'Ludique'], ['gourmet', 'Gourmand'], ['sport', 'Sport & outdoor']];
+const STYLE_VARS = {};
+for (const [k] of STYLE_KEYS) {
+  Object.assign(GLOBALS, { settings: { ...themeSettings, style_preset: k } });
+  const css = await engine.renderFile('theme-styles', { settings: { ...themeSettings, style_preset: k } });
+  STYLE_VARS[k] = (css.match(/:root\s*\{[\s\S]*?\n  \}/) || [''])[0].replace(/\s+/g, ' ');
+}
+const switcher = `<div id="style-switcher" style="position:fixed;right:1rem;bottom:1rem;z-index:81;display:flex;align-items:center;gap:.5rem;padding:.45rem .55rem .45rem .8rem;border-radius:999px;background:#121214;color:#f1efea;font:600 .78rem system-ui,sans-serif;box-shadow:0 10px 30px rgb(0 0 0 / .3)"><label for="style-select">${LOCALE === 'fr' ? 'Style' : 'Style'}</label><select id="style-select" style="border:0;border-radius:999px;padding:.35rem .6rem;font:inherit;background:#2b2b31;color:#fff">${STYLE_KEYS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('')}</select></div>
+<script>(function(){var V=${JSON.stringify(STYLE_VARS)};var st=document.createElement('style');document.head.appendChild(st);var sel=document.getElementById('style-select');function set(k){st.textContent=k==='custom'?'':V[k];sel.value=k;try{localStorage.setItem('kinetic-demo-style',k)}catch(e){}}sel.addEventListener('change',function(){set(sel.value)});var k='custom';try{k=localStorage.getItem('kinetic-demo-style')||'custom'}catch(e){}set(k);})();</script>`;
 const navLinks = PAGES.map((pg) => `<a href="${pg.file}" style="color:#9da4ff;font-weight:700">${pg.title.replace(/^Kinetic — /, '')}</a>`).join(' · ');
 
 const b64 = (name) => readFileSync(join(THEME, 'assets', name)).toString('base64');
@@ -301,6 +311,7 @@ for (const pg of PAGES) {
     ? `Démo autonome du thème Kinetic — contenu d'exemple, panier et paiements désactivés.<br>Pages : ${navLinks}`
     : `Standalone Kinetic theme demo — sample content, cart and payments disabled.<br>Pages: ${navLinks}`;
   html = html.replace('</body>', `<p style="position:fixed;left:1rem;bottom:1rem;z-index:80;max-width:24rem;margin:0;padding:.6rem .9rem;border-radius:12px;background:#121214;color:#f1efea;font:500 .78rem/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgb(0 0 0 / .3)" id="demo-note">${note} <button type="button" onclick="this.parentNode.remove()" style="margin-left:.4rem;color:#9da4ff;font-weight:700" aria-label="OK">OK</button></p>\n<script>setTimeout(function(){var n=document.getElementById('demo-note');if(n)n.remove()},12000)</script>\n</body>`);
+  html = html.replace('</body>', `${switcher}\n</body>`);
   html = html.replace(/\n\s*\n+/g, '\n');
 
   const out = join(ROOT, 'demo', pg.file);

@@ -26,6 +26,16 @@
     <textarea id="CartNote-{{ uid }}" class="input textarea" name="note" rows="3">{{ cart.note }}</textarea>
   </details>
 {%- endif -%}
+{%- if settings.cart_discount_field -%}
+  <details class="cart-option cart-note cart-discount">
+    <summary>{% render 'icon', name: 'tag', size: 18 %} {{ 'cart.discount' | t }}</summary>
+    <div class="inline-form">
+      <label for="Discount-{{ uid }}" class="visually-hidden">{{ 'cart.discount' | t }}</label>
+      <input id="Discount-{{ uid }}" class="input" type="text" autocomplete="off" autocapitalize="characters" data-discount-input>
+      <button type="button" class="btn btn--secondary" data-discount-apply>{{ 'cart.apply_discount' | t }}</button>
+    </div>
+  </details>
+{%- endif -%}
 {%- if settings.cart_terms -%}
   <label class="cart-option cart-terms">
     <input type="checkbox" data-terms required>
