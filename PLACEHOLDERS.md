@@ -7,6 +7,7 @@ Tout se remplace **dans l'éditeur Shopify** (Personnaliser), sans toucher au co
 | Où (éditeur) | Placeholder | Fichier source |
 |---|---|---|
 | Hero éditeur en direct › Note et avis | `[4,9/5] · [250+] avis vérifiés` | `templates/index.json` |
+| Hero éditeur en direct › blocs Boutique démo | produits, prix, notes (« 4,8/5 (126 avis) ») et descriptions des boutiques fictives Sève, Ruelle, Altitude — exemples de démonstration | `templates/index.json` |
 | Hero éditeur en direct › blocs Carte KPI | `[68,40 €]` `[+12 %]`, `[3,4 %]` `[+0,8 pt]` | `templates/index.json` |
 | Bandeau logos › blocs Logo | `[Logo client 1…8]` → téléversez les logos (SVG/PNG transparent) | `templates/index.json` |
 | Performance › blocs Score et Barre + note | scores 98/100/100/100, `[1,1 s]`, `[3,4 s]` | `templates/index.json` |

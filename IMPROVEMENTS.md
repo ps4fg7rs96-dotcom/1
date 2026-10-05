@@ -4,7 +4,9 @@
 
 | Amélioration | Où | Pourquoi |
 |---|---|---|
-| **Éditeur en direct réellement interactif** (saisie temps réel, 3 boutiques, dupliquer/masquer/supprimer, annuler/rétablir, IA, groupe vide) | `sections/hero-editor.liquid`, `assets/hero-editor.js` | Le visiteur *essaie* le produit au lieu de le regarder. |
+| **Éditeur en direct fidèle à Shopify** : arborescence, réglages générés depuis le schéma, catalogue de 30 blocs réellement rendus, glisser-déposer, annuler/rétablir, Enregistrer/Annuler les modifications, 3 boutiques complètes | `sections/hero-editor.liquid`, `assets/hero-editor.js` | Le visiteur *essaie* le produit au lieu de le regarder. |
+| **Éditeur chargé à la demande** (aperçu statique, activation à l'approche) | `assets/hero-editor.js` | Un éditeur riche sans pénaliser le score mobile. |
+| **Tout est éditable côté marchand** : boutiques démo (bandeau, logo, produits associés, propositions IA) en blocs de section | `hero-editor.liquid` (schéma) | Adapter la démo à sa propre niche sans code. |
 | **Mode sombre** complet (auto / clair / sombre + bouton, sans flash) | `layout/theme.liquid`, `base.css` | Confort, tendance forte, cohérent avec le logo sur fond noir. |
 | **Tiroir panier AJAX** avec quantités, remises et réassurance | `snippets/cart-drawer.liquid`, `theme.js` | Le client reste sur la page produit → moins d'abandons. |
 | **Jauge de livraison offerte** (tiroir, page panier, fiche produit) | `snippets/free-shipping-bar.liquid` | Levier classique d'augmentation du panier moyen. |

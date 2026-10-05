@@ -54,7 +54,15 @@
     document.addEventListener('click', (e) => {
       $$('details[open][data-dismissable]').forEach((d) => { if (!d.contains(e.target)) d.open = false; });
     });
-    $$('.menu-drawer').forEach((d) => d.addEventListener('toggle', () => { document.body.style.overflow = d.open ? 'hidden' : ''; }));
+    // Menu mobile : panneau plein écran sous l'en-tête (l'en-tête perd son flou pour ne pas piéger le position:fixed)
+    $$('.menu-drawer').forEach((d) => d.addEventListener('toggle', () => {
+      const w = d.closest('[data-header]');
+      if (w) {
+        w.classList.toggle('is-menu-open', d.open);
+        document.documentElement.style.setProperty('--header-bottom', `${Math.max(0, w.getBoundingClientRect().bottom)}px`);
+      }
+      document.body.style.overflow = d.open ? 'hidden' : '';
+    }));
   };
 
   /* ---------- Recherche (modale) ---------- */

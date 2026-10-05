@@ -65,19 +65,21 @@ theme/
                polices woff2 auto-hébergées, kinetic-mark.svg
   config/      settings_schema.json (logo, couleurs clair/sombre, typo, mise en page, produits, panier, réseaux, SEO)
                settings_data.json (valeurs de la marque Kinetic par défaut)
-  locales/     fr.default.json, en.json (161 clés chacune)
+  locales/     fr.default.json, en.json (370 clés chacune)
 ```
 
 ### Section phare : « Hero éditeur en direct »
-Une fausse fenêtre d'éditeur de thème, entièrement interactive :
-- barre d'outils (calques, sélection, annuler/rétablir, menu « … », bouton « Enregistrer » avec chevron) ;
-- pastilles pour basculer entre 3 boutiques démo (Sève — cosmétique, Ruelle — café, Altitude — outdoor) : nom, couleurs, produit, illustration et tags changent instantanément ;
-- sélection de bloc au survol/clic : cadre bleu + étiquette, bouton « + » rond, mini-barre (dupliquer, masquer, supprimer) ;
-- panneau de réglages : le champ « Texte » met à jour l'aperçu **en temps réel** ; barre d'édition (IA qui réécrit le titre, taille, gras, italique, lien, listes) ;
-- zone « Groupe vide — cliquez pour ajouter un bloc », annuler/rétablir (Ctrl/Cmd+Z), réinitialisation ;
-- 2 cartes KPI flottantes (valeurs placeholders), mot manuscrit décoratif, fond teinté.
+Une reproduction fidèle de **l'éditeur de thème Shopify (version mobile)**, dans une seule carte, entièrement interactive :
+- **barre d'outils** : calques, sélection, annuler / rétablir (Ctrl/Cmd+Z), menu « … » (réinitialiser la démo), bouton « Enregistrer ▾ » grisé tant que rien n'a changé ;
+- **3 boutiques démo** (Sève — cosmétique, Ruelle — café, Altitude — outdoor) : chacune a son bandeau d'annonce, son logo, ses couleurs, sa fiche produit et ses produits associés ;
+- **aperçu défilant** : clic sur un bloc → cadre bleu + étiquette, mini-barre (dupliquer, masquer, supprimer) et « + » rond pour insérer un bloc juste après ;
+- **panneau du bas à 3 vues**, comme dans Shopify :
+  - *arborescence* « Produit par défaut » (En-tête / Modèle › Produit › blocs imbriqués), « ⊕ Ajouter un bloc » dans chaque conteneur, œil pour masquer, repli des groupes, glisser-déposer (ou Alt + flèches) ;
+  - *réglages du bloc* générés depuis son schéma : texte riche (IA, style, gras, italique, lien, listes) mis à jour **en temps réel**, listes déroulantes, curseurs, interrupteurs, couleurs, palettes, choix de produit, marges, classes CSS, « Supprimer le bloc » ;
+  - *catalogue « Ajouter un bloc »* : recherche, onglets Blocs / Applis, « Générer », 30 blocs réels en 6 catégories (Avis, Code personnalisé, Composants de base, Mise en page, Offres, Produit), dont Cross-sell, Compte à rebours qui tourne, Estimation de livraison calculée, Onglets, Accordéons, Slider…
+- 2 cartes KPI sous l'éditeur (valeurs placeholders), note manuscrite avec flèche, fond chaud.
 
-Dans l'éditeur Shopify : **boutiques démo = blocs « Boutique démo »** (nom, niche, couleurs, produit, prix, note, tags, tag mis en avant, conditionnement, badge, illustration ou image, suggestions IA), **KPI = blocs « Carte KPI »**, plus titre, sous-titre, boutons, note, mot manuscrit et teintes de fond.
+Dans l'éditeur Shopify : **boutiques démo = blocs « Boutique démo »** (nom, style de logo, couleurs, bandeau d'annonce, produit, prix, note, badges, description, illustration ou image, produits associés, propositions IA), **KPI = blocs « Carte KPI »**, plus titre, sous-titre, boutons, note et teintes de fond.
 
 ---
 
@@ -92,10 +94,11 @@ Il est **généré à partir des vrais fichiers du thème** (`scripts/build-demo
 
 | Vérification | Résultat |
 |---|---|
-| `shopify theme check` (CLI 3.94) | **67 fichiers, 0 erreur, 0 avertissement** — y compris sur le contenu extrait de `theme.zip` |
-| `theme.zip` | 75 fichiers, 200 Ko, 8 dossiers à la racine, JSON valides |
-| Éditeur en direct (Playwright, ordinateur + iPhone 13 tactile) | 28/28 tests ×2 : saisie en temps réel, changement de boutique, dupliquer/masquer/supprimer, annuler/rétablir, « + », groupe vide, IA, enregistrer, menu, clavier, aucun débordement, aucune erreur JS |
-| Lighthouse sur la démo (servie en gzip comme sur un hébergeur) | Mobile **93–99** / 100 / 100 / 100 · Ordinateur 100 / 100 / 100 / 100 |
+| `shopify theme check` (CLI 3.94) | **68 fichiers, 0 erreur, 0 avertissement** |
+| `theme.zip` | 76 fichiers, 229 Ko, 8 dossiers à la racine, JSON valides |
+| Éditeur en direct (Playwright, ordinateur + mobile tactile) | sélection, saisie en temps réel, annuler/rétablir, arborescence (œil, fermer), recherche et insertion de blocs (Cross-sell, Compte à rebours dans le groupe vide), suppression, changement de boutique, réinitialisation, Enregistrer : tout passe, aucune erreur JS |
+| Corrections boutique réelle | erreur Liquid en haut de page corrigée, menu mobile affiché en entier (testé à 390 px), lien « Aller au contenu » masqué hors focus |
+| Lighthouse mobile sur la démo (servie en gzip) | **95–97** / 100 / 100 / 100 |
 
 Limite : le thème n'a pas pu être testé dans une vraie boutique Shopify depuis cet environnement (pas d'accès à une boutique). Les gabarits commerce (produit, collection, panier…) sont validés par `theme check`, mais doivent être vérifiés avec `shopify theme dev` sur une boutique de développement.
 
