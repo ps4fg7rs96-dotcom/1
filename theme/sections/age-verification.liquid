@@ -1,0 +1,32 @@
+{%- comment -%} VÉRIFICATION DE L'ÂGE — obligatoire pour l'alcool, le CBD, le vapotage… Mémorisée après confirmation. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<dialog class="modal age-gate" data-age-gate data-locked data-design-mode="{{ request.design_mode }}" aria-labelledby="AgeTitle-{{ section.id }}">
+  <div class="modal__box age-gate__box">
+    {%- if section.settings.logo -%}<div class="age-gate__logo">{% render 'logo' %}</div>{%- endif -%}
+    <div data-age-question>
+      <h2 class="h3" id="AgeTitle-{{ section.id }}">{{ section.settings.heading }}</h2>
+      <div class="rte muted">{{ section.settings.text }}</div>
+      <div class="btn-row btn-row--center">
+        <button type="button" class="btn btn--primary btn--lg" data-age-yes>{{ section.settings.yes }}</button>
+        <button type="button" class="btn btn--secondary btn--lg" data-age-no>{{ section.settings.no }}</button>
+      </div>
+    </div>
+    <div data-age-denied hidden><p class="h4">{{ section.settings.denied }}</p></div>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Vérification de l'âge",
+  "settings": [
+    { "type": "checkbox", "id": "logo", "label": "Afficher le logo", "default": true },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Avez-vous 18 ans ou plus ?" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Ce site est réservé aux personnes majeures.</p>" },
+    { "type": "text", "id": "yes", "label": "Bouton « oui »", "default": "Oui, j'ai 18 ans ou plus" },
+    { "type": "text", "id": "no", "label": "Bouton « non »", "default": "Non" },
+    { "type": "text", "id": "denied", "label": "Message de refus", "default": "Désolé, vous devez être majeur pour accéder à ce site." }
+  ],
+  "presets": [{ "name": "Vérification de l'âge" }],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

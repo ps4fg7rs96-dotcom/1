@@ -1,0 +1,47 @@
+{%- comment -%} TEXTE ENRICHI — titre, texte, boutons, citation, centrés ou alignés. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width rich-text rich-text--{{ section.settings.align }} rich-text--{{ section.settings.width }}" data-reveal>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'eyebrow' -%}<p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'heading' -%}<h2 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+        {%- when 'text' -%}<div class="rte {{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'quote' -%}
+          <figure class="rich-text__quote" {{ block.shopify_attributes }}>
+            <blockquote class="h3">« {{ block.settings.quote }} »</blockquote>
+            {%- if block.settings.author != blank -%}<figcaption class="muted">— {{ block.settings.author }}</figcaption>{%- endif -%}
+          </figure>
+        {%- when 'buttons' -%}
+          <div class="btn-row" {{ block.shopify_attributes }}>
+            {%- if block.settings.label_1 != blank -%}<a href="{{ block.settings.link_1 | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg">{{ block.settings.label_1 }}</a>{%- endif -%}
+            {%- if block.settings.label_2 != blank -%}<a href="{{ block.settings.link_2 | default: routes.all_products_collection_url }}" class="btn btn--secondary btn--lg">{{ block.settings.label_2 }}</a>{%- endif -%}
+          </div>
+        {%- when 'image' -%}
+          {%- if block.settings.image != blank -%}<div class="rich-text__image" style="max-width: {{ block.settings.width }}px" {{ block.shopify_attributes }}>{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '200, 400, 800', sizes: '300px', alt: block.settings.image.alt }}</div>{%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Texte enrichi",
+  "settings": [
+    { "type": "select", "id": "align", "label": "Alignement", "options": [{ "value": "center", "label": "Centre" }, { "value": "left", "label": "Gauche" }], "default": "center" },
+    { "type": "select", "id": "width", "label": "Largeur", "options": [{ "value": "narrow", "label": "Étroite" }, { "value": "medium", "label": "Moyenne" }, { "value": "wide", "label": "Large" }], "default": "medium" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Surtitre", "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "Notre engagement" }] },
+    { "type": "heading", "name": "Titre", "settings": [{ "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Parlez de votre marque" }, { "type": "select", "id": "size", "label": "Taille", "options": [{ "value": "h3", "label": "Petite" }, { "value": "h2", "label": "Moyenne" }, { "value": "h1", "label": "Grande" }, { "value": "h0", "label": "Très grande" }], "default": "h2" }] },
+    { "type": "text", "name": "Texte", "settings": [{ "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Partagez votre histoire, vos valeurs ou une annonce importante avec vos clients.</p>" }, { "type": "select", "id": "size", "label": "Taille", "options": [{ "value": "small", "label": "Petite" }, { "value": "", "label": "Normale" }, { "value": "lead", "label": "Grande" }], "default": "lead" }] },
+    { "type": "quote", "name": "Citation", "settings": [{ "type": "textarea", "id": "quote", "label": "Citation", "default": "Nous fabriquons ce que nous aimerions acheter." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Les fondateurs" }] },
+    { "type": "buttons", "name": "Boutons", "settings": [{ "type": "text", "id": "label_1", "label": "Bouton 1", "default": "Découvrir" }, { "type": "url", "id": "link_1", "label": "Lien 1" }, { "type": "text", "id": "label_2", "label": "Bouton 2" }, { "type": "url", "id": "link_2", "label": "Lien 2" }] },
+    { "type": "image", "name": "Image / logo", "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }, { "type": "range", "id": "width", "min": 40, "max": 400, "step": 10, "unit": "px", "label": "Largeur", "default": 120 }] }
+  ],
+  "presets": [{ "name": "Texte enrichi", "blocks": [{ "type": "heading" }, { "type": "text" }, { "type": "buttons" }] }]
+}
+{% endschema %}

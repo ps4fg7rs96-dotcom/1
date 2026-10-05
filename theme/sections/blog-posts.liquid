@@ -1,0 +1,50 @@
+{%- comment -%} ARTICLES DE BLOG — derniers articles d'un blog, avec image, date et extrait. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width">
+    <div class="section-head-row">
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, align: 'left' %}
+      {%- if section.settings.blog != blank -%}<a href="{{ section.settings.blog.url }}" class="link">{{ 'sections.featured_collection.view_all' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>{%- endif -%}
+    </div>
+    <ul class="posts" style="--cols: {{ section.settings.columns }}" role="list">
+      {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
+        {%- for article in section.settings.blog.articles limit: section.settings.limit -%}
+          <li class="post-card" data-reveal>
+            <a href="{{ article.url }}" class="post-card__media">
+              {%- if article.image -%}{{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 500, 700, 900', sizes: '(min-width: 990px) 33vw, 90vw', alt: article.image.alt | default: article.title }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+            </a>
+            <div class="post-card__body">
+              <p class="small muted">{%- if section.settings.show_date -%}{{ article.published_at | time_tag: format: 'date' }}{%- endif -%}{%- if section.settings.show_author %} · {{ article.author }}{% endif %}</p>
+              <h3 class="h4"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+              {%- if section.settings.show_excerpt -%}<p class="muted">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>{%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          <li class="post-card"><div class="post-card__media">{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}</div><div class="post-card__body"><p class="small muted">{{ 'now' | date: '%d/%m/%Y' }}</p><h3 class="h4">{{ 'sections.blog_posts.example' | t }}</h3></div></li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Articles de blog",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Le journal" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "limit", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Colonnes (ordinateur)", "default": 3 },
+    { "type": "checkbox", "id": "show_date", "label": "Afficher la date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Afficher l'auteur", "default": false },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Afficher l'extrait", "default": true },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "presets": [{ "name": "Articles de blog" }]
+}
+{% endschema %}

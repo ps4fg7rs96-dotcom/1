@@ -675,6 +675,9 @@
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   document.addEventListener('shopify:section:load', init);
+  // Éditeur de thème : ouvre la pop-up / la vérification d'âge quand la section est sélectionnée
+  document.addEventListener('shopify:section:select', (e) => { const d = e.target.querySelector('dialog[data-popup], dialog[data-age-gate]'); if (d) openDialog(d); });
+  document.addEventListener('shopify:section:deselect', (e) => { const d = e.target.querySelector('dialog[data-popup], dialog[data-age-gate]'); if (d) closeDialog(d); });
   document.addEventListener('kinetic:content-added', () => { wishlist.sync(); countdowns(); });
   document.addEventListener('kinetic:cart-updated', () => { countdowns(); });
   K.wishlist = wishlist;

@@ -12,7 +12,11 @@
       "next": "Page suivante",
       "page": "Page {{ number }}"
     },
-    "email": "Adresse e-mail"
+    "email": "Adresse e-mail",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "yes": "Oui",
+    "no": "Non"
   },
   "accessibility": {
     "skip_to_text": "Aller au contenu"
@@ -52,6 +56,42 @@
       "country": "Pays / devise",
       "language": "Langue",
       "payment": "Moyens de paiement acceptés"
+    },
+    "slideshow": {
+      "previous": "Diapositive précédente",
+      "next": "Diapositive suivante",
+      "go_to": "Aller à la diapositive {{ n }}",
+      "pause": "Mettre en pause le défilement"
+    },
+    "video": {
+      "play": "Lire la vidéo : {{ title }}"
+    },
+    "blog_posts": {
+      "example": "Titre de votre article"
+    },
+    "featured_product": {
+      "empty": "Choisissez un produit dans l'éditeur pour l'afficher ici."
+    },
+    "contact": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "order": "Numéro de commande",
+      "subject": "Sujet",
+      "message": "Message"
+    },
+    "lookbook": {
+      "choose": "Choisissez un produit pour ce point."
+    },
+    "before_after": {
+      "label": "Position du comparateur avant / après"
+    },
+    "comparison_table": {
+      "feature": "Critère"
+    },
+    "store_locator": {
+      "search": "Rechercher une ville, un code postal…",
+      "directions": "Itinéraire",
+      "empty": "Aucun point de vente ne correspond."
     }
   },
   "hero_editor": {
@@ -408,7 +448,10 @@
     "error": "Une erreur est survenue, réessayez.",
     "free_shipping_label": "Progression vers la livraison offerte",
     "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour la livraison offerte",
-    "free_shipping_done": "Bravo, la livraison est offerte !"
+    "free_shipping_done": "Bravo, la livraison est offerte !",
+    "delivery_date": "Date de livraison souhaitée",
+    "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}",
+    "reward_done": "Bravo, vous avez débloqué {{ reward }} !"
   },
   "collections": {
     "label": "Collection",
@@ -419,7 +462,11 @@
     "remove_filter": "Retirer le filtre",
     "price_min": "Prix minimum",
     "price_max": "Prix maximum",
-    "empty": "Aucun produit ne correspond à ces filtres."
+    "empty": "Aucun produit ne correspond à ces filtres.",
+    "count": {
+      "one": "{{ count }} produit",
+      "other": "{{ count }} produits"
+    }
   },
   "search": {
     "title": "Recherche",
@@ -462,6 +509,8 @@
   "features": {
     "add": "Ajouter",
     "choose": "Choisir",
+    "copy": "Copier",
+    "shop_now": "Acheter",
     "share": "Partager",
     "copied": "Code copié !",
     "link_copied": "Lien copié",
@@ -470,6 +519,7 @@
     "quick_view_of": "Aperçu rapide de {{ title }}",
     "view_details": "Voir la fiche complète",
     "wishlist": {
+      "empty": "Votre liste d'envies est vide. Touchez le cœur d'un produit pour l'ajouter.",
       "title": "Liste d'envies",
       "toggle": "Ajouter {{ title }} à la liste d'envies",
       "added": "Ajouté à votre liste d'envies",

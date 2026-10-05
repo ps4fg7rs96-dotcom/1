@@ -1,0 +1,67 @@
+{%- comment -%} FORMULAIRE DE CONTACT — champs configurables, coordonnées à côté. Messages reçus par e-mail (Shopify). {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+{%- assign cf_id = 'ContactForm-' | append: section.id -%}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width contact{% if section.blocks.size > 0 %} contact--split{% endif %}">
+    <div class="contact__form">
+      {% render 'section-head', heading: section.settings.heading, lead: section.settings.text, align: 'left' %}
+      {%- form 'contact', id: cf_id -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success" tabindex="-1" autofocus>{{ section.settings.success }}</p>
+        {%- elsif form.errors -%}
+          <p class="form-message form-message--error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <div class="contact__grid">
+          <div class="field"><label for="CfName-{{ section.id }}">{{ 'sections.contact.name' | t }}</label><input id="CfName-{{ section.id }}" class="input" type="text" name="contact[{{ 'sections.contact.name' | t }}]" autocomplete="name" value="{{ form.name }}"></div>
+          <div class="field"><label for="CfEmail-{{ section.id }}">{{ 'general.email' | t }} *</label><input id="CfEmail-{{ section.id }}" class="input" type="email" name="contact[email]" required autocomplete="email" value="{{ form.email }}"></div>
+          {%- if section.settings.show_phone -%}<div class="field"><label for="CfPhone-{{ section.id }}">{{ 'sections.contact.phone' | t }}</label><input id="CfPhone-{{ section.id }}" class="input" type="tel" name="contact[{{ 'sections.contact.phone' | t }}]" autocomplete="tel"></div>{%- endif -%}
+          {%- if section.settings.show_order -%}<div class="field"><label for="CfOrder-{{ section.id }}">{{ 'sections.contact.order' | t }}</label><input id="CfOrder-{{ section.id }}" class="input" type="text" name="contact[{{ 'sections.contact.order' | t }}]"></div>{%- endif -%}
+          {%- if section.settings.subjects != blank -%}
+            {%- assign subjects = section.settings.subjects | split: ',' -%}
+            <div class="field contact__full"><label for="CfSubject-{{ section.id }}">{{ 'sections.contact.subject' | t }}</label>
+              <select id="CfSubject-{{ section.id }}" class="select" name="contact[{{ 'sections.contact.subject' | t }}]">{%- for sj in subjects -%}<option>{{ sj | strip }}</option>{%- endfor -%}</select>
+            </div>
+          {%- endif -%}
+          <div class="field contact__full"><label for="CfMsg-{{ section.id }}">{{ 'sections.contact.message' | t }} *</label><textarea id="CfMsg-{{ section.id }}" class="input textarea" name="contact[body]" rows="6" required>{{ form.body }}</textarea></div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg">{{ section.settings.button }}</button>
+      {%- endform -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <aside class="contact__aside">
+        {%- for block in section.blocks -%}
+          <div class="contact__info card" {{ block.shopify_attributes }}>
+            <span class="icon-chip">{% render 'icon', name: block.settings.icon, size: 22 %}</span>
+            <div><p class="h4">{{ block.settings.title }}</p><div class="rte muted">{{ block.settings.text }}</div></div>
+          </div>
+        {%- endfor -%}
+      </aside>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Formulaire de contact",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Écrivez-nous" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Une question sur une commande ou un produit ? Nous répondons sous 24 h ouvrées.</p>" },
+    { "type": "checkbox", "id": "show_phone", "label": "Champ téléphone", "default": true },
+    { "type": "checkbox", "id": "show_order", "label": "Champ numéro de commande", "default": true },
+    { "type": "text", "id": "subjects", "label": "Sujets (séparés par des virgules)", "default": "Ma commande, Un produit, Un partenariat, Autre" },
+    { "type": "text", "id": "button", "label": "Bouton", "default": "Envoyer" },
+    { "type": "text", "id": "success", "label": "Message de confirmation", "default": "Merci ! Votre message est bien parti, nous revenons vers vous très vite." },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    { "type": "info", "name": "Coordonnée", "limit": 4, "settings": [
+      { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "mail", "label": "E-mail" }, { "value": "phone", "label": "Téléphone" }, { "value": "map-pin", "label": "Adresse" }, { "value": "clock", "label": "Horaires" }, { "value": "chat", "label": "Discussion" }], "default": "mail" },
+      { "type": "text", "id": "title", "label": "Titre", "default": "E-mail" },
+      { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>contact@votre-boutique.fr</p>" }
+    ] }
+  ],
+  "presets": [{ "name": "Formulaire de contact", "blocks": [{ "type": "info" }, { "type": "info", "settings": { "icon": "clock", "title": "Horaires", "text": "<p>Du lundi au vendredi, 9 h – 18 h</p>" } }] }]
+}
+{% endschema %}

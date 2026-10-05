@@ -1,0 +1,34 @@
+{%- comment -%}
+  Options du panier (à placer DANS le formulaire de commande) : emballage cadeau, note, date de livraison, CGV.
+  Paramètre : uid
+{%- endcomment -%}
+{%- assign gw = settings.gift_wrap_product -%}
+{%- if gw != blank and gw.available -%}
+  {%- assign gw_variant = gw.selected_or_first_available_variant -%}
+  {%- assign gw_in = false -%}
+  {%- for item in cart.items -%}{%- if item.variant_id == gw_variant.id -%}{%- assign gw_in = true -%}{%- endif -%}{%- endfor -%}
+  <label class="cart-option cart-option--gift">
+    <input type="checkbox" data-gift-wrap="{{ gw_variant.id }}"{% if gw_in %} checked{% endif %}>
+    <span>{% render 'icon', name: 'gift', size: 18 %} {{ settings.gift_wrap_label }} <b>(+{{ gw_variant.price | money }})</b></span>
+  </label>
+{%- endif -%}
+{%- if settings.cart_delivery_date -%}
+  {%- assign dd_key = 'cart.delivery_date' | t -%}
+  <div class="field cart-option">
+    <label for="DeliveryDate-{{ uid }}">{{ 'cart.delivery_date' | t }}</label>
+    <input id="DeliveryDate-{{ uid }}" class="input" type="date" name="attributes[{{ dd_key }}]" value="{{ cart.attributes[dd_key] }}" min="{{ 'now' | date: '%s' | plus: 172800 | date: '%Y-%m-%d' }}">
+  </div>
+{%- endif -%}
+{%- if settings.cart_show_note -%}
+  <details class="cart-option cart-note"{% if cart.note != blank %} open{% endif %}>
+    <summary>{% render 'icon', name: 'chat', size: 18 %} {{ 'cart.note' | t }}</summary>
+    <label for="CartNote-{{ uid }}" class="visually-hidden">{{ 'cart.note' | t }}</label>
+    <textarea id="CartNote-{{ uid }}" class="input textarea" name="note" rows="3">{{ cart.note }}</textarea>
+  </details>
+{%- endif -%}
+{%- if settings.cart_terms -%}
+  <label class="cart-option cart-terms">
+    <input type="checkbox" data-terms required>
+    <span>{{ settings.cart_terms_text }}</span>
+  </label>
+{%- endif -%}

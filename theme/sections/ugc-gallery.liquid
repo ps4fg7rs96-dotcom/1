@@ -1,0 +1,49 @@
+{%- comment -%}
+  GALERIE SOCIALE ACHETABLE — vos photos Instagram / TikTok / clients, chacune liée à un produit
+  (sans application ni script externe : vous choisissez les images dans l'éditeur).
+{%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" data-carousel>
+  <div class="page-width">
+    <div class="section-head-row">
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, align: 'left' %}
+      {%- if section.settings.handle != blank -%}<a href="{{ section.settings.profile_url | default: settings.social_instagram }}" class="link" target="_blank" rel="noopener">{% render 'icon', name: 'instagram', size: 18 %} {{ section.settings.handle }}</a>{%- endif -%}
+    </div>
+    <ul class="ugc" style="--cols: {{ section.settings.columns }}" role="list" data-carousel-track>
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        <li class="ugc__item" {{ block.shopify_attributes }}>
+          <figure class="ugc__media">
+            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '250, 400, 550, 700', sizes: '(min-width: 990px) 20vw, 60vw', alt: block.settings.image.alt | default: block.settings.author }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+            {%- if block.settings.author != blank -%}<figcaption class="ugc__author">{{ block.settings.author }}</figcaption>{%- endif -%}
+          </figure>
+          {%- if p != blank -%}
+            <button type="button" class="ugc__shop" data-quick-view="{{ p.url }}">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}<span>{{ p.title }}</span>{% render 'icon', name: 'cart', size: 16 %}</button>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Galerie sociale achetable",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Vus chez vous" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Ils l'ont adopté" },
+    { "type": "text", "id": "handle", "label": "Compte (ex. @votremarque)", "default": "@votremarque" },
+    { "type": "url", "id": "profile_url", "label": "Lien du profil" },
+    { "type": "range", "id": "columns", "min": 3, "max": 6, "step": 1, "label": "Images visibles (ordinateur)", "default": 5 },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [{ "type": "post", "name": "Photo", "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "text", "id": "author", "label": "Auteur", "default": "[@client]", "info": "Avec l'accord de la personne." },
+    { "type": "product", "id": "product", "label": "Produit lié" }
+  ] }],
+  "presets": [{ "name": "Galerie sociale achetable", "blocks": [{ "type": "post" }, { "type": "post" }, { "type": "post" }, { "type": "post" }, { "type": "post" }] }]
+}
+{% endschema %}

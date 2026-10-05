@@ -1,0 +1,60 @@
+{%- comment -%} POINTS DE VENTE — liste filtrable de boutiques / revendeurs, horaires, itinéraire Google Maps. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width">
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead %}
+    <div class="stores" data-store-filter>
+      <label class="stores__search">
+        {% render 'icon', name: 'search', size: 18 %}
+        <span class="visually-hidden">{{ 'sections.store_locator.search' | t }}</span>
+        <input class="input" type="search" placeholder="{{ 'sections.store_locator.search' | t }}" data-store-input>
+      </label>
+      <ul class="stores__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- capture q -%}{{ block.settings.name }} {{ block.settings.address | strip_html }}{%- endcapture -%}
+          <li class="store card" data-store="{{ q | downcase | escape }}" {{ block.shopify_attributes }}>
+            <p class="h4">{{ block.settings.name }}</p>
+            <div class="store__address muted">{{ block.settings.address }}</div>
+            {%- if block.settings.hours != blank -%}<p class="store__line">{% render 'icon', name: 'clock', size: 16 %} {{ block.settings.hours }}</p>{%- endif -%}
+            {%- if block.settings.phone != blank -%}<p class="store__line">{% render 'icon', name: 'phone', size: 16 %} <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a></p>{%- endif -%}
+            <a class="link" href="https://www.google.com/maps/search/?api=1&query={{ q | url_encode }}" target="_blank" rel="noopener">{% render 'icon', name: 'map-pin', size: 16 %} {{ 'sections.store_locator.directions' | t }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p class="muted" data-store-empty hidden>{{ 'sections.store_locator.empty' | t }}</p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var root = document.currentScript.closest('section');
+      var input = root.querySelector('[data-store-input]');
+      if (!input) return;
+      input.addEventListener('input', function () {
+        var q = input.value.trim().toLowerCase(), n = 0;
+        root.querySelectorAll('[data-store]').forEach(function (s) { var ok = !q || s.dataset.store.indexOf(q) > -1; s.hidden = !ok; if (ok) n++; });
+        root.querySelector('[data-store-empty]').hidden = n > 0;
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Points de vente",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Nous trouver" },
+    { "type": "richtext", "id": "lead", "label": "Introduction", "default": "<p>Nos boutiques et revendeurs partenaires.</p>" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [{ "type": "store", "name": "Point de vente", "settings": [
+    { "type": "text", "id": "name", "label": "Nom", "default": "[Boutique Paris]" },
+    { "type": "richtext", "id": "address", "label": "Adresse", "default": "<p>[12 rue Exemple, 75000 Paris]</p>" },
+    { "type": "text", "id": "hours", "label": "Horaires", "default": "Du mardi au samedi, 10 h – 19 h" },
+    { "type": "text", "id": "phone", "label": "Téléphone" }
+  ] }],
+  "presets": [{ "name": "Points de vente", "blocks": [{ "type": "store" }, { "type": "store", "settings": { "name": "[Boutique Lyon]", "address": "<p>[5 place Exemple, 69000 Lyon]</p>" } }] }]
+}
+{% endschema %}

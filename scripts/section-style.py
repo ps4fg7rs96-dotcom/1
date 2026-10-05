@@ -16,7 +16,7 @@ def settings(scheme="theme", pad="l"):
 
 CLASS = "section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}"
 
-def patch(name):
+def patch(name, force_scheme=None, force_pad=None):
     p = os.path.join(S, f"{name}.liquid")
     src = open(p, encoding="utf-8").read()
     m = re.search(r"\{%-?\s*schema\s*-?%\}([\s\S]*?)\{%-?\s*endschema\s*-?%\}", src)
@@ -25,6 +25,8 @@ def patch(name):
         return False
     head = re.search(r'<section class="(section[^"]*)"', src)
     scheme, pad = "theme", "l"
+    if head and 'scheme-{{' in head.group(1):
+        head = None
     if head:
         cls = head.group(1)
         if "section--alt" in cls: scheme = "alt"
@@ -32,6 +34,8 @@ def patch(name):
         if "section--tight" in cls: pad = "m"
         extra = " ".join(c for c in cls.split() if c not in ("section", "section--alt", "scheme-dark", "section--tight"))
         src = src.replace(head.group(0), f'<section class="{CLASS}{(" " + extra) if extra else ""}"', 1)
+    scheme = force_scheme or scheme
+    pad = force_pad or pad
     # Insère les réglages à la fin du tableau "settings" sans reformater le reste du schéma
     m = re.search(r"\{%-?\s*schema\s*-?%\}([\s\S]*?)\{%-?\s*endschema\s*-?%\}", src)
     body = m.group(1)
@@ -52,5 +56,6 @@ def patch(name):
     return True
 
 if __name__ == "__main__":
-    for n in sys.argv[1:]:
-        print(n, "patched" if patch(n) else "already")
+    for arg in sys.argv[1:]:
+        n, *rest = arg.split(":")
+        print(n, "patched" if patch(n, *rest) else "already")

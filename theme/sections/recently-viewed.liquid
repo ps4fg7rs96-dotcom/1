@@ -1,0 +1,22 @@
+{%- comment -%} RÉCEMMENT CONSULTÉS — mémorisés dans le navigateur, sans compte ni application. Masquée si vide. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" data-recently-viewed data-limit="{{ section.settings.limit }}" hidden>
+  <div class="page-width">
+    {% render 'section-head', heading: section.settings.heading, align: 'left' %}
+    <ul class="product-grid" style="--cols-desktop: {{ section.settings.limit }}" role="list" data-recent-grid></ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Récemment consultés",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Vous avez regardé" },
+    { "type": "range", "id": "limit", "min": 2, "max": 6, "step": 1, "label": "Nombre de produits", "default": 4 },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "presets": [{ "name": "Récemment consultés" }]
+}
+{% endschema %}

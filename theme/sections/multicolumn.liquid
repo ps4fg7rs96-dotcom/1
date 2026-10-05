@@ -1,0 +1,61 @@
+{%- comment -%} COLONNES — icônes, images ou chiffres en colonnes ; grille ou carrousel sur mobile. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width">
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, align: section.settings.head_align %}
+    <ul class="mcol mcol--{{ section.settings.columns }} mcol--{{ section.settings.style }} mcol--{{ section.settings.align }}{% if section.settings.mobile_slider %} mcol--slider{% endif %}" role="list">
+      {%- for block in section.blocks -%}
+        <li class="mcol__item" data-reveal style="--d: {{ forloop.index0 | modulo: 4 | times: 70 }}ms" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="mcol__img" style="--ratio: {{ section.settings.image_ratio }}">{{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 990px) 25vw, 80vw', alt: block.settings.image.alt }}</div>
+          {%- elsif block.settings.icon != 'none' -%}
+            <span class="icon-chip mcol__icon">{% render 'icon', name: block.settings.icon, size: 24 %}</span>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}<h3 class="h4">{{ block.settings.title }}</h3>{%- endif -%}
+          {%- if block.settings.text != blank -%}<div class="rte muted">{{ block.settings.text }}</div>{%- endif -%}
+          {%- if block.settings.link_label != blank -%}<a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="link">{{ block.settings.link_label }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.button_label != blank -%}
+      <div class="btn-row btn-row--center section-foot"><a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn--secondary">{{ section.settings.button_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Colonnes (icônes, images)",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Pourquoi nous choisir" },
+    { "type": "richtext", "id": "lead", "label": "Introduction" },
+    { "type": "select", "id": "head_align", "label": "Alignement du titre", "options": [{ "value": "center", "label": "Centre" }, { "value": "left", "label": "Gauche" }], "default": "center" },
+    { "type": "select", "id": "columns", "label": "Colonnes (ordinateur)", "options": [{ "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }, { "value": "5", "label": "5" }], "default": "3" },
+    { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "plain", "label": "Simple" }, { "value": "card", "label": "Cartes" }, { "value": "line", "label": "Séparateurs" }], "default": "plain" },
+    { "type": "select", "id": "align", "label": "Alignement", "options": [{ "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" }], "default": "center" },
+    { "type": "select", "id": "image_ratio", "label": "Format des images", "options": [{ "value": "1 / 1", "label": "Carré" }, { "value": "4 / 3", "label": "Paysage" }, { "value": "3 / 4", "label": "Portrait" }, { "value": "auto", "label": "Origine" }], "default": "4 / 3" },
+    { "type": "checkbox", "id": "mobile_slider", "label": "Carrousel sur mobile", "default": false },
+    { "type": "text", "id": "button_label", "label": "Bouton sous les colonnes" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Colonne",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (remplace l'icône)" },
+        { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "none", "label": "Aucune" }, { "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" }, { "value": "leaf", "label": "Feuille" }, { "value": "heart", "label": "Cœur" }, { "value": "gift", "label": "Cadeau" }, { "value": "award", "label": "Médaille" }, { "value": "star", "label": "Étoile" }, { "value": "chat", "label": "Discussion" }, { "value": "headset", "label": "Support" }, { "value": "droplet", "label": "Goutte" }, { "value": "recycle", "label": "Recyclage" }, { "value": "package", "label": "Colis" }, { "value": "credit-card", "label": "Carte bancaire" }, { "value": "clock", "label": "Horloge" }, { "value": "flag", "label": "Drapeau" }, { "value": "bolt", "label": "Éclair" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "paw", "label": "Patte" }, { "value": "coffee", "label": "Tasse" }, { "value": "shirt", "label": "Vêtement" }, { "value": "scale", "label": "Balance" }, { "value": "store", "label": "Boutique" }], "default": "truck" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Un avantage clair" },
+        { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Une phrase pour expliquer ce que le client y gagne.</p>" },
+        { "type": "text", "id": "link_label", "label": "Lien (libellé)" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Colonnes (icônes, images)", "blocks": [{ "type": "column", "settings": { "icon": "truck", "title": "Livraison rapide" } }, { "type": "column", "settings": { "icon": "refresh", "title": "Retours faciles" } }, { "type": "column", "settings": { "icon": "lock", "title": "Paiement sécurisé" } }] }]
+}
+{% endschema %}

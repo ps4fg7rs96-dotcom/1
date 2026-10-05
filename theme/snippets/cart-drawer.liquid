@@ -28,6 +28,9 @@
                 {%- unless item.product.has_only_default_variant -%}
                   <p class="cart-line__variant">{{ item.variant.title }}</p>
                 {%- endunless -%}
+                {%- for p in item.properties -%}
+                  {%- unless p.last == blank or p.first contains '_' -%}<p class="cart-line__variant">{{ p.first }} : {{ p.last }}</p>{%- endunless -%}
+                {%- endfor -%}
                 {%- for discount in item.line_level_discount_allocations -%}
                   <p class="cart-line__discount">{% render 'icon', name: 'tag', size: 14 %} {{ discount.discount_application.title }}</p>
                 {%- endfor -%}
@@ -44,6 +47,7 @@
             </li>
           {%- endfor -%}
         </ul>
+        {% render 'cart-upsell' %}
         <footer class="drawer__foot">
           {%- for discount in cart.cart_level_discount_applications -%}
             <p class="cart-total cart-total--discount"><span>{{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span></p>
@@ -51,6 +55,7 @@
           <p class="cart-total"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.total_price | money_with_currency }}</span></p>
           <p class="cart-note-small">{{ 'cart.taxes_note' | t }}</p>
           <form action="{{ routes.cart_url }}" method="post" class="drawer__checkout">
+            {% render 'cart-options', uid: 'drawer' %}
             <button type="submit" name="checkout" class="btn btn--primary btn--lg btn--block">{{ 'cart.checkout' | t }} {% render 'icon', name: 'arrow-right', size: 18 %}</button>
           </form>
           <a href="{{ routes.cart_url }}" class="link drawer__view-cart">{{ 'cart.view_cart' | t }}</a>

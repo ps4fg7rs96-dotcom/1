@@ -1,0 +1,45 @@
+{%- comment -%} PRODUITS PAR ONGLETS — plusieurs collections, un onglet chacune (navigation clavier ←/→). {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width" data-tabs>
+    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, align: section.settings.head_align %}
+    <div class="tabs-bar tabs-bar--{{ section.settings.head_align }}" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+      {%- for block in section.blocks -%}
+        <button type="button" role="tab" class="chip" id="Tab-{{ block.id }}" aria-controls="Panel-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.title | default: block.settings.collection.title | default: 'Collection' }}</button>
+      {%- endfor -%}
+    </div>
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection -%}
+      <div role="tabpanel" id="Panel-{{ block.id }}" aria-labelledby="Tab-{{ block.id }}" class="tabs-panel"{% unless forloop.first %} hidden{% endunless %}>
+        <ul class="product-grid" style="--cols-desktop: {{ section.settings.columns }}" role="list">
+          {%- if c != blank and c.products_count > 0 -%}
+            {%- for product in c.products limit: section.settings.limit -%}<li>{% render 'product-card', product: product %}</li>{%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..section.settings.columns) -%}<li>{% render 'product-card', index: i %}</li>{%- endfor -%}
+          {%- endif -%}
+        </ul>
+        {%- if c != blank -%}<div class="btn-row btn-row--center section-foot"><a href="{{ c.url }}" class="btn btn--secondary">{{ 'sections.featured_collection.view_all' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</a></div>{%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produits par onglets",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Nos incontournables" },
+    { "type": "select", "id": "head_align", "label": "Alignement", "options": [{ "value": "center", "label": "Centre" }, { "value": "left", "label": "Gauche" }], "default": "center" },
+    { "type": "range", "id": "limit", "min": 2, "max": 12, "step": 1, "label": "Produits par onglet", "default": 4 },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Colonnes (ordinateur)", "default": 4 },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    { "type": "tab", "name": "Onglet", "limit": 6, "settings": [{ "type": "collection", "id": "collection", "label": "Collection" }, { "type": "text", "id": "title", "label": "Titre de l'onglet" }] }
+  ],
+  "presets": [{ "name": "Produits par onglets", "blocks": [{ "type": "tab", "settings": { "title": "Nouveautés" } }, { "type": "tab", "settings": { "title": "Meilleures ventes" } }, { "type": "tab", "settings": { "title": "Promotions" } }] }]
+}
+{% endschema %}

@@ -1,0 +1,75 @@
+{%- comment -%}
+  POP-UP — newsletter avec code de bienvenue, promo ou annonce. Déclencheurs : délai, défilement,
+  intention de sortie, immédiat. Fréquence réglable (mémorisée dans le navigateur).
+  Dans l'éditeur, s'ouvre quand la section est sélectionnée.
+{%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign show = true
+  if section.settings.pages == 'home' and template.name != 'index'
+    assign show = false
+  elsif section.settings.pages == 'not-cart' and template.name == 'cart'
+    assign show = false
+  endif
+  assign pop_form = 'PopupForm-' | append: section.id
+-%}
+{%- if show -%}
+  <dialog class="modal popup popup--{{ section.settings.position }}{% if section.settings.image != blank %} popup--image{% endif %}" data-popup="{{ section.id }}" data-trigger="{{ section.settings.trigger }}" data-delay="{{ section.settings.delay }}" data-scroll="{{ section.settings.scroll }}" data-frequency="{{ section.settings.frequency }}" data-design-mode="{{ request.design_mode }}" aria-labelledby="PopupTitle-{{ section.id }}">
+    <div class="popup__inner scheme-{{ section.settings.color_scheme }}">
+      {%- if section.settings.image != blank -%}<div class="popup__media">{{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 750px) 22rem, 100vw', alt: '' }}</div>{%- endif -%}
+      <div class="modal__box popup__content">
+        <button type="button" class="icon-btn modal__close" data-dialog-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h2" id="PopupTitle-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="rte muted">{{ section.settings.text }}</div>{%- endif -%}
+        {%- case section.settings.type -%}
+          {%- when 'newsletter' -%}
+            {%- form 'customer', id: pop_form -%}
+              <input type="hidden" name="contact[tags]" value="newsletter,popup">
+              {%- if form.posted_successfully? -%}
+                <p class="form-message form-message--success">{{ section.settings.success }}</p>
+                {%- if section.settings.code != blank -%}<button type="button" class="discount-code" data-copy="{{ section.settings.code | escape }}">{{ section.settings.code }} <span class="small">{% render 'icon', name: 'copy', size: 16 %} {{ 'features.copy' | t }}</span></button>{%- endif -%}
+              {%- else -%}
+                <div class="field"><label for="PopEmail-{{ section.id }}" class="visually-hidden">{{ 'general.email' | t }}</label><input id="PopEmail-{{ section.id }}" class="input" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ 'general.email' | t }}"></div>
+                <button type="submit" class="btn btn--primary btn--lg btn--block">{{ section.settings.button }}</button>
+              {%- endif -%}
+            {%- endform -%}
+          {%- when 'code' -%}
+            {%- if section.settings.code != blank -%}<button type="button" class="discount-code" data-copy="{{ section.settings.code | escape }}">{{ section.settings.code }} <span class="small">{% render 'icon', name: 'copy', size: 16 %} {{ 'features.copy' | t }}</span></button>{%- endif -%}
+            {%- if section.settings.button != blank -%}<a href="{{ section.settings.link | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg btn--block">{{ section.settings.button }}</a>{%- endif -%}
+          {%- else -%}
+            {%- if section.settings.button != blank -%}<a href="{{ section.settings.link | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg btn--block">{{ section.settings.button }}</a>{%- endif -%}
+        {%- endcase -%}
+        <button type="button" class="link link--muted popup__dismiss" data-dialog-close>{{ section.settings.dismiss }}</button>
+      </div>
+    </div>
+  </dialog>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pop-up",
+  "settings": [
+    { "type": "select", "id": "type", "label": "Type", "options": [{ "value": "newsletter", "label": "Inscription newsletter" }, { "value": "code", "label": "Code promo à copier" }, { "value": "announcement", "label": "Annonce avec bouton" }], "default": "newsletter" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Bienvenue" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "−10 % sur votre première commande" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Inscrivez-vous et recevez votre code tout de suite.</p>" },
+    { "type": "text", "id": "button", "label": "Bouton", "default": "Recevoir mon code" },
+    { "type": "url", "id": "link", "label": "Lien du bouton (promo / annonce)" },
+    { "type": "text", "id": "code", "label": "Code promo", "info": "Créez-le dans Shopify › Réductions." },
+    { "type": "text", "id": "success", "label": "Message après inscription", "default": "Merci ! Voici votre code :" },
+    { "type": "text", "id": "dismiss", "label": "Lien de refus", "default": "Non merci" },
+    { "type": "header", "content": "Affichage" },
+    { "type": "select", "id": "trigger", "label": "Déclencheur", "options": [{ "value": "delay", "label": "Après un délai" }, { "value": "scroll", "label": "Après un défilement" }, { "value": "exit", "label": "Intention de sortie (ordinateur)" }, { "value": "immediate", "label": "Immédiatement" }], "default": "delay" },
+    { "type": "range", "id": "delay", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Délai", "default": 10 },
+    { "type": "range", "id": "scroll", "min": 10, "max": 90, "step": 5, "unit": "%", "label": "Défilement", "default": 40 },
+    { "type": "range", "id": "frequency", "min": 1, "max": 60, "step": 1, "unit": "j", "label": "Ne pas réafficher pendant", "default": 7 },
+    { "type": "select", "id": "pages", "label": "Pages", "options": [{ "value": "all", "label": "Toutes" }, { "value": "home", "label": "Accueil uniquement" }, { "value": "not-cart", "label": "Toutes sauf le panier" }], "default": "not-cart" },
+    { "type": "select", "id": "position", "label": "Position", "options": [{ "value": "center", "label": "Centre" }, { "value": "corner", "label": "Coin inférieur" }], "default": "center" },
+    { "type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{ "value": "theme", "label": "Thème" }, { "value": "alt", "label": "Alternée" }, { "value": "dark", "label": "Sombre" }, { "value": "primary", "label": "Couleur primaire" }, { "value": "custom-1", "label": "Personnalisée 1" }, { "value": "custom-2", "label": "Personnalisée 2" }], "default": "theme" }
+  ],
+  "presets": [{ "name": "Pop-up" }],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

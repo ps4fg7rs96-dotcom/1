@@ -1,0 +1,53 @@
+{%- comment -%} LISTE DE COLLECTIONS — cartes rondes, carrées ou portrait ; grille ou carrousel. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" data-carousel>
+  <div class="page-width">
+    <div class="section-head-row">
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, align: 'left' %}
+      {%- if section.settings.layout == 'slider' -%}
+        <div class="carousel__nav"><button type="button" class="icon-btn" data-carousel-prev aria-label="{{ 'general.previous' | t }}">{% render 'icon', name: 'chevron-left' %}</button><button type="button" class="icon-btn" data-carousel-next aria-label="{{ 'general.next' | t }}">{% render 'icon', name: 'chevron-right' %}</button></div>
+      {%- endif -%}
+    </div>
+    <ul class="clist clist--{{ section.settings.shape }} clist--{{ section.settings.layout }}" style="--cols: {{ section.settings.columns }}" role="list"{% if section.settings.layout == 'slider' %} data-carousel-track{% endif %}>
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        <li class="clist__item" {{ block.shopify_attributes }}>
+          <a href="{{ c.url | default: routes.collections_url }}" class="clist__link">
+            <span class="clist__media">
+              {%- assign img = block.settings.image | default: c.featured_image -%}
+              {%- if img != blank -%}
+                {{ img | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200, 350, 500, 700', sizes: '(min-width: 990px) 20vw, 45vw', alt: c.title }}
+              {%- else -%}
+                {%- capture ph -%}collection-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+                {{ ph | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </span>
+            <span class="clist__title">{{ block.settings.title | default: c.title | default: 'Collection' }}</span>
+            {%- if section.settings.show_count and c != blank -%}<span class="small muted">{{ 'collections.count' | t: count: c.products_count }}</span>{%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste de collections",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Acheter par catégorie" },
+    { "type": "select", "id": "shape", "label": "Forme des images", "options": [{ "value": "circle", "label": "Rondes" }, { "value": "square", "label": "Carrées" }, { "value": "portrait", "label": "Portrait" }], "default": "circle" },
+    { "type": "select", "id": "layout", "label": "Disposition", "options": [{ "value": "grid", "label": "Grille" }, { "value": "slider", "label": "Carrousel" }], "default": "grid" },
+    { "type": "range", "id": "columns", "min": 2, "max": 8, "step": 1, "label": "Colonnes (ordinateur)", "default": 6 },
+    { "type": "checkbox", "id": "show_count", "label": "Afficher le nombre de produits", "default": false },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    { "type": "collection", "name": "Collection", "settings": [{ "type": "collection", "id": "collection", "label": "Collection" }, { "type": "image_picker", "id": "image", "label": "Image personnalisée" }, { "type": "text", "id": "title", "label": "Titre personnalisé" }] }
+  ],
+  "presets": [{ "name": "Liste de collections", "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }, { "type": "collection" }, { "type": "collection" }, { "type": "collection" }] }]
+}
+{% endschema %}

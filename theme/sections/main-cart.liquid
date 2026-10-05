@@ -1,4 +1,4 @@
-<section class="section section--tight">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
   <div class="page-width">
     <h1 style="margin-bottom: 2rem;">{{ 'cart.title' | t }}</h1>
     {%- if cart.item_count > 0 -%}
@@ -41,17 +41,13 @@
           {%- endfor -%}
           <p class="cart-total"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.total_price | money_with_currency }}</span></p>
           <p class="cart-note-small">{{ 'cart.taxes_note' | t }}</p>
-          {%- if settings.cart_show_note -%}
-            <div class="field">
-              <label for="CartNote">{{ 'cart.note' | t }}</label>
-              <textarea id="CartNote" name="note" class="textarea" rows="3">{{ cart.note }}</textarea>
-            </div>
-          {%- endif -%}
+          {% render 'cart-options', uid: 'page' %}
           <button type="submit" name="checkout" class="btn btn--primary btn--lg btn--block">{{ 'cart.checkout' | t }} {% render 'icon', name: 'arrow-right', size: 18 %}</button>
           {%- if additional_checkout_buttons -%}<div>{{ content_for_additional_checkout_buttons }}</div>{%- endif -%}
           {%- if settings.cart_reassurance != blank -%}<p class="cart-reassurance">{% render 'icon', name: 'shield', size: 16 %} {{ settings.cart_reassurance }}</p>{%- endif -%}
         </aside>
       </form>
+      <div class="cart-page__upsell">{% render 'cart-upsell' %}</div>
     {%- else -%}
       <div class="empty-state">
         <span class="empty-icon">{% render 'icon', name: 'cart', size: 30 %}</span>
@@ -63,5 +59,9 @@
 </section>
 
 {% schema %}
-{ "name": "Panier", "settings": [] }
+{ "name": "Panier", "settings": [
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "m"}
+  ] }
 {% endschema %}

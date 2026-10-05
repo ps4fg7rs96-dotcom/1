@@ -4,6 +4,7 @@
   compte à rebours, guide des tailles, alerte retour en stock, estimation de livraison, stock en direct,
   partage, produits complémentaires, paiement fractionné, retrait en boutique, carte cadeau à offrir.
 {%- endcomment -%}
+{{ 'component-product.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign form_id = 'ProductForm-' | append: section.id
@@ -166,7 +167,8 @@
           {%- when 'back_in_stock' -%}
             <div class="back-in-stock" data-variant-only="sold-out"{% if current_variant.available %} hidden{% endif %} {{ block.shopify_attributes }}>
               <p class="back-in-stock__title">{% render 'icon', name: 'bell', size: 18 %} {{ block.settings.heading }}</p>
-              {%- form 'contact', id: 'BackInStock-{{ section.id }}', class: 'back-in-stock__form' -%}
+              {%- assign bis_id = 'BackInStock-' | append: section.id -%}
+              {%- form 'contact', id: bis_id, class: 'back-in-stock__form' -%}
                 {%- if form.posted_successfully? -%}
                   <p class="form-message form-message--success">{{ block.settings.success }}</p>
                 {%- else -%}

@@ -1,0 +1,67 @@
+{%- comment -%} PRODUIT EN VEDETTE — un produit achetable directement depuis n'importe quelle page. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign product = section.settings.product
+  assign uid = 'fp-' | append: section.id
+  assign form_id = 'FeaturedForm-' | append: section.id
+-%}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  {%- if product != blank -%}
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+    {%- assign featured = current_variant.featured_media | default: product.featured_media -%}
+    <div class="page-width product product--{{ section.settings.media_position }}" data-product>
+      {% render 'product-gallery', product: product, uid: uid, featured: featured, style: 'thumbs', zoom: false, ratio: 'square', eager: false %}
+      <div class="product__info">
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="product__title">{{ product.title }}</h2>
+        {%- if product.metafields.reviews.rating.value != blank -%}{% render 'stars', rating: product.metafields.reviews.rating.value.rating, count: product.metafields.reviews.rating_count %}{%- endif -%}
+        <div class="product__price" data-price-target>{% render 'price', product: product, variant: current_variant %}</div>
+        {%- if section.settings.show_description and product.description != blank -%}<div class="rte muted">{{ product.description | strip_html | truncatewords: 45 }}</div>{%- endif -%}
+        {% render 'variant-picker', product: product, form_id: form_id, uid: uid, style: 'swatches' %}
+        {%- form 'product', product, id: form_id, class: 'product__form', data-cart-form: '', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          <div class="buy-row">
+            <div class="qty">
+              <button type="button" class="qty__btn" data-qty-step="-1" aria-label="{{ 'products.product.decrease' | t }}">{% render 'icon', name: 'minus', size: 16 %}</button>
+              <input class="qty__input" type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="{{ 'products.product.quantity' | t }}">
+              <button type="button" class="qty__btn" data-qty-step="1" aria-label="{{ 'products.product.increase' | t }}">{% render 'icon', name: 'plus', size: 16 %}</button>
+            </div>
+            <button type="submit" name="add" class="btn btn--primary btn--lg" data-add-btn{% unless current_variant.available %} disabled{% endunless %}>
+              <span>{% if current_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+            </button>
+          </div>
+          {%- if section.settings.show_dynamic_checkout -%}<div style="margin-top: .75rem">{{ form | payment_button }}</div>{%- endif -%}
+        {%- endform -%}
+        <a href="{{ product.url }}" class="link">{{ 'features.view_details' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>
+      </div>
+      {% render 'product-json', product: product %}
+    </div>
+  {%- else -%}
+    <div class="page-width product">
+      <div class="product__gallery"><div class="product__main-media">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div></div>
+      <div class="product__info">
+        <h2 class="product__title">{{ 'products.product.example_title' | t }}</h2>
+        <div class="price"><span class="price__current">{{ 4900 | money }}</span></div>
+        <p class="muted">{{ 'sections.featured_product.empty' | t }}</p>
+        <span class="btn btn--primary btn--lg" aria-disabled="true">{{ 'products.product.add_to_cart' | t }}</span>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Produit en vedette",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Coup de cœur" },
+    { "type": "select", "id": "media_position", "label": "Position de l'image", "options": [{ "value": "left", "label": "À gauche" }, { "value": "right", "label": "À droite" }], "default": "left" },
+    { "type": "checkbox", "id": "show_description", "label": "Afficher un extrait de la description", "default": true },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Paiement accéléré", "default": true },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "presets": [{ "name": "Produit en vedette" }]
+}
+{% endschema %}

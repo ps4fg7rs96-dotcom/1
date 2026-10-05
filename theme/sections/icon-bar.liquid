@@ -1,0 +1,33 @@
+{%- comment -%} BARRE DE RÉASSURANCE — 2 à 6 badges (livraison, retours, paiement…), défilable sur mobile. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }} icon-bar-section">
+  <div class="page-width">
+    <ul class="icon-bar icon-bar--{{ section.settings.style }}" role="list">
+      {%- for block in section.blocks -%}
+        <li class="icon-bar__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}<span class="icon-bar__img">{{ block.settings.image | image_url: width: 96 | image_tag: loading: 'lazy', alt: '' }}</span>{%- else -%}<span class="icon-bar__icon">{% render 'icon', name: block.settings.icon, size: 24 %}</span>{%- endif -%}
+          <span><b>{{ block.settings.title }}</b>{%- if block.settings.text != blank -%}<small>{{ block.settings.text }}</small>{%- endif -%}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Barre de réassurance",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "inline", "label": "Icône à gauche" }, { "value": "stacked", "label": "Icône au-dessus" }], "default": "inline" },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "alt"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "s"}
+  ],
+  "blocks": [{ "type": "badge", "name": "Badge", "limit": 6, "settings": [
+    { "type": "select", "id": "icon", "label": "Icône", "options": [{ "value": "truck", "label": "Livraison" }, { "value": "refresh", "label": "Retour" }, { "value": "lock", "label": "Cadenas" }, { "value": "shield", "label": "Bouclier" }, { "value": "chat", "label": "Support" }, { "value": "gift", "label": "Cadeau" }, { "value": "leaf", "label": "Feuille" }, { "value": "award", "label": "Médaille" }, { "value": "flag", "label": "Drapeau" }, { "value": "credit-card", "label": "Carte bancaire" }, { "value": "recycle", "label": "Recyclage" }, { "value": "clock", "label": "Horloge" }], "default": "truck" },
+    { "type": "image_picker", "id": "image", "label": "Image (remplace l'icône)" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Livraison rapide" },
+    { "type": "text", "id": "text", "label": "Texte", "default": "Expédiée sous 24 h" }
+  ] }],
+  "presets": [{ "name": "Barre de réassurance", "blocks": [{ "type": "badge" }, { "type": "badge", "settings": { "icon": "refresh", "title": "Retours gratuits", "text": "Pendant 30 jours" } }, { "type": "badge", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "CB, PayPal, Apple Pay" } }, { "type": "badge", "settings": { "icon": "chat", "title": "Service client", "text": "Réponse sous 24 h" } }] }]
+}
+{% endschema %}

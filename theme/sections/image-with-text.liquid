@@ -1,0 +1,62 @@
+{%- comment -%} IMAGE AVEC TEXTE — image + contenu en blocs, inversion, chevauchement, largeurs réglables. {%- endcomment -%}
+{{ 'sections.css' | asset_url | stylesheet_tag }}
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}">
+  <div class="page-width iwt iwt--{{ section.settings.layout }} iwt--{{ section.settings.image_width }}{% if section.settings.overlap %} iwt--overlap{% endif %}">
+    <div class="iwt__media" style="--ratio: {{ section.settings.ratio }}" data-reveal>
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 990px) 50vw, 100vw', alt: section.settings.image.alt }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      {%- if section.settings.image_2 != blank -%}
+        <div class="iwt__media-2">{{ section.settings.image_2 | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 500, 800', sizes: '25vw', alt: section.settings.image_2.alt }}</div>
+      {%- endif -%}
+    </div>
+    <div class="iwt__content{% if section.settings.overlap %} card{% endif %} iwt__content--{{ section.settings.text_align }}" data-reveal>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}<p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+          {%- when 'heading' -%}<h2 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+          {%- when 'text' -%}<div class="rte lead" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'list' -%}
+            <ul class="check-list" role="list" {{ block.shopify_attributes }}>
+              {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+              {%- for it in items -%}{%- assign itx = it | strip -%}{%- if itx != blank -%}<li><span class="check-dot">{% render 'icon', name: 'check' %}</span>{{ itx }}</li>{%- endif -%}{%- endfor -%}
+            </ul>
+          {%- when 'button' -%}
+            <div class="btn-row" {{ block.shopify_attributes }}>
+              {%- if block.settings.label != blank -%}<a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="btn btn--{{ block.settings.style }} btn--lg">{{ block.settings.label }}</a>{%- endif -%}
+            </div>
+          {%- when 'signature' -%}<p class="iwt__signature" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image avec texte",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_2", "label": "Seconde image (incrustée)" },
+    { "type": "select", "id": "layout", "label": "Position de l'image", "options": [{ "value": "image-left", "label": "À gauche" }, { "value": "image-right", "label": "À droite" }], "default": "image-left" },
+    { "type": "select", "id": "image_width", "label": "Largeur de l'image", "options": [{ "value": "narrow", "label": "Étroite" }, { "value": "half", "label": "Moitié" }, { "value": "wide", "label": "Large" }], "default": "half" },
+    { "type": "select", "id": "ratio", "label": "Format de l'image", "options": [{ "value": "1 / 1", "label": "Carré" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Paysage" }, { "value": "16 / 9", "label": "Panoramique" }], "default": "4 / 5" },
+    { "type": "select", "id": "text_align", "label": "Alignement du texte", "options": [{ "value": "left", "label": "Gauche" }, { "value": "center", "label": "Centre" }], "default": "left" },
+    { "type": "checkbox", "id": "overlap", "label": "Texte en carte qui chevauche l'image", "default": false },
+    {"type": "header", "content": "Mise en forme de la section"},
+    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
+    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Surtitre", "limit": 1, "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "Notre histoire" }] },
+    { "type": "heading", "name": "Titre", "limit": 2, "settings": [{ "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Racontez ce qui rend votre marque unique" }, { "type": "select", "id": "size", "label": "Taille", "options": [{ "value": "h3", "label": "Petite" }, { "value": "h2", "label": "Moyenne" }, { "value": "h1", "label": "Grande" }], "default": "h2" }] },
+    { "type": "text", "name": "Texte", "settings": [{ "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Associez une image forte à un texte court : l'origine du produit, un savoir-faire, une promesse.</p>" }] },
+    { "type": "list", "name": "Liste à coches", "settings": [{ "type": "textarea", "id": "items", "label": "Éléments (un par ligne)", "default": "Premier avantage\nDeuxième avantage\nTroisième avantage" }] },
+    { "type": "button", "name": "Bouton", "limit": 2, "settings": [{ "type": "text", "id": "label", "label": "Libellé", "default": "En savoir plus" }, { "type": "url", "id": "link", "label": "Lien" }, { "type": "select", "id": "style", "label": "Style", "options": [{ "value": "primary", "label": "Plein" }, { "value": "secondary", "label": "Contour" }], "default": "primary" }] },
+    { "type": "signature", "name": "Signature manuscrite", "limit": 1, "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "L'équipe fondatrice" }] }
+  ],
+  "presets": [{ "name": "Image avec texte", "blocks": [{ "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }, { "type": "button" }] }]
+}
+{% endschema %}

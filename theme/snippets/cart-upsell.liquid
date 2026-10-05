@@ -1,0 +1,38 @@
+{%- comment -%}
+  Suggestions dans le panier : produits complémentaires du 1er article (Search & Discovery),
+  sinon la collection choisie dans Paramètres du thème › Panier. Exclut les articles déjà au panier.
+{%- endcomment -%}
+{%- if settings.cart_upsell and cart.item_count > 0 -%}
+  {%- liquid
+    assign in_cart = cart.items | map: 'product_id'
+    assign pool = cart.items.first.product.metafields.shopify--discovery--product_recommendation.complementary_products.value
+    if pool == blank and settings.cart_upsell_collection != blank
+      assign pool = settings.cart_upsell_collection.products
+    endif
+    assign shown = 0
+  -%}
+  {%- if pool != blank -%}
+    <div class="cart-upsell">
+      <p class="cart-upsell__title">{{ settings.cart_upsell_heading }}</p>
+      <ul class="cart-upsell__list" role="list">
+        {%- for p in pool -%}
+          {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
+          {%- if in_cart contains p.id or p.available == false or p.id == settings.gift_wrap_product.id -%}{%- continue -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+          <li class="mini-product">
+            <a href="{{ p.url }}" class="mini-product__img">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 140 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</a>
+            <div class="mini-product__info"><a href="{{ p.url }}">{{ p.title }}</a>{% render 'price', product: p %}</div>
+            {%- if p.has_only_default_variant -%}
+              {%- form 'product', p, data-cart-form: '' -%}
+                <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+                <button type="submit" class="btn btn--secondary btn--sm" aria-label="{{ 'products.product.quick_add' | t: title: p.title | escape }}">{% render 'icon', name: 'plus', size: 16 %}</button>
+              {%- endform -%}
+            {%- else -%}
+              <button type="button" class="btn btn--secondary btn--sm" data-quick-view="{{ p.url }}" aria-label="{{ 'products.product.choose_options' | t: title: p.title | escape }}">{% render 'icon', name: 'plus', size: 16 %}</button>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

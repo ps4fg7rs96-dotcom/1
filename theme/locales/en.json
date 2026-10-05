@@ -12,7 +12,11 @@
       "next": "Next page",
       "page": "Page {{ number }}"
     },
-    "email": "Email address"
+    "email": "Email address",
+    "previous": "Previous",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No"
   },
   "accessibility": {
     "skip_to_text": "Skip to content"
@@ -52,6 +56,42 @@
       "country": "Country / currency",
       "language": "Language",
       "payment": "Accepted payment methods"
+    },
+    "slideshow": {
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "go_to": "Go to slide {{ n }}",
+      "pause": "Pause autoplay"
+    },
+    "video": {
+      "play": "Play video: {{ title }}"
+    },
+    "blog_posts": {
+      "example": "Your article title"
+    },
+    "featured_product": {
+      "empty": "Pick a product in the editor to show it here."
+    },
+    "contact": {
+      "name": "Name",
+      "phone": "Phone",
+      "order": "Order number",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "lookbook": {
+      "choose": "Pick a product for this hotspot."
+    },
+    "before_after": {
+      "label": "Before / after slider position"
+    },
+    "comparison_table": {
+      "feature": "Feature"
+    },
+    "store_locator": {
+      "search": "Search a city, a postcode…",
+      "directions": "Directions",
+      "empty": "No store matches."
     }
   },
   "hero_editor": {
@@ -408,7 +448,10 @@
     "error": "Something went wrong, please try again.",
     "free_shipping_label": "Progress towards free shipping",
     "free_shipping_remaining_html": "Only <strong>{{ amount }}</strong> away from free shipping",
-    "free_shipping_done": "Nice, shipping is on us!"
+    "free_shipping_done": "Nice, shipping is on us!",
+    "delivery_date": "Preferred delivery date",
+    "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}",
+    "reward_done": "Nice, you've unlocked {{ reward }}!"
   },
   "collections": {
     "label": "Collection",
@@ -419,7 +462,11 @@
     "remove_filter": "Remove filter",
     "price_min": "Minimum price",
     "price_max": "Maximum price",
-    "empty": "No products match these filters."
+    "empty": "No products match these filters.",
+    "count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    }
   },
   "search": {
     "title": "Search",
@@ -462,6 +509,8 @@
   "features": {
     "add": "Add",
     "choose": "Choose",
+    "copy": "Copy",
+    "shop_now": "Shop now",
     "share": "Share",
     "copied": "Code copied!",
     "link_copied": "Link copied",
@@ -470,6 +519,7 @@
     "quick_view_of": "Quick view of {{ title }}",
     "view_details": "View full details",
     "wishlist": {
+      "empty": "Your wishlist is empty. Tap the heart on a product to save it.",
       "title": "Wishlist",
       "toggle": "Add {{ title }} to wishlist",
       "added": "Added to your wishlist",

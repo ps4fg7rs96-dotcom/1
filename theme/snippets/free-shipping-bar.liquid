@@ -1,25 +1,50 @@
-{%- comment -%} Jauge de livraison offerte. Seuil exprimé dans la devise principale (réglage du thème). {%- endcomment -%}
+{%- comment -%}
+  Jauge de récompenses : livraison offerte puis, en option, un second palier (cadeau, remise…).
+  Seuils exprimés dans la devise principale (Paramètres du thème › Panier).
+{%- endcomment -%}
 {%- if settings.show_free_shipping and settings.free_shipping_threshold > 0 -%}
   {%- liquid
-    assign threshold_local = settings.free_shipping_threshold | times: 100.0
-    assign remaining = threshold_local | minus: cart.total_price
-    assign pct = cart.total_price | times: 100.0 | divided_by: threshold_local
+    assign t1 = settings.free_shipping_threshold | times: 100.0
+    assign t2 = settings.reward_2_threshold | default: 0 | times: 100.0
+    assign has_t2 = false
+    if t2 > t1 and settings.reward_2_label != blank
+      assign has_t2 = true
+    endif
+    assign goal = t1
+    if has_t2
+      assign goal = t2
+    endif
+    assign total = cart.total_price
+    assign pct = total | times: 100.0 | divided_by: goal
     if pct > 100
       assign pct = 100
     endif
+    assign mark = t1 | times: 100.0 | divided_by: goal
   -%}
-  <div class="ship-bar{% if remaining <= 0 %} is-done{% endif %}">
+  <div class="ship-bar{% if total >= goal %} is-done{% endif %}">
     <p class="ship-bar__text">
-      {%- render 'icon', name: 'truck', size: 18 -%}
-      {%- if remaining > 0 -%}
-        {%- assign remaining_money = remaining | money -%}
-        {{ 'cart.free_shipping_remaining_html' | t: amount: remaining_money }}
+      {%- if total < t1 -%}
+        {%- render 'icon', name: 'truck', size: 18 -%}
+        {%- assign remaining_money = t1 | minus: total | money -%}
+        <span>{{ 'cart.free_shipping_remaining_html' | t: amount: remaining_money }}</span>
+      {%- elsif has_t2 and total < t2 -%}
+        {%- render 'icon', name: 'gift', size: 18 -%}
+        {%- assign remaining_money = t2 | minus: total | money -%}
+        <span>{{ 'cart.reward_remaining_html' | t: amount: remaining_money, reward: settings.reward_2_label }}</span>
+      {%- elsif has_t2 -%}
+        {%- render 'icon', name: 'gift', size: 18 -%}
+        <span>{{ 'cart.reward_done' | t: reward: settings.reward_2_label }}</span>
       {%- else -%}
-        {{ 'cart.free_shipping_done' | t }}
+        {%- render 'icon', name: 'truck', size: 18 -%}
+        <span>{{ 'cart.free_shipping_done' | t }}</span>
       {%- endif -%}
     </p>
     <div class="ship-bar__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct | round }}" aria-label="{{ 'cart.free_shipping_label' | t }}">
       <span class="ship-bar__fill" style="width: {{ pct | round: 1 }}%"></span>
+      {%- if has_t2 -%}
+        <span class="ship-bar__mark{% if total >= t1 %} is-reached{% endif %}" style="left: {{ mark | round: 1 }}%" title="{{ 'cart.free_shipping_label' | t }}">{% render 'icon', name: 'truck', size: 12 %}</span>
+        <span class="ship-bar__mark ship-bar__mark--end{% if total >= t2 %} is-reached{% endif %}" style="left: 100%">{% render 'icon', name: 'gift', size: 12 %}</span>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
