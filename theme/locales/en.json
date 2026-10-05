@@ -12,6 +12,7 @@
       "next": "Next page",
       "page": "Page {{ number }}"
     },
+    "breadcrumbs": "Breadcrumbs",
     "email": "Email address",
     "previous": "Previous",
     "next": "Next",
@@ -466,7 +467,17 @@
     "count": {
       "one": "{{ count }} product",
       "other": "{{ count }} products"
-    }
+    },
+    "filters": "Filter",
+    "columns": "Number of columns",
+    "columns_n": "{{ n }} columns",
+    "results": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "show_results": "Show results ({{ count }})",
+    "shown": "Showing {{ shown }} of {{ total }} products",
+    "load_more": "Load more products"
   },
   "search": {
     "title": "Search",
@@ -505,6 +516,15 @@
     "password": "Password",
     "enter": "Enter",
     "powered": "Store powered by"
+  },
+  "gift_card": {
+    "title": "Your gift card",
+    "initial": "Initial value: {{ amount }}",
+    "disabled": "Card expired or disabled",
+    "expires": "Valid until {{ date }}",
+    "shop": "Start shopping",
+    "print": "Print",
+    "wallet": "Add to Apple Wallet"
   },
   "features": {
     "add": "Add",

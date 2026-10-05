@@ -3,14 +3,24 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "per_page": 16,
+        "per_page": 24,
+        "columns": 4,
         "show_description": true,
         "enable_filters": true,
-        "enable_sorting": true
+        "filter_layout": "sidebar",
+        "enable_sorting": true,
+        "pagination": "button"
+      }
+    },
+    "recent": {
+      "type": "recently-viewed",
+      "settings": {
+        "limit": 4
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "recent"
   ]
 }

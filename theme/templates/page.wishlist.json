@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-wishlist",
+      "settings": {}
+    },
+    "recent": {
+      "type": "recently-viewed",
+      "settings": {
+        "heading": "Vous avez regardé",
+        "limit": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recent"
+  ]
+}

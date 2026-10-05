@@ -181,17 +181,33 @@ index = template([
 write('index.json', index)
 
 write('product.json', template([
-  ("main", section("main-product", {"sticky_atc": True}, [
-      B("vendor"), B("title"), B("rating"), B("price"), B("tags", limit=4), B("inventory", threshold=5),
-      B("variant_picker"), B("buy_buttons", show_quantity=True, show_dynamic_checkout=True), B("free_shipping"),
+  ("main", section("main-product", {"sticky_atc": True, "gallery_style": "thumbs", "enable_zoom": True}, [
+      B("vendor"), B("title"), B("rating"), B("price", show_tax_note=True), B("sku"), B("inventory", threshold=8, show_bar=True),
+      B("variant_picker", style="swatches"), B("size_chart", label="Guide des tailles"),
+      B("quantity_breaks", heading="Plus vous en prenez, plus vous économisez", default=2),
+      B("buy_buttons", show_quantity=True, show_dynamic_checkout=True, show_installments=True, show_wishlist=True, show_pickup=True),
+      B("back_in_stock", heading="Prévenez-moi du retour en stock"),
+      B("delivery", min_days=2, max_days=4, cutoff=14), B("free_shipping"),
+      B("bundle", heading="Souvent achetés ensemble", use_recommendations=True, discount=0),
       B("trust", line_1="Livraison offerte dès 60 €", line_2="Retours gratuits sous 30 jours", line_3="Paiement 100 % sécurisé"),
-      B("description"),
-      B("collapsible", heading="Livraison et retours", content="<p>Expédition sous 24 h ouvrées. Retours gratuits pendant 30 jours.</p>"),
+      B("description", collapsed=False),
+      B("collapsible", heading="Livraison et retours", icon="truck", content="<p>Expédition sous 24 h ouvrées. Retours gratuits pendant 30 jours.</p>"),
+      B("collapsible", heading="Composition et entretien", icon="leaf", content="<p>Remplacez par les informations de votre produit.</p>"),
+      B("complementary", heading="Complétez avec", limit=3), B("share"),
   ])),
   ("reco", section("product-recommendations", {"heading": "Vous aimerez aussi", "limit": 4})),
+  ("recent", section("recently-viewed", {"heading": "Vous avez regardé", "limit": 4})),
 ]))
-write('collection.json', template([("main", section("main-collection", {"per_page": 16, "show_description": True, "enable_filters": True, "enable_sorting": True}))]))
-write('cart.json', template([("main", section("main-cart")), ("reco", section("featured-collection", {"eyebrow": "", "heading": "Complétez votre commande", "limit": 4, "show_link": False}))]))
+write('collection.json', template([("main", section("main-collection", {"per_page": 24, "columns": 4, "show_description": True, "enable_filters": True, "filter_layout": "sidebar", "enable_sorting": True, "pagination": "button"})), ("recent", section("recently-viewed", {"limit": 4}))]))
+write('list-collections.json', template([("main", section("main-list-collections", {"heading": "Toutes les collections"}))]))
+write('page.wishlist.json', template([("main", section("main-wishlist")), ("recent", section("recently-viewed", {"heading": "Vous avez regardé", "limit": 4}))]))
+write('page.contact.json', template([
+  ("main", section("main-page")),
+  ("form", section("contact-form", {}, [B("info", icon="mail", title="E-mail", text="<p>[contact@votre-boutique.fr]</p>"), B("info", icon="clock", title="Horaires", text="<p>Du lundi au vendredi, 9 h – 18 h</p>")])),
+  ("faq", section("faq", {"eyebrow": "FAQ", "heading": "Questions fréquentes"}, [B("question", question="Où en est ma commande ?", answer="<p>Remplacez par votre réponse.</p>"), B("question", question="Comment faire un retour ?", answer="<p>Remplacez par votre réponse.</p>")])),
+]))
+write('page.stores.json', template([("main", section("main-page")), ("stores", section("store-locator", {}, [B("store"), B("store", name="[Boutique Lyon]", address="<p>[5 place Exemple, 69000 Lyon]</p>")]))]))
+write('cart.json', template([("main", section("main-cart")), ("reco", section("featured-collection", {"eyebrow": "", "heading": "Complétez votre commande", "limit": 4, "show_link": False, "layout": "slider"})), ("recent", section("recently-viewed", {"limit": 4}))]))
 write('page.json', template([("main", section("main-page"))]))
 write('page.landing.json', template([
   ("banner", section("hero-banner", {"eyebrow": "Lancement", "heading": "La nouvelle collection est là", "text": "Une page de campagne construite avec les blocs du thème, sans page builder ni script externe.", "cta_label": "Je découvre", "cta2_label": "En savoir plus"})),

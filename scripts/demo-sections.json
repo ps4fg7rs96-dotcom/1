@@ -1,0 +1,723 @@
+{
+ "sections": {
+  "slideshow": {
+   "type": "slideshow",
+   "settings": {
+    "height": "l",
+    "autoplay": true,
+    "speed": 6
+   },
+   "blocks": {
+    "b0": {
+     "type": "slide",
+     "settings": {
+      "image": "demo:scene-1",
+      "eyebrow": "Nouvelle saison",
+      "heading": "Une boutique qui vous ressemble",
+      "text": "<p>10 styles prêts à l'emploi, 8 palettes par section : le thème s'adapte à votre univers.</p>",
+      "button_label": "Découvrir",
+      "button2_label": "Voir les styles",
+      "overlay": 20,
+      "align": "left"
+     }
+    },
+    "b1": {
+     "type": "slide",
+     "settings": {
+      "image": "demo:scene-2",
+      "eyebrow": "Sans applications",
+      "heading": "Tout est déjà intégré",
+      "text": "<p>Liste d'envies, aperçu rapide, remises par quantité, pop-ups…</p>",
+      "button_label": "Voir la fiche produit",
+      "overlay": 15,
+      "align": "center",
+      "box": true
+     }
+    },
+    "b2": {
+     "type": "slide",
+     "settings": {
+      "image": "demo:scene-3",
+      "heading": "Rapide sur mobile",
+      "text": "<p>Chaque fonction ne se charge que là où elle sert.</p>",
+      "button_label": "Voir la collection",
+      "overlay": 25,
+      "align": "bottom-left"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "ticker": {
+   "type": "scrolling-text",
+   "settings": {
+    "size": "m",
+    "speed": 30,
+    "color_scheme": "dark"
+   },
+   "blocks": {
+    "b0": {
+     "type": "item",
+     "settings": {
+      "text": "Livraison offerte dès 60 €"
+     }
+    },
+    "b1": {
+     "type": "item",
+     "settings": {
+      "text": "Retours gratuits 30 jours"
+     }
+    },
+    "b2": {
+     "type": "item",
+     "settings": {
+      "text": "Paiement en 3 fois"
+     }
+    },
+    "b3": {
+     "type": "item",
+     "settings": {
+      "text": "Expédié sous 24 h"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "icons": {
+   "type": "icon-bar",
+   "settings": {
+    "color_scheme": "alt",
+    "padding": "s"
+   },
+   "blocks": {
+    "b0": {
+     "type": "badge",
+     "settings": {
+      "icon": "truck",
+      "title": "Livraison rapide",
+      "text": "Expédiée sous 24 h"
+     }
+    },
+    "b1": {
+     "type": "badge",
+     "settings": {
+      "icon": "refresh",
+      "title": "Retours gratuits",
+      "text": "Pendant 30 jours"
+     }
+    },
+    "b2": {
+     "type": "badge",
+     "settings": {
+      "icon": "lock",
+      "title": "Paiement sécurisé",
+      "text": "CB, PayPal, Apple Pay"
+     }
+    },
+    "b3": {
+     "type": "badge",
+     "settings": {
+      "icon": "chat",
+      "title": "Service client",
+      "text": "Réponse sous 24 h"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "clist": {
+   "type": "collection-list",
+   "settings": {
+    "heading": "Acheter par catégorie",
+    "shape": "circle",
+    "columns": 5
+   },
+   "blocks": {
+    "b0": {
+     "type": "collection",
+     "settings": {
+      "collection": "nouveautes"
+     }
+    },
+    "b1": {
+     "type": "collection",
+     "settings": {
+      "collection": "soin"
+     }
+    },
+    "b2": {
+     "type": "collection",
+     "settings": {
+      "collection": "cafe"
+     }
+    },
+    "b3": {
+     "type": "collection",
+     "settings": {
+      "collection": "outdoor"
+     }
+    },
+    "b4": {
+     "type": "collection",
+     "settings": {
+      "collection": "maison"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4"
+   ]
+  },
+  "tabs": {
+   "type": "collection-tabs",
+   "settings": {
+    "heading": "Nos incontournables",
+    "limit": 4,
+    "columns": 4
+   },
+   "blocks": {
+    "b0": {
+     "type": "tab",
+     "settings": {
+      "collection": "tout",
+      "title": "Tout"
+     }
+    },
+    "b1": {
+     "type": "tab",
+     "settings": {
+      "collection": "soin",
+      "title": "Soin"
+     }
+    },
+    "b2": {
+     "type": "tab",
+     "settings": {
+      "collection": "cafe",
+      "title": "Café"
+     }
+    },
+    "b3": {
+     "type": "tab",
+     "settings": {
+      "collection": "outdoor",
+      "title": "Outdoor"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3"
+   ]
+  },
+  "fp": {
+   "type": "featured-product",
+   "settings": {
+    "product": "gourde-crete",
+    "eyebrow": "Coup de cœur",
+    "color_scheme": "tint"
+   }
+  },
+  "iwt": {
+   "type": "image-with-text",
+   "settings": {
+    "image": "demo:scene-4",
+    "layout": "image-right",
+    "ratio": "4 / 5",
+    "overlap": false
+   },
+   "blocks": {
+    "b0": {
+     "type": "eyebrow",
+     "settings": {
+      "text": "Notre histoire"
+     }
+    },
+    "b1": {
+     "type": "heading",
+     "settings": {
+      "heading": "Racontez ce qui rend votre marque unique"
+     }
+    },
+    "b2": {
+     "type": "text",
+     "settings": {
+      "text": "<p>Associez une image forte à un texte court : l'origine, un savoir-faire, une promesse.</p>"
+     }
+    },
+    "b3": {
+     "type": "list",
+     "settings": {
+      "items": "Fabriqué en petites séries\nMatières sélectionnées\nExpédié depuis la France"
+     }
+    },
+    "b4": {
+     "type": "button",
+     "settings": {
+      "label": "En savoir plus",
+      "style": "primary"
+     }
+    },
+    "b5": {
+     "type": "signature",
+     "settings": {
+      "text": "L'équipe fondatrice"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5"
+   ]
+  },
+  "look": {
+   "type": "lookbook",
+   "settings": {
+    "image": "demo:scene-5",
+    "heading": "Composez votre routine",
+    "show_list": true
+   },
+   "blocks": {
+    "b0": {
+     "type": "hotspot",
+     "settings": {
+      "product": "serum-eclat",
+      "x": 38,
+      "y": 36
+     }
+    },
+    "b1": {
+     "type": "hotspot",
+     "settings": {
+      "product": "brume-tonique",
+      "x": 64,
+      "y": 62
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  },
+  "ba": {
+   "type": "before-after",
+   "settings": {
+    "before": "demo:before",
+    "after": "demo:after",
+    "heading": "La différence, en un geste",
+    "start": 50
+   }
+  },
+  "mcol": {
+   "type": "multicolumn",
+   "settings": {
+    "heading": "Pourquoi nous choisir",
+    "columns": "3",
+    "style": "card"
+   },
+   "blocks": {
+    "b0": {
+     "type": "column",
+     "settings": {
+      "icon": "leaf",
+      "title": "Matières responsables",
+      "text": "<p>Remplacez par votre premier argument.</p>"
+     }
+    },
+    "b1": {
+     "type": "column",
+     "settings": {
+      "icon": "award",
+      "title": "Qualité contrôlée",
+      "text": "<p>Chaque pièce vérifiée à la main.</p>"
+     }
+    },
+    "b2": {
+     "type": "column",
+     "settings": {
+      "icon": "heart",
+      "title": "Clients ravis",
+      "text": "<p>[Note moyenne à remplacer]</p>"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "collage": {
+   "type": "collage",
+   "settings": {
+    "heading": "À découvrir",
+    "layout": "a"
+   },
+   "blocks": {
+    "b0": {
+     "type": "tile",
+     "settings": {
+      "collection": "nouveautes",
+      "eyebrow": "Arrivages",
+      "cta": "Voir"
+     }
+    },
+    "b1": {
+     "type": "tile",
+     "settings": {
+      "collection": "cafe",
+      "cta": "Voir"
+     }
+    },
+    "b2": {
+     "type": "tile",
+     "settings": {
+      "collection": "outdoor",
+      "cta": "Voir"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "cd": {
+   "type": "countdown-banner",
+   "settings": {
+    "heading": "Les soldes se terminent bientôt",
+    "end_date": "2026-12-31",
+    "end_time": "23:59",
+    "image": "demo:scene-6",
+    "overlay": 45,
+    "code": "KINETIC10",
+    "color_scheme": "dark"
+   }
+  },
+  "stats": {
+   "type": "stats",
+   "settings": {
+    "heading": "En quelques chiffres"
+   },
+   "blocks": {
+    "b0": {
+     "type": "stat",
+     "settings": {
+      "value": "1200",
+      "suffix": "+",
+      "label": "[Clients satisfaits]"
+     }
+    },
+    "b1": {
+     "type": "stat",
+     "settings": {
+      "value": "48",
+      "suffix": " h",
+      "label": "[Délai d'expédition]"
+     }
+    },
+    "b2": {
+     "type": "stat",
+     "settings": {
+      "value": "4.8",
+      "suffix": "/5",
+      "label": "[Note moyenne]"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "ctable": {
+   "type": "comparison-table",
+   "settings": {
+    "heading": "Pourquoi nous plutôt qu'ailleurs",
+    "col_1": "Notre gourde",
+    "col_2": "Gourde classique",
+    "col_3": "Bouteille jetable"
+   },
+   "blocks": {
+    "b0": {
+     "type": "row",
+     "settings": {
+      "feature": "Garde au frais 24 h",
+      "v1": "oui",
+      "v2": "non",
+      "v3": "non"
+     }
+    },
+    "b1": {
+     "type": "row",
+     "settings": {
+      "feature": "Inox recyclé",
+      "v1": "oui",
+      "v2": "oui",
+      "v3": "non"
+     }
+    },
+    "b2": {
+     "type": "row",
+     "settings": {
+      "feature": "Garantie",
+      "v1": "2 ans",
+      "v2": "6 mois",
+      "v3": "—"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "ugc": {
+   "type": "ugc-gallery",
+   "settings": {
+    "heading": "Ils l'ont adopté",
+    "columns": 5
+   },
+   "blocks": {
+    "b0": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-1",
+      "author": "[@client]",
+      "product": "gourde-crete"
+     }
+    },
+    "b1": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-2",
+      "author": "[@client]",
+      "product": "serum-eclat"
+     }
+    },
+    "b2": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-3",
+      "author": "[@client]",
+      "product": "espresso-3"
+     }
+    },
+    "b3": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-4",
+      "author": "[@client]",
+      "product": "bougie-lueur"
+     }
+    },
+    "b4": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-5",
+      "author": "[@client]",
+      "product": "brume-tonique"
+     }
+    },
+    "b5": {
+     "type": "post",
+     "settings": {
+      "image": "demo:scene-6",
+      "author": "[@client]",
+      "product": "tasse-double-paroi"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5"
+   ]
+  },
+  "timeline": {
+   "type": "timeline",
+   "settings": {
+    "heading": "Notre histoire"
+   },
+   "blocks": {
+    "b0": {
+     "type": "step",
+     "settings": {
+      "date": "2020",
+      "title": "Le début de l'aventure",
+      "text": "<p>Racontez ce moment en deux phrases.</p>"
+     }
+    },
+    "b1": {
+     "type": "step",
+     "settings": {
+      "date": "2022",
+      "title": "La première boutique",
+      "text": "<p>Une étape clé.</p>"
+     }
+    },
+    "b2": {
+     "type": "step",
+     "settings": {
+      "date": "Aujourd'hui",
+      "title": "Et demain ?",
+      "text": "<p>Votre prochaine ambition.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "rich": {
+   "type": "rich-text",
+   "settings": {
+    "color_scheme": "custom-1"
+   },
+   "blocks": {
+    "b0": {
+     "type": "eyebrow",
+     "settings": {
+      "text": "Notre engagement"
+     }
+    },
+    "b1": {
+     "type": "quote",
+     "settings": {
+      "quote": "Nous fabriquons ce que nous aimerions acheter.",
+      "author": "Les fondateurs"
+     }
+    },
+    "b2": {
+     "type": "buttons",
+     "settings": {
+      "label_1": "Découvrir"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  },
+  "news": {
+   "type": "newsletter",
+   "settings": {
+    "layout": "split",
+    "image": "demo:scene-2",
+    "color_scheme": "alt"
+   }
+  },
+  "contact": {
+   "type": "contact-form",
+   "settings": {},
+   "blocks": {
+    "b0": {
+     "type": "info",
+     "settings": {
+      "icon": "mail",
+      "title": "E-mail",
+      "text": "<p>[contact@votre-boutique.fr]</p>"
+     }
+    },
+    "b1": {
+     "type": "info",
+     "settings": {
+      "icon": "clock",
+      "title": "Horaires",
+      "text": "<p>Du lundi au vendredi, 9 h – 18 h</p>"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1"
+   ]
+  },
+  "stores": {
+   "type": "store-locator",
+   "settings": {},
+   "blocks": {
+    "b0": {
+     "type": "store",
+     "settings": {}
+    },
+    "b1": {
+     "type": "store",
+     "settings": {
+      "name": "[Boutique Lyon]",
+      "address": "<p>[5 place Exemple, 69000 Lyon]</p>"
+     }
+    },
+    "b2": {
+     "type": "store",
+     "settings": {
+      "name": "[Boutique Bordeaux]",
+      "address": "<p>[8 cours Exemple, 33000 Bordeaux]</p>"
+     }
+    }
+   },
+   "block_order": [
+    "b0",
+    "b1",
+    "b2"
+   ]
+  }
+ },
+ "order": [
+  "slideshow",
+  "ticker",
+  "icons",
+  "clist",
+  "tabs",
+  "fp",
+  "iwt",
+  "look",
+  "ba",
+  "mcol",
+  "collage",
+  "cd",
+  "stats",
+  "ctable",
+  "ugc",
+  "timeline",
+  "rich",
+  "news",
+  "contact",
+  "stores"
+ ]
+}

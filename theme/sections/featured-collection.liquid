@@ -1,9 +1,18 @@
-<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" aria-labelledby="Fc-{{ section.id }}">
+<section class="section scheme-{{ section.settings.color_scheme }} pad-{{ section.settings.padding }}" aria-labelledby="Fc-{{ section.id }}"{% if section.settings.layout == 'slider' %} data-carousel{% endif %}>
   <div class="page-width">
     {%- assign hid = 'Fc-' | append: section.id -%}
-    {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid %}
-    <ul class="product-grid product-grid--4" role="list">
-      {%- if section.settings.collection != blank -%}
+    <div class="section-head-row{% if section.settings.head_align == 'center' %} section-head-row--center{% endif %}">
+      {% render 'section-head', eyebrow: section.settings.eyebrow, heading: section.settings.heading, lead: section.settings.lead, id: hid, align: section.settings.head_align %}
+      {%- if section.settings.layout == 'slider' -%}
+        <div class="carousel__nav"><button type="button" class="icon-btn" data-carousel-prev aria-label="{{ 'general.previous' | t }}">{% render 'icon', name: 'chevron-left' %}</button><button type="button" class="icon-btn" data-carousel-next aria-label="{{ 'general.next' | t }}">{% render 'icon', name: 'chevron-right' %}</button></div>
+      {%- endif -%}
+    </div>
+    <ul class="product-grid{% if section.settings.layout == 'slider' %} product-slider{% endif %}" style="--cols-desktop: {{ section.settings.columns }}" role="list"{% if section.settings.layout == 'slider' %} data-carousel-track{% endif %}>
+      {%- if section.settings.products != blank -%}
+        {%- for product in section.settings.products limit: section.settings.limit -%}
+          <li data-reveal style="--d: {{ forloop.index0 | modulo: 4 | times: 70 }}ms">{% render 'product-card', product: product %}</li>
+        {%- endfor -%}
+      {%- elsif section.settings.collection != blank -%}
         {%- for product in section.settings.collection.products limit: section.settings.limit -%}
           <li data-reveal style="--d: {{ forloop.index0 | modulo: 4 | times: 70 }}ms">{% render 'product-card', product: product %}</li>
         {%- endfor -%}
@@ -23,16 +32,167 @@
 {
   "name": "Collection en vedette",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Boutique" },
-    { "type": "text", "id": "heading", "label": "Titre", "default": "Nos best-sellers" },
-    { "type": "textarea", "id": "lead", "label": "Introduction" },
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "limit", "min": 2, "max": 12, "step": 1, "label": "Nombre de produits", "default": 4 },
-    { "type": "checkbox", "id": "show_link", "label": "Lien « Tout voir »", "default": true },
-    {"type": "header", "content": "Mise en forme de la section"},
-    {"type": "select", "id": "color_scheme", "label": "Palette de couleurs", "options": [{"value": "theme", "label": "Thème"}, {"value": "alt", "label": "Alternée"}, {"value": "tint", "label": "Teintée"}, {"value": "dark", "label": "Sombre"}, {"value": "primary", "label": "Couleur primaire"}, {"value": "accent", "label": "Couleur d'accent"}, {"value": "custom-1", "label": "Personnalisée 1"}, {"value": "custom-2", "label": "Personnalisée 2"}], "default": "theme"},
-    {"type": "select", "id": "padding", "label": "Espacement vertical", "options": [{"value": "none", "label": "Aucun"}, {"value": "s", "label": "Petit"}, {"value": "m", "label": "Moyen"}, {"value": "l", "label": "Grand"}, {"value": "xl", "label": "Très grand"}], "default": "l"}
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Boutique"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Nos best-sellers"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Ou une sélection de produits",
+      "limit": 12
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "label": "Nombre de produits",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Colonnes (ordinateur)",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Disposition",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grille"
+        },
+        {
+          "value": "slider",
+          "label": "Carrousel"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Alignement du titre",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "left",
+          "label": "Gauche"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "label": "Lien « Tout voir »",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mise en forme de la section"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Thème"
+        },
+        {
+          "value": "alt",
+          "label": "Alternée"
+        },
+        {
+          "value": "tint",
+          "label": "Teintée"
+        },
+        {
+          "value": "dark",
+          "label": "Sombre"
+        },
+        {
+          "value": "primary",
+          "label": "Couleur primaire"
+        },
+        {
+          "value": "accent",
+          "label": "Couleur d'accent"
+        },
+        {
+          "value": "custom-1",
+          "label": "Personnalisée 1"
+        },
+        {
+          "value": "custom-2",
+          "label": "Personnalisée 2"
+        }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Espacement vertical",
+      "options": [
+        {
+          "value": "none",
+          "label": "Aucun"
+        },
+        {
+          "value": "s",
+          "label": "Petit"
+        },
+        {
+          "value": "m",
+          "label": "Moyen"
+        },
+        {
+          "value": "l",
+          "label": "Grand"
+        },
+        {
+          "value": "xl",
+          "label": "Très grand"
+        }
+      ],
+      "default": "l"
+    }
   ],
-  "presets": [{ "name": "Collection en vedette" }]
+  "presets": [
+    {
+      "name": "Collection en vedette"
+    }
+  ]
 }
 {% endschema %}

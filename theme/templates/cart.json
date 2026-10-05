@@ -10,12 +10,20 @@
         "eyebrow": "",
         "heading": "Complétez votre commande",
         "limit": 4,
-        "show_link": false
+        "show_link": false,
+        "layout": "slider"
+      }
+    },
+    "recent": {
+      "type": "recently-viewed",
+      "settings": {
+        "limit": 4
       }
     }
   },
   "order": [
     "main",
-    "reco"
+    "reco",
+    "recent"
   ]
 }

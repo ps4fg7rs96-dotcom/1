@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "stores": {
+      "type": "store-locator",
+      "settings": {},
+      "blocks": {
+        "store-1": {
+          "type": "store",
+          "settings": {}
+        },
+        "store-2": {
+          "type": "store",
+          "settings": {
+            "name": "[Boutique Lyon]",
+            "address": "<p>[5 place Exemple, 69000 Lyon]</p>"
+          }
+        }
+      },
+      "block_order": [
+        "store-1",
+        "store-2"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "stores"
+  ]
+}

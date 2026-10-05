@@ -7,9 +7,13 @@
  * avec des équivalents simplifiés des tags/filtres propres à Shopify.
  * Ensuite CSS, JS, polices et icônes sont intégrés en ligne → un seul fichier autonome.
  *
+ * Pages générées : demo/demo.html (accueil), demo/sections.html (sections universelles),
+ * demo/produit.html (fiche produit), demo/collection.html (collection avec filtres).
+ *
  * Usage : node scripts/build-demo.mjs [--locale=en]
  */
 import { Liquid, Tag, Value } from 'liquidjs';
+import { makeImages, makeCatalog } from './demo-data.mjs';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -40,6 +44,8 @@ const linklists = {
     ],
   },
 };
+// Objets de démonstration (produits, collections, images) — remplis après la création du moteur
+const DEMO = { catalog: null, image: () => null };
 const fontObject = (handle) => ({ family: 'Assistant', fallback_families: 'sans-serif', weight: 400, style: 'normal', handle });
 
 /** Convertit une valeur de réglage selon son type de schéma (comme le ferait Shopify). */
@@ -47,7 +53,11 @@ function convert(type, value) {
   switch (type) {
     case 'link_list': return linklists[value] || { links: [] };
     case 'url': return !value ? '' : String(value).startsWith('shopify://') ? '#' : value;
-    case 'image_picker': case 'collection': case 'product': case 'page': case 'video': return null;
+    case 'image_picker': return typeof value === 'string' && value.startsWith('demo:') ? DEMO.image(value.slice(5)) : null;
+    case 'product': return typeof value === 'string' && DEMO.catalog ? (DEMO.catalog.byHandle[value] || null) : null;
+    case 'product_list': return Array.isArray(value) && DEMO.catalog ? value.map((h) => DEMO.catalog.byHandle[h]).filter(Boolean) : [];
+    case 'collection': return typeof value === 'string' && DEMO.catalog ? (DEMO.catalog.collections[value] || null) : null;
+    case 'page': case 'video': case 'video_url': case 'blog': return null;
     case 'font_picker': return fontObject(value);
     default: return value;
   }
@@ -91,8 +101,15 @@ engine.registerFilter('t', (key, ...args) => {
 engine.registerFilter('asset_url', (name) => `asset://${name}`);
 engine.registerFilter('stylesheet_tag', (url) => `<link rel="stylesheet" href="${url}" media="all">`);
 engine.registerFilter('preload_tag', () => '');
-engine.registerFilter('image_url', () => '');
-engine.registerFilter('image_tag', () => '');
+engine.registerFilter('image_url', (img) => (img && img.src) || '');
+engine.registerFilter('image_tag', (url, ...args) => {
+  if (!url) return '';
+  const o = kw(args);
+  return `<img src="${url}" alt="${String(o.alt || '').replace(/"/g, '&quot;')}"${o.class ? ` class="${o.class}"` : ''} loading="${o.loading || 'lazy'}" width="600" height="600">`;
+});
+for (const f of ['video_tag', 'external_video_tag', 'media_tag', 'payment_terms', 'payment_button', 'shopify_asset_url']) engine.registerFilter(f, () => '');
+engine.registerFilter('time_tag', (d) => `<time>${new Date(d || Date.now()).toLocaleDateString('fr-FR')}</time>`);
+engine.registerFilter('format_code', (c) => c);
 engine.registerFilter('placeholder_svg_tag', (_n, cls) => `<svg class="${cls || ''}" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100"/></svg>`);
 const money = (cents) => `${(Number(cents || 0) / 100).toFixed(2).replace('.', ',')} €`;
 engine.registerFilter('money', money);
@@ -132,13 +149,33 @@ engine.registerTag('form', class extends Tag {
   }
   *render(ctx, emitter) {
     const cls = (this.args.match(/class:\s*'([^']*)'/) || [])[1] || '';
-    const id = (this.args.match(/id:\s*'([^']*)'/) || [])[1];
+    let id = (this.args.match(/id:\s*'([^']*)'/) || [])[1];
+    const idVar = (this.args.match(/id:\s*([a-z_][\w.]*)/) || [])[1];
+    if (!id && idVar) id = ctx.getSync(idVar.split('.'));
     const data = /data-([a-z-]+):/.exec(this.args);
     emitter.write(`<form method="post" action="#"${id ? ` id="${id}"` : ''} class="${cls}"${data ? ` data-${data[1]}` : ''} onsubmit="event.preventDefault()">`);
     ctx.push({ form: { posted_successfully: false, errors: null } });
     yield this.liquid.renderer.renderTemplates(this.templates, ctx, emitter);
     ctx.pop();
     emitter.write('</form>');
+  }
+});
+
+// {% paginate x by n %} … {% endpaginate %} : une seule page en démo
+engine.registerTag('paginate', class extends Tag {
+  constructor(token, remain, liquid) {
+    super(token, remain, liquid);
+    this.templates = [];
+    const stream = liquid.parser.parseStream(remain)
+      .on('tag:endpaginate', () => stream.stop())
+      .on('template', (tpl) => this.templates.push(tpl))
+      .on('end', () => { throw new Error('tag paginate non fermé'); });
+    stream.start();
+  }
+  *render(ctx, emitter) {
+    ctx.push({ paginate: { pages: 1, current_page: 1, current_offset: 0, next: null, previous: null, parts: [] } });
+    yield this.liquid.renderer.renderTemplates(this.templates, ctx, emitter);
+    ctx.pop();
   }
 });
 
@@ -152,15 +189,17 @@ function sectionSchema(type) {
   return m ? JSON.parse(m[1]) : {};
 }
 const sectionCache = new Map();
+let sectionIndex = 0;
 async function renderSection(id, data, globals) {
+  sectionIndex += 1;
   const schema = sectionSchema(data.type);
   const blocksSchema = Object.fromEntries((schema.blocks || []).map((b) => [b.type, b]));
   const order = data.block_order || Object.keys(data.blocks || {});
   const blocks = order.filter((k) => !(data.blocks[k] || {}).disabled).map((k) => {
     const b = data.blocks[k];
-    return { id: k, type: b.type, settings: withDefaults((blocksSchema[b.type] || {}).settings, b.settings), shopify_attributes: '' };
+    return { id: k, type: b.type, settings: withDefaults((blocksSchema[b.type] || {}).settings, b.settings), shopify_attributes: '', blocks: [] };
   });
-  const section = { id, settings: withDefaults(schema.settings, data.settings), blocks };
+  const section = { id, index: sectionIndex, settings: withDefaults(schema.settings, data.settings), blocks };
   if (!sectionCache.has(data.type)) sectionCache.set(data.type, engine.parse(read(`sections/${data.type}.liquid`)));
   const html = await engine.render(sectionCache.get(data.type), { ...globals, section });
   const tag = schema.tag || 'div';
@@ -170,6 +209,7 @@ async function renderGroup(json, globals) {
   let out = '';
   for (const key of json.order) {
     if (json.sections[key].disabled) continue;
+    if (json.sections[key].type.startsWith('@')) continue;
     out += await renderSection(key, json.sections[key], globals);
   }
   return out;
@@ -183,57 +223,90 @@ engine.registerTag('sections', class extends Tag {
   }
 });
 
-/* ---------- Rendu de la page ---------- */
-const globals = {
+/* ---------- Données de démonstration (produits, images) ---------- */
+const arts = {};
+for (const a of ['bottle', 'bag', 'flask', 'candle']) arts[a] = (await engine.renderFile('product-art', { art: a })).trim();
+const img = makeImages(arts);
+DEMO.catalog = makeCatalog(img);
+const SCENES = {
+  'scene-1': img.scene('#1F3A30', '#3F6E5B', 'bottle', '#F6E27A'),
+  'scene-2': img.scene('#2B37DE', '#EC7454', 'flask', '#121214'),
+  'scene-3': img.scene('#8A4B2A', '#E9C9A5', 'bag', '#3B2316'),
+  'scene-4': img.scene('#C99A1E', '#F6E7B8', 'candle', '#7A5C2E', 1200, 1500),
+  'scene-5': img.scene('#B5536B', '#FBEDEA', 'bottle', '#3A2A2E', 1200, 1200),
+  'scene-6': img.scene('#0369A1', '#BAE6FD', 'flask', '#F97316', 1200, 1200),
+  'before': img.scene('#9CA3AF', '#D1D5DB', 'candle', '#6B7280', 1600, 1200),
+  'after': img.scene('#C99A1E', '#FDE68A', 'candle', '#C2410C', 1600, 1200),
+};
+DEMO.image = (key) => SCENES[key] || (DEMO.catalog.byHandle[key] ? DEMO.catalog.byHandle[key].featured_media : null);
+
+/* ---------- Rendu des pages ---------- */
+const baseGlobals = {
   settings: themeSettings,
-  shop: { name: 'Kinetic', description: 'Thème Shopify', customer_accounts_enabled: true, enabled_payment_types: [], currency: 'EUR' },
+  shop: { name: 'Kinetic', description: 'Thème Shopify', customer_accounts_enabled: true, enabled_payment_types: [], currency: 'EUR', money_format: '{{amount_with_comma_separator}} €', url: '#' },
   request: { locale: { iso_code: LOCALE }, page_type: 'index', design_mode: false, origin: 'https://demo.kinetic-theme.com' },
-  routes: { root_url: '/', cart_url: '#', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '#', account_url: '#', all_products_collection_url: '#', product_recommendations_url: '#' },
-  cart: { item_count: 0, items: [], total_price: 0, currency: { iso_code: 'EUR' }, cart_level_discount_applications: [] },
+  routes: { root_url: '/', cart_url: '#', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '#', account_url: '#', all_products_collection_url: '#', collections_url: '#', product_recommendations_url: '#' },
+  cart: { item_count: 0, items: [], total_price: 0, currency: { iso_code: 'EUR' }, cart_level_discount_applications: [], attributes: {} },
   localization: { available_countries: [], available_languages: [] },
-  template: { name: 'index' },
   linklists,
-  page_title: LOCALE === 'fr' ? 'Kinetic — Démo du thème Shopify' : 'Kinetic — Shopify theme demo',
-  page_description: LOCALE === 'fr'
-    ? "Démo autonome du thème Shopify Kinetic : éditeur en direct, outils de conversion intégrés et chargement rapide."
-    : 'Standalone demo of the Kinetic Shopify theme: live editor, built-in conversion tools and fast loading.',
   canonical_url: 'https://demo.kinetic-theme.com/',
   current_page: 1,
   content_for_header: '',
   powered_by_link: '',
 };
+const FR = LOCALE === 'fr';
+const PAGES = [
+  { file: FR ? 'demo.html' : `demo.${LOCALE}.html`, template: 'templates/index.json', name: 'index', title: FR ? 'Kinetic — Démo du thème Shopify' : 'Kinetic — Shopify theme demo', description: FR ? "Démo autonome du thème Shopify Kinetic : éditeur en direct, outils de conversion intégrés et chargement rapide." : 'Standalone demo of the Kinetic Shopify theme: live editor, built-in conversion tools and fast loading.' },
+  { file: FR ? 'sections.html' : `sections.${LOCALE}.html`, template: '../scripts/demo-sections.json', name: 'page', title: FR ? 'Kinetic — Sections universelles' : 'Kinetic — Universal sections', description: FR ? 'Toutes les sections universelles du thème Kinetic avec des données d\'exemple.' : 'All universal sections of the Kinetic theme with sample data.' },
+  { file: FR ? 'produit.html' : `product.${LOCALE}.html`, template: 'templates/product.json', name: 'product', product: 'gourde-crete', title: FR ? 'Kinetic — Fiche produit' : 'Kinetic — Product page', description: FR ? 'Fiche produit Kinetic : remises par quantité, lot, stock en direct, livraison estimée…' : 'Kinetic product page demo.' },
+  { file: FR ? 'collection.html' : `collection.${LOCALE}.html`, template: 'templates/collection.json', name: 'collection', collection: 'tout', title: FR ? 'Kinetic — Collection' : 'Kinetic — Collection', description: FR ? 'Page collection Kinetic : filtres, pastilles, colonnes, vignette promo.' : 'Kinetic collection page demo.' },
+];
+const navLinks = PAGES.map((pg) => `<a href="${pg.file}" style="color:#9da4ff;font-weight:700">${pg.title.replace(/^Kinetic — /, '')}</a>`).join(' · ');
 
-Object.assign(GLOBALS, globals);
-const index = readJson('templates/index.json');
-const content = await renderGroup(index, globals);
-let html = await engine.parseAndRender(read('layout/theme.liquid'), { ...globals, content_for_layout: content });
-
-/* ---------- Intégration des assets ---------- */
 const b64 = (name) => readFileSync(join(THEME, 'assets', name)).toString('base64');
 const mime = { woff2: 'font/woff2', svg: 'image/svg+xml' };
 const inlineUrls = (text) => text.replace(/asset:\/\/([\w.-]+\.(woff2|svg))/g, (_, n, ext) => `data:${mime[ext]};base64,${b64(n)}`);
 const minifyCss = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{}:;,>])\s*/g, '$1').replace(/;}/g, '}').trim();
 
-html = html
-  .replace(/<link rel="stylesheet" href="asset:\/\/([\w.-]+\.css)"[^>]*>/g, (_, n) => `<style>${minifyCss(read(`assets/${n}`))}</style>`)
-  .replace(/<script src="asset:\/\/([\w.-]+\.js)"[^>]*><\/script>/g, (_, n) => `<script>${read(`assets/${n}`).replace(/<\/script/gi, '<\\/script')}</script>`);
-html = inlineUrls(html);
-
-// Liens Shopify inexistants hors boutique → ancres neutres
-html = html.replace(/href="#"/g, 'href="#top"');
-html = html.replace('<body ', '<body id="top" ');
-// Bandeau discret indiquant qu'il s'agit d'une démo (fermable)
-const note = LOCALE === 'fr'
-  ? 'Démo autonome du thème Kinetic — contenu d\'exemple, panier et paiements désactivés.'
-  : 'Standalone Kinetic theme demo — sample content, cart and payments disabled.';
-html = html.replace('</body>', `<p style="position:fixed;left:1rem;bottom:1rem;z-index:80;max-width:22rem;margin:0;padding:.6rem .9rem;border-radius:12px;background:#121214;color:#f1efea;font:500 .78rem/1.4 system-ui,sans-serif;box-shadow:0 10px 30px rgb(0 0 0 / .3)" id="demo-note">${note} <button type="button" onclick="this.parentNode.remove()" style="margin-left:.4rem;color:#9da4ff;font-weight:700" aria-label="OK">OK</button></p>\n<script>setTimeout(function(){var n=document.getElementById('demo-note');if(n)n.remove()},9000)</script>\n</body>`);
-
-// Nettoyage des lignes vides
-html = html.replace(/\n\s*\n+/g, '\n');
-
 mkdirSync(join(ROOT, 'demo'), { recursive: true });
-const out = join(ROOT, 'demo', LOCALE === 'fr' ? 'demo.html' : `demo.${LOCALE}.html`);
-writeFileSync(out, html);
-const missing = (html.match(/\[missing [^\]]+\]/g) || []);
-console.log(`✓ ${out} — ${(Buffer.byteLength(html) / 1024).toFixed(0)} Ko${missing.length ? ` — CLÉS MANQUANTES : ${[...new Set(missing)].join(', ')}` : ''}`);
-if (missing.length || /asset:\/\//.test(html)) process.exit(1);
+let failed = false;
+for (const pg of PAGES) {
+  sectionIndex = 0;
+  const product = pg.product ? DEMO.catalog.byHandle[pg.product] : null;
+  const collection = pg.collection ? DEMO.catalog.collections[pg.collection] : null;
+  const globals = {
+    ...baseGlobals,
+    request: { ...baseGlobals.request, page_type: pg.name },
+    template: { name: pg.name },
+    page_title: pg.title,
+    page_description: pg.description,
+    product, collection,
+    collections: Object.values(DEMO.catalog.collections),
+  };
+  Object.keys(GLOBALS).forEach((k) => delete GLOBALS[k]);
+  Object.assign(GLOBALS, globals);
+  const tpl = readJson(pg.template);
+  const content = await renderGroup(tpl, globals);
+  let html = await engine.parseAndRender(read('layout/theme.liquid'), { ...globals, content_for_layout: content });
+
+  // CSS et JS en ligne (chaque fichier une seule fois), polices et SVG en data URI
+  const seen = new Set();
+  html = html
+    .replace(/<link rel="stylesheet" href="asset:\/\/([\w.-]+\.css)"[^>]*>/g, (_, n) => { if (seen.has(n)) return ''; seen.add(n); return `<style>${minifyCss(read(`assets/${n}`))}</style>`; })
+    .replace(/<script src="asset:\/\/([\w.-]+\.js)"[^>]*><\/script>/g, (_, n) => { if (seen.has(n)) return ''; seen.add(n); return `<script>${read(`assets/${n}`).replace(/<\/script/gi, '<\\/script')}</script>`; });
+  html = inlineUrls(html);
+  html = html.replace(/href="#"/g, 'href="#top"');
+  html = html.replace('<body ', '<body id="top" ');
+  const note = FR
+    ? `Démo autonome du thème Kinetic — contenu d'exemple, panier et paiements désactivés.<br>Pages : ${navLinks}`
+    : `Standalone Kinetic theme demo — sample content, cart and payments disabled.<br>Pages: ${navLinks}`;
+  html = html.replace('</body>', `<p style="position:fixed;left:1rem;bottom:1rem;z-index:80;max-width:24rem;margin:0;padding:.6rem .9rem;border-radius:12px;background:#121214;color:#f1efea;font:500 .78rem/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgb(0 0 0 / .3)" id="demo-note">${note} <button type="button" onclick="this.parentNode.remove()" style="margin-left:.4rem;color:#9da4ff;font-weight:700" aria-label="OK">OK</button></p>\n<script>setTimeout(function(){var n=document.getElementById('demo-note');if(n)n.remove()},12000)</script>\n</body>`);
+  html = html.replace(/\n\s*\n+/g, '\n');
+
+  const out = join(ROOT, 'demo', pg.file);
+  writeFileSync(out, html);
+  const missing = (html.match(/\[missing [^\]]+\]/g) || []);
+  console.log(`✓ ${out} — ${(Buffer.byteLength(html) / 1024).toFixed(0)} Ko${missing.length ? ` — CLÉS MANQUANTES : ${[...new Set(missing)].join(', ')}` : ''}`);
+  if (missing.length || /asset:\/\//.test(html)) failed = true;
+}
+if (failed) process.exit(1);

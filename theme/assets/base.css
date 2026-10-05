@@ -916,3 +916,37 @@ html.has-dialog { overflow: hidden; }
 .discount-code { display: inline-flex; align-items: center; gap: .75rem; padding: .7rem 1rem; border-radius: var(--radius-sm); border: 2px dashed currentColor; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; font-weight: 700; letter-spacing: .08em; }
 .discount-code .small { font-family: var(--font-body); letter-spacing: 0; display: inline-flex; align-items: center; gap: .3rem; opacity: .8; }
 .discount-code.is-copied { border-style: solid; color: var(--c-success); }
+
+/* Bannière v2 */
+.banner--s { min-height: clamp(18rem, 40vh, 26rem); } .banner--m { min-height: clamp(22rem, 50vh, 32rem); } .banner--full { min-height: calc(100svh - 4.25rem); }
+.banner__media::after { background: linear-gradient(to top, rgb(18 18 20 / calc(var(--overlay, .45) + .3)), rgb(18 18 20 / calc(var(--overlay, .45) * .4))); }
+.banner__img { width: 100%; height: 100%; object-fit: cover; }
+.banner__img--mobile { display: none; }
+@media (max-width: 749px) { .banner__media:has(.banner__img--mobile) .banner__img:not(.banner__img--mobile) { display: none; } .banner__img--mobile { display: block; } }
+.banner--center, .banner--center-left { align-items: center; }
+.banner--center .banner__content, .banner--bottom-center .banner__content { max-width: none; display: flex; justify-content: center; text-align: center; }
+.banner--center .btn-row, .banner--bottom-center .btn-row { justify-content: center; }
+.banner__box { display: grid; gap: .9rem; max-width: 46rem; }
+.banner__box--card { padding: clamp(1.25rem, 1rem + 2vw, 2.5rem); border-radius: var(--radius); background: rgb(18 18 20 / .55); backdrop-filter: blur(8px); }
+.banner__eyebrow { color: #f5a084; }
+.section-head-row--center { justify-content: center; text-align: center; }
+.section-head-row--center .section-head { margin-inline: auto; }
+.product-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -1rem; padding-inline: 1rem; }
+.product-slider::-webkit-scrollbar { display: none; }
+.product-slider > li { flex: 0 0 72%; scroll-snap-align: start; }
+@media (min-width: 750px) { .product-slider > li { flex-basis: calc((100% - 2 * 1.25rem) / 3); } }
+@media (min-width: 990px) { .product-slider > li { flex-basis: calc((100% - (var(--cols-desktop, 4) - 1) * 1.25rem) / var(--cols-desktop, 4)); } }
+
+/* Page carte cadeau */
+.gift-card { display: grid; gap: 1.5rem; justify-items: center; text-align: center; }
+.gift-card__card { display: grid; gap: 1rem; justify-items: center; width: 100%; padding: clamp(1.5rem, 1rem + 3vw, 3rem); }
+.gift-card__amount { color: var(--c-link); }
+.gift-card__code { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .75rem; }
+.gift-card__code code { padding: .6rem 1rem; border-radius: var(--radius-sm); border: 2px dashed var(--c-border); font-size: 1.2rem; letter-spacing: .1em; }
+@media print { .gift-card .btn-row, .gift-card__code .btn { display: none; } }
+textarea.input, .textarea { border-radius: min(var(--input-radius, 12px), 16px); }
+.link { display: inline-flex; align-items: center; gap: .3rem; }
+.product > *, .quick-view__grid > * { min-width: 0; }
+@media (max-width: 479px) { .header__account, .header__wishlist { display: none; } }
+.menu-drawer__extra { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+.menu-drawer__extra a { flex: 1; justify-content: center !important; gap: .5rem; padding: .8rem !important; border: 1px solid var(--c-border) !important; border-radius: var(--btn-radius); font-family: var(--font-body) !important; font-size: .95rem !important; font-weight: 600 !important; }

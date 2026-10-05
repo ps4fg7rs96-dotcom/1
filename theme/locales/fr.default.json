@@ -12,6 +12,7 @@
       "next": "Page suivante",
       "page": "Page {{ number }}"
     },
+    "breadcrumbs": "Fil d'Ariane",
     "email": "Adresse e-mail",
     "previous": "Précédent",
     "next": "Suivant",
@@ -466,7 +467,17 @@
     "count": {
       "one": "{{ count }} produit",
       "other": "{{ count }} produits"
-    }
+    },
+    "filters": "Filtrer",
+    "columns": "Nombre de colonnes",
+    "columns_n": "{{ n }} colonnes",
+    "results": {
+      "one": "{{ count }} produit",
+      "other": "{{ count }} produits"
+    },
+    "show_results": "Voir les résultats ({{ count }})",
+    "shown": "{{ shown }} produits affichés sur {{ total }}",
+    "load_more": "Voir plus de produits"
   },
   "search": {
     "title": "Recherche",
@@ -505,6 +516,15 @@
     "password": "Mot de passe",
     "enter": "Entrer",
     "powered": "Boutique propulsée par"
+  },
+  "gift_card": {
+    "title": "Votre carte cadeau",
+    "initial": "Valeur initiale : {{ amount }}",
+    "disabled": "Carte expirée ou désactivée",
+    "expires": "Valable jusqu'au {{ date }}",
+    "shop": "Commencer mes achats",
+    "print": "Imprimer",
+    "wallet": "Ajouter à Apple Wallet"
   },
   "features": {
     "add": "Ajouter",

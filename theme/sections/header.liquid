@@ -29,6 +29,10 @@
             <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }} {% render 'icon', name: 'arrow-right' %}</a>
           {%- endif -%}
         {%- endfor -%}
+        <div class="menu-drawer__extra">
+          {%- if shop.customer_accounts_enabled and section.settings.show_account -%}<a href="{{ routes.account_url }}">{% render 'icon', name: 'account', size: 18 %} {{ 'sections.header.account' | t }}</a>{%- endif -%}
+          {%- if settings.wishlist_enable -%}<a href="{{ settings.wishlist_url | default: routes.root_url }}">{% render 'icon', name: 'heart', size: 18 %} {{ 'features.wishlist.title' | t }}</a>{%- endif -%}
+        </div>
         {%- if section.settings.cta_label != blank -%}
           <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--primary btn--lg">{{ section.settings.cta_label }}</a>
         {%- endif -%}

@@ -55,7 +55,7 @@
           <span class="badge badge--muted">{{ 'products.product.sold_out' | t }}</span>
         {%- elsif variant.compare_at_price > variant.price -%}
           {%- if settings.card_sale_percent -%}
-            {%- assign saving = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price -%}
+            {%- assign saving = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round -%}
             <span class="badge badge--sale">−{{ saving }} %</span>
           {%- else -%}
             <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>

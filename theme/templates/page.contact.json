@@ -1,0 +1,66 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {},
+      "blocks": {
+        "info-1": {
+          "type": "info",
+          "settings": {
+            "icon": "mail",
+            "title": "E-mail",
+            "text": "<p>[contact@votre-boutique.fr]</p>"
+          }
+        },
+        "info-2": {
+          "type": "info",
+          "settings": {
+            "icon": "clock",
+            "title": "Horaires",
+            "text": "<p>Du lundi au vendredi, 9 h – 18 h</p>"
+          }
+        }
+      },
+      "block_order": [
+        "info-1",
+        "info-2"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Questions fréquentes"
+      },
+      "blocks": {
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "Où en est ma commande ?",
+            "answer": "<p>Remplacez par votre réponse.</p>"
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "question": "Comment faire un retour ?",
+            "answer": "<p>Remplacez par votre réponse.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question-1",
+        "question-2"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "form",
+    "faq"
+  ]
+}

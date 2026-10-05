@@ -5,14 +5,68 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "brand": { "type": "brand", "settings": { "text": "Le thème Shopify rapide et pensé pour la conversion, pour les marques qui veulent avancer sans empiler les applications.", "show_social": true } },
-        "menu-1": { "type": "menu", "settings": { "title": "Boutique", "menu": "main-menu" } },
-        "menu-2": { "type": "menu", "settings": { "title": "Informations", "menu": "footer" } },
-        "newsletter": { "type": "newsletter", "settings": { "title": "Newsletter", "text": "Nouveautés et conseils de conversion, une fois par mois." } }
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "text": "Le thème Shopify rapide et pensé pour la conversion, pour les marques qui veulent avancer sans empiler les applications.",
+            "show_social": true
+          }
+        },
+        "menu-1": {
+          "type": "menu",
+          "settings": {
+            "title": "Boutique",
+            "menu": "main-menu"
+          }
+        },
+        "menu-2": {
+          "type": "menu",
+          "settings": {
+            "title": "Informations",
+            "menu": "footer"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "text": "Nouveautés et conseils de conversion, une fois par mois."
+          }
+        }
       },
-      "block_order": ["brand", "menu-1", "menu-2", "newsletter"],
-      "settings": { "dark": true, "copyright": "Tous droits réservés.", "show_payment": true, "show_localization": true }
+      "block_order": [
+        "brand",
+        "menu-1",
+        "menu-2",
+        "newsletter"
+      ],
+      "settings": {
+        "dark": true,
+        "copyright": "Tous droits réservés.",
+        "show_payment": true,
+        "show_localization": true
+      }
+    },
+    "popup": {
+      "type": "popup",
+      "disabled": true,
+      "settings": {
+        "type": "newsletter",
+        "trigger": "delay",
+        "delay": 10,
+        "frequency": 7,
+        "pages": "not-cart"
+      }
+    },
+    "age": {
+      "type": "age-verification",
+      "disabled": true,
+      "settings": {}
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer",
+    "popup",
+    "age"
+  ]
 }

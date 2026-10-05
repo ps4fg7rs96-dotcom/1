@@ -31,7 +31,10 @@
     const els = $$('[data-reveal]:not(.is-visible)');
     if (!('IntersectionObserver' in window) || reduceMotion) return els.forEach((el) => el.classList.add('is-visible'));
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); } });
+      entries.forEach((en) => {
+        // Visible, ou déjà dépassé (défilement rapide, touche Fin) : on affiche
+        if (en.isIntersecting || en.boundingClientRect.bottom < 0) { en.target.classList.add('is-visible'); io.unobserve(en.target); }
+      });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     els.forEach((el) => io.observe(el));
   };
@@ -328,7 +331,7 @@
 
   /* ---------- Filtres de collection : envoi automatique ---------- */
   document.addEventListener('change', (e) => {
-    const form = e.target.closest('form[data-auto-submit]');
+    const form = e.target.form && e.target.form.matches('[data-auto-submit]') ? e.target.form : e.target.closest('form[data-auto-submit]');
     if (form && !e.target.matches('input[type="number"]')) form.requestSubmit ? form.requestSubmit() : form.submit();
   });
 

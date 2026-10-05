@@ -1,8 +1,9 @@
 """Chaînes ajoutées avec les fonctionnalités v2 (fusionnées dans gen-locales.py)."""
 fr_more = {
- "general": {"email": "Adresse e-mail", "previous": "Précédent", "next": "Suivant", "yes": "Oui", "no": "Non"},
+ "general": {"breadcrumbs": "Fil d'Ariane", "email": "Adresse e-mail", "previous": "Précédent", "next": "Suivant", "yes": "Oui", "no": "Non"},
  "cart": {"delivery_date": "Date de livraison souhaitée", "reward_remaining_html": "Plus que <strong>{{ amount }}</strong> pour débloquer {{ reward }}", "reward_done": "Bravo, vous avez débloqué {{ reward }} !"},
- "collections": {"count": {"one": "{{ count }} produit", "other": "{{ count }} produits"}},
+ "collections": {"count": {"one": "{{ count }} produit", "other": "{{ count }} produits"}, "filters": "Filtrer", "columns": "Nombre de colonnes", "columns_n": "{{ n }} colonnes",
+   "results": {"one": "{{ count }} produit", "other": "{{ count }} produits"}, "show_results": "Voir les résultats ({{ count }})", "shown": "{{ shown }} produits affichés sur {{ total }}", "load_more": "Voir plus de produits"},
  "sections": {
    "slideshow": {"previous": "Diapositive précédente", "next": "Diapositive suivante", "go_to": "Aller à la diapositive {{ n }}", "pause": "Mettre en pause le défilement"},
    "video": {"play": "Lire la vidéo : {{ title }}"},
@@ -21,6 +22,7 @@ fr_more = {
    "gift_recipient": "Je souhaite l'offrir (envoi par e-mail au destinataire)", "recipient_email": "E-mail du destinataire",
    "recipient_name": "Nom du destinataire", "recipient_message": "Message (facultatif)",
    "pickup_available": "Retrait disponible à {{ location }}", "back_in_stock_body": "Alerte retour en stock : {{ title }}"}},
+ "gift_card": {"title": "Votre carte cadeau", "initial": "Valeur initiale : {{ amount }}", "disabled": "Carte expirée ou désactivée", "expires": "Valable jusqu'au {{ date }}", "shop": "Commencer mes achats", "print": "Imprimer", "wallet": "Ajouter à Apple Wallet"},
  "features": {
    "add": "Ajouter", "choose": "Choisir", "copy": "Copier", "shop_now": "Acheter", "share": "Partager", "copied": "Code copié !", "link_copied": "Lien copié",
    "back_to_top": "Retour en haut de page", "quick_view": "Aperçu rapide", "quick_view_of": "Aperçu rapide de {{ title }}",
@@ -31,9 +33,10 @@ fr_more = {
    "delivery": {"between": "Livraison estimée entre le", "and": "et le", "order_within": "Commandez dans les", "ships_today": "pour une expédition aujourd'hui"}},
 }
 en_more = {
- "general": {"email": "Email address", "previous": "Previous", "next": "Next", "yes": "Yes", "no": "No"},
+ "general": {"breadcrumbs": "Breadcrumbs", "email": "Email address", "previous": "Previous", "next": "Next", "yes": "Yes", "no": "No"},
  "cart": {"delivery_date": "Preferred delivery date", "reward_remaining_html": "Only <strong>{{ amount }}</strong> away from {{ reward }}", "reward_done": "Nice, you've unlocked {{ reward }}!"},
- "collections": {"count": {"one": "{{ count }} product", "other": "{{ count }} products"}},
+ "collections": {"count": {"one": "{{ count }} product", "other": "{{ count }} products"}, "filters": "Filter", "columns": "Number of columns", "columns_n": "{{ n }} columns",
+   "results": {"one": "{{ count }} product", "other": "{{ count }} products"}, "show_results": "Show results ({{ count }})", "shown": "Showing {{ shown }} of {{ total }} products", "load_more": "Load more products"},
  "sections": {
    "slideshow": {"previous": "Previous slide", "next": "Next slide", "go_to": "Go to slide {{ n }}", "pause": "Pause autoplay"},
    "video": {"play": "Play video: {{ title }}"},
@@ -52,6 +55,7 @@ en_more = {
    "gift_recipient": "I want to send this as a gift (emailed to the recipient)", "recipient_email": "Recipient email",
    "recipient_name": "Recipient name", "recipient_message": "Message (optional)",
    "pickup_available": "Pickup available at {{ location }}", "back_in_stock_body": "Back in stock alert: {{ title }}"}},
+ "gift_card": {"title": "Your gift card", "initial": "Initial value: {{ amount }}", "disabled": "Card expired or disabled", "expires": "Valid until {{ date }}", "shop": "Start shopping", "print": "Print", "wallet": "Add to Apple Wallet"},
  "features": {
    "add": "Add", "choose": "Choose", "copy": "Copy", "shop_now": "Shop now", "share": "Share", "copied": "Code copied!", "link_copied": "Link copied",
    "back_to_top": "Back to top", "quick_view": "Quick view", "quick_view_of": "Quick view of {{ title }}",

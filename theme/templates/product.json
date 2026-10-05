@@ -3,7 +3,9 @@
     "main": {
       "type": "main-product",
       "settings": {
-        "sticky_atc": true
+        "sticky_atc": true,
+        "gallery_style": "thumbs",
+        "enable_zoom": true
       },
       "blocks": {
         "vendor-1": {
@@ -20,36 +22,77 @@
         },
         "price-4": {
           "type": "price",
-          "settings": {}
-        },
-        "tags-5": {
-          "type": "tags",
           "settings": {
-            "limit": 4
+            "show_tax_note": true
           }
+        },
+        "sku-5": {
+          "type": "sku",
+          "settings": {}
         },
         "inventory-6": {
           "type": "inventory",
           "settings": {
-            "threshold": 5
+            "threshold": 8,
+            "show_bar": true
           }
         },
         "variant_picker-7": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "style": "swatches"
+          }
         },
-        "buy_buttons-8": {
+        "size_chart-8": {
+          "type": "size_chart",
+          "settings": {
+            "label": "Guide des tailles"
+          }
+        },
+        "quantity_breaks-9": {
+          "type": "quantity_breaks",
+          "settings": {
+            "heading": "Plus vous en prenez, plus vous économisez",
+            "default": 2
+          }
+        },
+        "buy_buttons-10": {
           "type": "buy_buttons",
           "settings": {
             "show_quantity": true,
-            "show_dynamic_checkout": true
+            "show_dynamic_checkout": true,
+            "show_installments": true,
+            "show_wishlist": true,
+            "show_pickup": true
           }
         },
-        "free_shipping-9": {
+        "back_in_stock-11": {
+          "type": "back_in_stock",
+          "settings": {
+            "heading": "Prévenez-moi du retour en stock"
+          }
+        },
+        "delivery-12": {
+          "type": "delivery",
+          "settings": {
+            "min_days": 2,
+            "max_days": 4,
+            "cutoff": 14
+          }
+        },
+        "free_shipping-13": {
           "type": "free_shipping",
           "settings": {}
         },
-        "trust-10": {
+        "bundle-14": {
+          "type": "bundle",
+          "settings": {
+            "heading": "Souvent achetés ensemble",
+            "use_recommendations": true,
+            "discount": 0
+          }
+        },
+        "trust-15": {
           "type": "trust",
           "settings": {
             "line_1": "Livraison offerte dès 60 €",
@@ -57,16 +100,38 @@
             "line_3": "Paiement 100 % sécurisé"
           }
         },
-        "description-11": {
+        "description-16": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "collapsed": false
+          }
         },
-        "collapsible-12": {
+        "collapsible-17": {
           "type": "collapsible",
           "settings": {
             "heading": "Livraison et retours",
+            "icon": "truck",
             "content": "<p>Expédition sous 24 h ouvrées. Retours gratuits pendant 30 jours.</p>"
           }
+        },
+        "collapsible-18": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Composition et entretien",
+            "icon": "leaf",
+            "content": "<p>Remplacez par les informations de votre produit.</p>"
+          }
+        },
+        "complementary-19": {
+          "type": "complementary",
+          "settings": {
+            "heading": "Complétez avec",
+            "limit": 3
+          }
+        },
+        "share-20": {
+          "type": "share",
+          "settings": {}
         }
       },
       "block_order": [
@@ -74,14 +139,22 @@
         "title-2",
         "rating-3",
         "price-4",
-        "tags-5",
+        "sku-5",
         "inventory-6",
         "variant_picker-7",
-        "buy_buttons-8",
-        "free_shipping-9",
-        "trust-10",
-        "description-11",
-        "collapsible-12"
+        "size_chart-8",
+        "quantity_breaks-9",
+        "buy_buttons-10",
+        "back_in_stock-11",
+        "delivery-12",
+        "free_shipping-13",
+        "bundle-14",
+        "trust-15",
+        "description-16",
+        "collapsible-17",
+        "collapsible-18",
+        "complementary-19",
+        "share-20"
       ]
     },
     "reco": {
@@ -90,10 +163,18 @@
         "heading": "Vous aimerez aussi",
         "limit": 4
       }
+    },
+    "recent": {
+      "type": "recently-viewed",
+      "settings": {
+        "heading": "Vous avez regardé",
+        "limit": 4
+      }
     }
   },
   "order": [
     "main",
-    "reco"
+    "reco",
+    "recent"
   ]
 }
